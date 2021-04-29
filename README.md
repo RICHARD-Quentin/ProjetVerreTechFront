@@ -1,5 +1,7 @@
 # Front
 
+Après avoir clone le debot, faire un npm install dans le dossier
+
 ## Build Setup
 
 ```bash
