@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "Front/node_modules/.bin/nuxt",
-    "build": "Front/node_modules/.bin/nuxt build",
-    "start": "Front/node_modules/.bin/nuxt start",
-    "generate": "Front/node_modules/.bin/nuxt generate"
+    "dev": "node_modules/.bin/nuxt",
+    "build": "node_modules/.bin/nuxt build",
+    "start": "node_modules/.bin/nuxt start",
+    "generate": "node_modules/.bin/nuxt generate"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
