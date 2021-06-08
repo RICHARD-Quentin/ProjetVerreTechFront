@@ -9,9 +9,14 @@
     "generate": "node_modules/.bin/nuxt generate"
   },
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.15.0",
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/auth-next": "5.0.0-1622718665.cc99959",
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.9.1",
-    "nuxt": "^2.15.3"
+    "nanoid": "^2.1.11",
+    "nuxt": "^2.15.3",
+    "nuxt-auth": "^2.0.10"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"

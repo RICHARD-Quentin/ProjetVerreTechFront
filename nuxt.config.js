@@ -38,20 +38,38 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
+  auth: {
+    strategies: {
+      auth0: {
+        domain: 'kradihsoy.eu.auth0.com',
+        clientId: '7IWpXSGn2Z4rct4LhpMcNoM7gIUlA3d0',
+        scope: ['openid', 'profile', 'offline_access'],
+        accessType: 'offline',
+        responseType: 'code',
+        grantType: 'authorization_code',
+        codeChallengeMethod: 'S256',
+        logoutRedirectUri: 'http://localhost:3000',
+      }
+    }
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseUrl: 'localhost'
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
