@@ -11,6 +11,7 @@
     <v-spacer/>
 
     <v-badge
+      color="red"
       class="mr-5"
       :content="getNumberOfArticles"
       :value="getNumberOfArticles"
