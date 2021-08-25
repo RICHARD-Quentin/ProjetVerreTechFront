@@ -1,19 +1,32 @@
 export const state = () => ({
-  articles: 0
+  articleCount: 0,
+  articles: []
 })
 
 export const mutations = {
   increment(state) {
-    state.articles ++
+    state.articleCount ++
   },
 
   decrement(state) {
-    state.articles --
+    state.articleCount --
+  },
+
+  addArticle(state, {article}) {
+    state.articles.push(article)
+  },
+
+  suppArticle(state, {articleIndex}) {
+    state.articles.splice(articleIndex, 1)
   }
 }
 
 export const getters = {
   getNumberOfArticles(state) {
+    return state.articles.length
+  },
+
+  getArticlesList(state) {
     return state.articles
   }
 }

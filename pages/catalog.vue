@@ -22,11 +22,11 @@ export default {
 
   methods: {
     increment() {
-      this.$store.commit('basket/increment')
+      this.$store.commit('basket/addArticle', {article: this.article})
     },
 
     decrement() {
-      this.$store.commit('basket/decrement')
+      this.$store.commit('basket/suppArticle', {articleIndex: 0})
     }
   }
 }

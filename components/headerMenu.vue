@@ -16,7 +16,7 @@
       :content="getNumberOfArticles"
       :value="getNumberOfArticles"
     >
-      <v-btn text icon small class="px-0 ">
+      <v-btn text icon small nuxt to="/basket" class="px-0 ">
         <v-icon> mdi-cart </v-icon>
       </v-btn>
     </v-badge>
