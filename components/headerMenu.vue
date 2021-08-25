@@ -10,9 +10,16 @@
 
     <v-spacer/>
 
-    <v-btn text class="px-0">
-      <v-icon class="mr-2"> mdi-cart </v-icon>
-    </v-btn>
+    <v-badge
+      class="mr-5"
+      :content="getNumberOfArticles"
+      :value="getNumberOfArticles"
+    >
+      <v-btn text icon small class="px-0 ">
+        <v-icon> mdi-cart </v-icon>
+      </v-btn>
+    </v-badge>
+
 
     <v-btn @click="login" v-if="!getLoggedIn" text>
       <v-icon> mdi-account</v-icon>
@@ -71,6 +78,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "headerMenu",
   props: ['items', 'title'],
@@ -92,6 +101,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters('basket', ['getNumberOfArticles']),
+
     getLoggedIn() {
       return this.$auth.loggedIn
     },

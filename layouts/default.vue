@@ -9,12 +9,11 @@
       </v-container>
     </v-main>
 
-    <v-footer v-if="$vuetify.breakpoint.smAndUp">
+    <v-footer>
       <v-card flat width="100%" color="#f5f5f5" class="mt-3">
-
         <v-card-text>
           <v-row justify="space-between" align="center" class="px-10">
-            <v-col cols="3" sm="4" v-for="footerItem in footerItems" :key="footerItem.to">
+            <v-col cols="12" sm="4" v-for="footerItem in footerItems" :key="footerItem.to">
               <v-row>
                 <v-col cols="4">
                   <v-img  width="60px" height="60px" :src="footerItem.img"></v-img>
