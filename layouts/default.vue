@@ -1,50 +1,20 @@
 <template>
   <v-app dark>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-      extended
-    >
-      <v-img src="LogoVerreTech.jpg" height="9vh" width="0vw" contain class="absolute left" aspect-ratio="1.2" style="margin-left: -150px"></v-img>
-      <v-toolbar-title v-text="title" style="margin-left: -150px"/>
-      <span v-if="getLoggedIn" v-text="$auth.user.nickname"></span>
-      <v-spacer />
-      <v-btn class="mr-2"> Pannier
-        <v-icon> mdi-cart </v-icon>
-      </v-btn>
 
-      <v-btn @click="login" v-if="!getLoggedIn" class="mr-2"> Connexion </v-btn>
-      <v-btn v-if="getLoggedIn" class="mr-2"> Mon compte </v-btn>
-      <v-btn @click="logout" v-if="getLoggedIn"> Deconnexion </v-btn>
+    <header-menu :items="items" :title="title"></header-menu>
 
-      <template v-slot:extension class="px-0">
-        <v-toolbar dense flat short color="#f5f5f5" width="100%">
-          <v-toolbar-items v-for="item in items" :key="item.to">
-            <v-btn small plain text nuxt :to="item.to">
-              <v-icon v-if="item.icon"> {{ item.icon }} </v-icon>
-              {{ item.title }}
-            </v-btn>
-
-          </v-toolbar-items>
-        </v-toolbar>
-      </template>
-    </v-app-bar>
-
-    <v-main>
-      <v-container>
+    <v-main id="main">
+      <v-container style="min-height: 100vh">
         <nuxt />
       </v-container>
     </v-main>
 
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <v-card flat width="100%" color="#f5f5f5">
+    <v-footer v-if="$vuetify.breakpoint.smAndUp">
+      <v-card flat width="100%" color="#f5f5f5" class="mt-3">
+
         <v-card-text>
           <v-row justify="space-between" align="center" class="px-10">
-            <v-col cols="3" v-for="footerItem in footerItems" :key="footerItem.to">
+            <v-col cols="3" sm="4" v-for="footerItem in footerItems" :key="footerItem.to">
               <v-row>
                 <v-col cols="4">
                   <v-img  width="60px" height="60px" :src="footerItem.img"></v-img>
@@ -60,13 +30,14 @@
         </v-card-text>
 
         <v-divider></v-divider>
+
         <v-card-text>
           <v-row align="center" justify="center">
-            <span>&copy; {{ new Date().getFullYear() }}</span>
+            <span>&copy; {{ new Date().getFullYear() }} - Copyright</span>
           </v-row>
         </v-card-text>
-      </v-card>
 
+      </v-card>
     </v-footer>
   </v-app>
 </template>
@@ -105,40 +76,21 @@ export default {
         {
           img: 'lock.png',
           title: 'Paiement sécurisé',
-          subtitle: '/'
+          subtitle: 'Tout vos paiements sur le site sont sécurisés'
         },
         {
           img: 'cartonEmballage.jpg',
           title: 'Catalogue',
-          subtitle: '/catalog'
+          subtitle: 'Le catalogue complet des produits disponibles dans votre magasin'
         },
         {
           img: 'chrono.png',
           title: 'Retrait en 2h',
-          subtitle: '/apropos'
+          subtitle: 'Retrait dans le points de retrait de votre choix dans les 2 heures'
         },
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'Boutique VerreTech'
     }
   },
-
-  methods: {
-    login() {
-      this.$auth.loginWith('auth0')
-    },
-
-    logout(){
-      this.$auth.logout()
-    }
-  },
-
-  computed: {
-    getLoggedIn(){
-      return this.$auth.loggedIn
-    }
-  }
 }
 </script>
