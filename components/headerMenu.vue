@@ -3,23 +3,32 @@
     :clipped-left="clipped"
     fixed
     app
-    extended
+    dense
   >
-
     <v-toolbar-title> Boutique <br v-if="$vuetify.breakpoint.xsOnly"/> VerreTech </v-toolbar-title>
-
     <v-spacer/>
 
-    <v-badge
-      color="red"
-      class="mr-5"
-      :content="getNumberOfArticles"
-      :value="getNumberOfArticles"
+    <v-menu
+      offset-y
+      :close-on-content-click="false"
     >
-      <v-btn text icon small nuxt to="/basket" class="px-0 ">
-        <v-icon> mdi-cart </v-icon>
-      </v-btn>
-    </v-badge>
+      <template v-slot:activator="{ on, attrs }">
+        <v-badge
+          color="red"
+          class="mr-5"
+          :content="getNumberOfArticles"
+          :value="getNumberOfArticles"
+        >
+          <v-btn v-on="on" v-bind="attrs" text icon small class="px-0 ">
+            <v-icon> mdi-cart </v-icon>
+          </v-btn>
+        </v-badge>
+      </template>
+
+      <articles-list/>
+
+    </v-menu>
+
 
 
     <v-btn @click="login" v-if="!getLoggedIn" text>
@@ -80,8 +89,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import articlesList from "./articlesList";
 
 export default {
+  components: {
+    articlesList
+  },
   name: "headerMenu",
   props: ['items', 'title'],
 
@@ -102,7 +115,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('basket', ['getNumberOfArticles']),
+    ...mapGetters('cart', ['getNumberOfArticles', 'getArticlesList']),
 
     getLoggedIn() {
       return this.$auth.loggedIn

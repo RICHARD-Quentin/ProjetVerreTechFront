@@ -28,5 +28,11 @@ export const getters = {
 
   getArticlesList(state) {
     return state.articles
+  },
+
+  getTotalPrice(state) {
+    return state.articles.reduce((total, article) => {
+      total += article.price
+    })
   }
 }
