@@ -36,7 +36,7 @@
       
       <v-col cols="12" md="5" >
         <v-card>
-          <v-card-title class="text-h4"> Nos adresses </v-card-title>
+          <v-card-title class="text-h5"> Nos adresses </v-card-title>
           
           <v-row class="mx-10 py-4">
             <v-btn
@@ -136,8 +136,9 @@
       
       <v-col cols="12" md="12" >
       <v-sheet
-    class="mx-auto"
+    class="mx-auto pa-5"
     elevation="3"
+    
   >
       <v-card-title class="text-h4"> Nos articles populaires </v-card-title>
     <v-slide-group
@@ -190,7 +191,7 @@
             </v-card>
           </v-col>
           <v-col cols="8" md="8" >
-            <v-card-title class="text-h3"> Nous ne vendons pas de fleur ! </v-card-title>
+            <v-card-title class="text-h4"> Nous ne vendons pas de fleur ! </v-card-title>
 
             <v-card-text class="text-h6 text--lighten-1 grey--text">
               Je ne sais pas qui est l'énergue humaine qui a trouvé intelligent de mettre des femmes et des fleurs sur ce site, c'est une honte ! 
@@ -209,7 +210,7 @@
             </v-card>
           </v-col>
           <v-col cols="8" md="8" >
-            <v-card-title class="text-h3"> Non très sérieusement </v-card-title>
+            <v-card-title class="text-h4"> Non très sérieusement </v-card-title>
 
             <v-card-text class="text-h6 text--lighten-1 grey--text">
               Va falloir faire quelque chose, parce que là c'est très grave.
