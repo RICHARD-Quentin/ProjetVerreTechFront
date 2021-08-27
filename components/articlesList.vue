@@ -49,7 +49,7 @@
 
     <v-card-actions v-show="articles.length > 0">
       <v-row no-gutters justify="center">
-        <v-btn color="#fffbd2"> Passer commande </v-btn>
+        <v-btn color="button-custom-color"> Passer commande </v-btn>
       </v-row>
     </v-card-actions>
   </v-card>
