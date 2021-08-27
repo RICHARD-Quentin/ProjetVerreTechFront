@@ -14,7 +14,8 @@ export default {
       article: {
         id:121231,
         title: 'test',
-        price: 40
+        price: 40,
+        img: 'chrono.png'
       }
     }
   },
