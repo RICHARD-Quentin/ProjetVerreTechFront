@@ -7,7 +7,6 @@
 </template>
 
 <script>
-
 export default {
   name: "catalog",
   data() {
@@ -22,11 +21,11 @@ export default {
 
   methods: {
     increment() {
-      this.$store.commit('basket/addArticle', {article: this.article})
+      this.$store.commit('cart/addArticle', {article: this.article})
     },
 
     decrement() {
-      this.$store.commit('basket/suppArticle', {articleIndex: 0})
+      this.$store.commit('cart/suppArticle', {articleIndex: 0})
     }
   }
 }
