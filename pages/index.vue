@@ -36,72 +36,196 @@
       
       <v-col cols="12" md="5" >
         <v-card>
-          <v-card-title> Nos adresses </v-card-title>
-          <v-row>
-            <v-col cols="12" md="2" >
-            <img
-              src="location.svg"
-              alt="un triangle aux trois côtés égaux"
-              height="50px"
-              width="50px" />
-            </v-col>
-            <v-col cols="12" md="9" 
-              justify="center"
-              align="left"
-              class="px-0"
+          <v-card-title class="text-h4"> Nos adresses </v-card-title>
+          
+          <v-row class="mx-10 py-4">
+            <v-btn
+              block
+              elevation="2"
+              large
+              small
+              class="py-9"
+              style="width:200px;"
+            >
+              <v-col cols="2" md="2" >
+              
+              <img
+                src="location.svg"
+                alt="Symbole_localisation"
+                height="50px"
+                width="50px" />
+              </v-col>
+              <v-col cols="9" md="9" 
+                justify="center"
+                align="left"
+                class="px-0"
 
-              >
-              <v-card-text class="adresses">
-                  Toulouse
-              </v-card-text>
-            </v-col>
-
+                >
+                <v-card-text class="adresses">
+                    Nancy
+                </v-card-text>
+              </v-col>
+            </v-btn>
           </v-row>
 
-          <v-row height="40px" no-gutters>
-            <v-col cols="12" md="2" >
-            <img
-              src="location.svg"
-              alt="un triangle aux trois côtés égaux"
-              height="50px"
-              width="50px" />
-            </v-col>
-            <v-col cols="12" md="9" 
-              justify="center"
-              align="left"
-              class="px-0"
+          <v-row class="mx-10 py-4">
+            <v-btn
+              block
+              elevation="2"
+              large
+              small
+              class="py-9"
+              style="width:200px;"
+            >
+              <v-col cols="2" md="2" >
+              
+              <img
+                src="location.svg"
+                alt="Symbole_localisation"
+                height="50px"
+                width="50px" />
+              </v-col>
+              <v-col cols="9" md="9" 
+                justify="center"
+                align="left"
+                class="px-0"
 
-              >
-              <v-card-text class="adresses">
-                  Paris
-              </v-card-text>
-            </v-col>
-
+                >
+                <v-card-text class="adresses">
+                    Toulouse
+                </v-card-text>
+              </v-col>
+            </v-btn>
           </v-row>
 
-          <v-row height="30px" no-gutters>
-            <v-col cols="12" md="2" >
-            <img
-              src="location.svg"
-              alt="un triangle aux trois côtés égaux"
-              height="50px"
-              width="50px" />
-            </v-col>
-            <v-col cols="12" md="9" 
-              justify="center"
-              align="left"
-              class="px-0"
+          <v-row class="mx-10 py-4">
+            <v-btn
+              block
+              elevation="2"
+              large
+              small
+              class="py-9"
+              style="width:200px;"
+            >
+              <v-col cols="2" md="2" >
+              
+              <img
+                src="location.svg"
+                alt="Symbole_localisation"
+                height="50px"
+                width="50px" />
+              </v-col>
+              <v-col cols="9" md="9" 
+                justify="center"
+                align="left"
+                class="px-0"
 
-              >
-              <v-card-text class="adresses">
-                  Nancy
-              </v-card-text>
-            </v-col>
+                >
+                <v-card-text class="adresses">
+                    Paris
+                </v-card-text>
+              </v-col>
+            </v-btn>
           </v-row>
         </v-card>
 
       </v-col>
     </v-row>
+
+    <v-row>
+      
+      <v-col cols="12" md="12" >
+      <v-sheet
+    class="mx-auto"
+    elevation="3"
+  >
+      <v-card-title class="text-h4"> Nos articles populaires </v-card-title>
+    <v-slide-group
+      v-model="model"
+      class="pa-4"
+      center-active
+      show-arrows
+    >
+      <v-slide-item
+        v-for="n in 15"
+        :key="n"
+        v-slot="{ active, toggle }"
+      >
+        <v-card
+          :color="active ? 'primary' : 'grey lighten-1'"
+          class="ma-4"
+          height="200"
+          width="200"
+          @click="toggle"
+        >
+
+        <v-img contain src="/datamock/flower4.jpg"></v-img>
+        <v-card-title>
+          <v-card-title-text>
+            <v-spacer>aaarf</v-spacer>
+          </v-card-title-text>
+        </v-card-title>
+
+
+
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+  </v-sheet>
+      </v-col>      
+    </v-row>
+
+    <v-row>
+      <v-col cols="12" md="12" >
+        <v-card class="pa-5">
+        <v-card-title class="text-h4"> Nos actualités </v-card-title>
+
+
+        <v-row>
+          <v-col cols="4" md="4" >
+            <v-card elevation="12">
+
+            <v-img class=" rounded-lg"
+               elevation="12" contains src="/datamock/flower5.jpg"> </v-img>
+            </v-card>
+          </v-col>
+          <v-col cols="8" md="8" >
+            <v-card-title class="text-h3"> Nous ne vendons pas de fleur ! </v-card-title>
+
+            <v-card-text class="text-h6 text--lighten-1 grey--text">
+              Je ne sais pas qui est l'énergue humaine qui a trouvé intelligent de mettre des femmes et des fleurs sur ce site, c'est une honte ! 
+              En attendant sachez que si je le trouve, je lui fais manger la définition d'une vitre et la définition d'une fleur. Bon le texte n'est toujours pas assez grand,
+              alors je cause un peu plus comme ça, ça remplit bien la case. N'est ce pas merveilleux ?
+            </v-card-text>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="4" md="4" >
+            <v-card elevation="12">
+
+            <v-img class=" rounded-lg"
+               elevation="12" contains src="/datamock/flower1.jpg"> </v-img>
+            </v-card>
+          </v-col>
+          <v-col cols="8" md="8" >
+            <v-card-title class="text-h3"> Non très sérieusement </v-card-title>
+
+            <v-card-text class="text-h6 text--lighten-1 grey--text">
+              Va falloir faire quelque chose, parce que là c'est très grave.
+            </v-card-text>
+          </v-col>
+        </v-row>
+
+
+
+
+        </v-card>
+      </v-col>
+    </v-row>
+
+
+        
   </v-container>
   
 </template>
