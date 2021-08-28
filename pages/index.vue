@@ -140,7 +140,8 @@
     elevation="3"
     
   >
-      <v-card-title class="text-h4"> Nos articles populaires </v-card-title>
+      <v-card-title class="text-h4"> Nos articles populaires </v-card-title>        
+
     <v-slide-group
       v-model="model"
       class="pa-4"
@@ -153,19 +154,34 @@
         v-slot="{ active, toggle }"
       >
         <v-card
-          :color="active ? 'primary' : 'grey lighten-1'"
-          class="ma-4"
-          height="200"
+          class="ma-2"
+          height="220"
           width="200"
+          elevation="4"
+          x-large
           @click="toggle"
         >
 
         <v-img contain src="/datamock/flower4.jpg"></v-img>
         <v-card-title>
+          <v-rating
+              background-color="grey"
+              color="teal"
+              length="5"
+              size="19"
+              value="4.5"
+              readonly
+              half-increments
+              
+            ></v-rating>
+
           <v-card-title-text>
-            <v-spacer>aaarf</v-spacer>
+            <v-spacer>FleurumSpectrum</v-spacer>
+            
           </v-card-title-text>
         </v-card-title>
+
+        
 
 
 
