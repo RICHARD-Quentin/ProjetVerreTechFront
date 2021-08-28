@@ -16,7 +16,8 @@
     "core-js": "^3.9.1",
     "nanoid": "^2.1.11",
     "nuxt": "^2.15.3",
-    "nuxt-auth": "^2.0.10"
+    "nuxt-auth": "^2.0.10",
+    "nuxt-leaflet": "^0.0.25"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"

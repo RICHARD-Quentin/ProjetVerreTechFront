@@ -102,7 +102,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('basket', ['getNumberOfArticles']),
+    ...mapGetters('cart', ['getNumberOfArticles']),
 
     getLoggedIn() {
       return this.$auth.loggedIn
