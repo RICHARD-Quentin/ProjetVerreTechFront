@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node_modules/.bin/nuxt",
-    "build": "node_modules/.bin/nuxt build",
-    "start": "node_modules/.bin/nuxt start",
-    "generate": "node_modules/.bin/nuxt generate"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.15.0",
@@ -16,7 +16,8 @@
     "core-js": "^3.9.1",
     "nanoid": "^2.1.11",
     "nuxt": "^2.15.3",
-    "nuxt-auth": "^2.0.10"
+    "nuxt-auth": "^2.0.10",
+    "nuxt-leaflet": "^0.0.25"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"
