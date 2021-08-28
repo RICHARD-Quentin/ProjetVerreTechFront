@@ -62,7 +62,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'A propos',
-          to: '/apropos'
+          to: '/about'
         },
         {
           icon: 'mdi-apps',
