@@ -26,7 +26,7 @@
           </v-badge>
         </template>
 
-        <articles-list/>
+        <articles-list :showFooter="true"/>
 
       </v-menu>
 

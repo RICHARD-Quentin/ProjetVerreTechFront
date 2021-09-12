@@ -15,6 +15,7 @@ export default {
         id:121231,
         title: 'test',
         price: 40,
+        quantity:3,
         img: 'chrono.png'
       }
     }

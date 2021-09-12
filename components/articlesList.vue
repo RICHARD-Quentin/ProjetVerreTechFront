@@ -2,12 +2,12 @@
   <v-card
     class="mx-auto"
     tile
-    min-width="250px"
-    max-height="75vh"
+    max-height="50vh"
+    
   >
-    <v-list v-show="articles.length > 0">
+    <v-list v-show="getArticlesList.length > 0">
       <v-list-item-group>
-        <v-list-item v-for="(article, i) in articles" :key="i" class="px-0">
+        <v-list-item v-for="(article, i) in getArticlesList" :key="i" class="px-0">
           <v-row no-gutters align="center">
             <v-col cols="4">
               <v-img max-width="80px" max-height="80px" :src="'/' + article.img "/>
@@ -16,7 +16,7 @@
             <v-col cols="6">
               <v-list-item-title v-text="article.title"/>
               <v-list-item-subtitle v-text="'Quantité: ' + article.quantity"/>
-              <v-list-item-subtitle v-text="'Prix: ' + article.price*article.quantity + '€'"/>
+              <v-list-item-subtitle v-text="'Prix: ' + (article.price*article.quantity) + '€'"/>
             </v-col>
 
             <v-col cols="1">
@@ -31,7 +31,7 @@
       </v-list-item-group>
     </v-list>
 
-    <v-card-text v-show="articles.length > 0">
+    <v-card-text v-show="getArticlesList.length > 0 " v-if="showFooter == true">
       <v-row>
         Nombre d'articles : {{ getNumberOfArticles }}
       </v-row>
@@ -42,14 +42,14 @@
     </v-card-text>
 
 
-    <v-card-text v-show="articles.length === 0">
-      Aucun article dans le pannier
+    <v-card-text v-show="getArticlesList.length === 0">
+      Aucun article dans le panier
     </v-card-text>
 
 
-    <v-card-actions v-show="articles.length > 0">
+    <v-card-actions v-show="getArticlesList.length > 0" v-if="showFooter == true">
       <v-row no-gutters justify="center">
-        <v-btn color="#fffbd2"> Passer commande </v-btn>
+        <v-btn color="#fffbd2" to="order">Passer commande</v-btn>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -69,7 +69,9 @@ export default {
       numberOfArticles: 0
     }
   },
-
+  props:{
+    showFooter: Boolean
+  },
   methods: {
     suppArticle(articleIndex){
       this.$store.commit('cart/suppArticle', articleIndex)
@@ -96,9 +98,13 @@ export default {
       deep: true
     }
   },
-
+  methods:{
+     
+  },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles'])
+
+   
   },
 
   mounted() {

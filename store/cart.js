@@ -1,6 +1,7 @@
 export const state = () => ({
   articleCount: 0,
-  articles: []
+  articles: [],
+  shop: null
 })
 
 export const mutations = {
@@ -18,6 +19,10 @@ export const mutations = {
 
   suppArticle(state, {articleIndex}) {
     state.articles.splice(articleIndex, 1)
+  },
+
+  setShop(state,value){
+    state.shop = value
   }
 }
 
@@ -28,5 +33,13 @@ export const getters = {
 
   getArticlesList(state) {
     return state.articles
+  },
+
+  getTotalPrice(state){
+    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return acc+curr.price},0) : 0;
+  },
+
+  shopSelected(state){
+    return state.shop;
   }
 }
