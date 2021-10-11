@@ -1,5 +1,7 @@
 <template>
   <div>
+    
+    <article-card v-for="article in articles" :article=article :key="article.id"></article-card>
     <v-btn @click="decrement">-</v-btn>
     <v-btn @click="increment">+</v-btn>
   </div>
@@ -11,13 +13,20 @@ export default {
   name: "catalog",
   data() {
     return {
-      article: {
-        id:2,
-        title: 'test',
+      articles: [
+        {
+        id:121231,
+        name: 'test',
         price: 40,
-        quantity:3,
-        img: 'chrono.png'
-      }
+        item: 'mdi-card'
+        },
+        {
+        id:1212,
+        name: 'test',
+        price: 40,
+        item: 'mdi-card'
+        }
+      ]
     }
   },
   methods: {
