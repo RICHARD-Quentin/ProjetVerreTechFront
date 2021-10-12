@@ -1,5 +1,6 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-container>
+  <v-stepper v-if="offline==false" v-model="e1">
     <h2 class="d-flex justify-center align-center ma-5">Passer une commande</h2>
 
     <v-stepper-header>
@@ -249,6 +250,14 @@
                 >
                   Valider ma commande et payer sur place
                 </v-btn>
+
+                <v-btn 
+                v-if="payementMethod == null"
+                disabled
+                block
+                >
+                  Sélectionnez un moyen de paiement...
+                </v-btn>
               </v-col>
               
             </v-row>
@@ -263,7 +272,7 @@
           <v-col class="d-flex flex justify-center align-center">
         <v-card max-width="450" >
           <v-card-title>Votre commande a été validée !</v-card-title>
-          <v-card-subtitle>Référence de commande: n°</v-card-subtitle>
+          <v-card-subtitle>Référence de commande: n° <b>{{getOrderNumber}}</b></v-card-subtitle>
           <v-card-text class="flex-column">
             <p>Vous allez recevoir un e-mail concernant les informations de votre commande ! Vous pouvez aussi consulter à tout moment son état, directement sur la page de vos commandes.</p>
             <p>Votre commande est disponible au plus tard dans <span class="text-bold">2h</span>. </p>
@@ -287,6 +296,27 @@
     </v-dialog>
     <!--  -->
   </v-stepper>
+  <v-card max-width="500" class="mx-auto my-12" v-else>
+    <v-card-title >
+      Service indisponible
+    </v-card-title>
+    <v-card-subtitle>
+      Le service des commandes est momentanement indisponible, merci de réessayer plus tard. Le contenu de votre panier reste sauvegardé, et nous vous prions d'accepter nos sincères excuses pour cette gêne occasionné.
+    </v-card-subtitle>
+    <v-card-text>
+      <v-img
+    src ="https://www.cinepal.fr/evenement/5553120.jpg-r_x_600-f_jpg-q_x-xxyxx.jpg">
+    </v-img>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn>
+        Continuer mes achats 
+      </v-btn>
+    </v-card-actions>
+    
+    
+  </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -304,6 +334,8 @@ export default {
   },
   data() {
     return {
+      offline:true,
+      newOrder:null,
       e1: 1,
       dialogSelectorShop:false,
       payementMethod:null,
@@ -318,13 +350,20 @@ export default {
       }
     };
   },
+  created(){
+this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
+  },
   mounted() {
    
   },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles','shopSelected']),
 
-    getLoggedIn() {
+  getOrderNumber() {
+    return this.newOrder == null ? 0 : this.newOrder.n_commande;
+  },
+
+  getLoggedIn() {
       return this.$auth.loggedIn
     }
   },
@@ -342,7 +381,7 @@ export default {
           id_boutique: this.shopSelected.id,
           contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
           id_client:1
-        }).then(result =>{console.log(result);this.e1 = 4;})
+        }).then(result =>{console.log(result);this.newOrder = result.message; this.e1 = 4;})
       .catch(err => console.log(err.response))
     },
     async payment_autorize(e)
@@ -363,7 +402,7 @@ export default {
           id_boutique: this.shopSelected.id,
           contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
           id_client:1
-        }).then(result =>{console.log(result);this.e1 = 4;})
+        }).then(result =>{console.log(result);this.newOrder = result.message;this.e1 = 4;})
       .catch(err => console.log(err.response))
          
      console.log(e)
