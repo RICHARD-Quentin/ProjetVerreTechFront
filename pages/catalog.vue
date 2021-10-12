@@ -7,31 +7,29 @@
 </template>
 
 <script>
-
 export default {
   name: "catalog",
   data() {
     return {
       article: {
-        id:121231,
+        id:2,
         title: 'test',
-        price: 40
+        price: 40,
+        quantity:3,
+        img: 'chrono.png'
       }
     }
   },
-
   methods: {
     increment() {
-      this.$store.commit('basket/addArticle', {article: this.article})
+      this.$store.commit('cart/addArticle', {article: this.article})
     },
-
     decrement() {
-      this.$store.commit('basket/suppArticle', {articleIndex: 0})
+      this.$store.commit('cart/suppArticle', {articleIndex: 0})
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

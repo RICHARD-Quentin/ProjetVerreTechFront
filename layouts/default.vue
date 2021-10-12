@@ -70,7 +70,6 @@ export default {
           to: '/retreat'
         },
       ],
-
       footerItems: [
         {
           img: 'lock.png',
