@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       article: {
-        id:121231,
+        id:2,
         title: 'test',
         price: 40,
         quantity:3,
