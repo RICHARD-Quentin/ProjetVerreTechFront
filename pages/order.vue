@@ -151,6 +151,7 @@
                 <v-text-field label="Nom" />
               </v-col>
             </v-row>
+            Adresse :
             <v-row>
               <v-col>
                 <v-text-field label="Adresse" />              
@@ -182,22 +183,14 @@
               </v-col>
               <v-col >
                 <v-card>
-              <v-card-title>Facture</v-card-title>
-              <v-card-text>               
-                    <v-row>
-                      <v-col>
-                        Adresse :
-                      </v-col>
-                      <v-col>
-                        test
-                      </v-col>
-                    </v-row> 
+              <v-card-title>Informations</v-card-title>
+              <v-card-text>                               
                     <v-row>
                       <v-col>
                         Mode de paiement sélectionné:
                       </v-col>
                       <v-col>
-                        {{payementMethod}}
+                        {{payementMethod == null ? "Pas de paiement sélectionné":payementMethod}}
                       </v-col>
                     </v-row>
                     <v-row>
@@ -205,7 +198,12 @@
                         A payer sur le site:
                       </v-col>
                       <v-col>
-                        0 €
+                        <div v-if="payementMethod != 'Paiement sur place'">
+                          {{getTotalPrice}} € TTC
+                        </div>
+                        <div v-else>
+                          0 € TTC
+                        </div>
                       </v-col>
                     </v-row> 
                     <v-row>
@@ -213,7 +211,12 @@
                         A payer sur place :
                       </v-col>
                       <v-col>
-                        0 €
+                        <div v-if="payementMethod == 'Paiement sur place'">
+                          {{getTotalPrice}} € TTC
+                        </div>
+                        <div v-else>
+                          0 € TTC
+                        </div>                       
                       </v-col>
                     </v-row>               
               </v-card-text>
@@ -221,13 +224,12 @@
               </v-col>
               <v-col>
                 <!-- notify-url="<your-ipn-url>"  à placer pour vérifier la transaction coté back...-->
-                <AdvancedPayPal
-                 :methods="paypalListeners"
-                ref="paypal"
+                <AdvancedPayPal             
                 v-if="payementMethod == 'Paypal'"
                 :amount="getTotalPrice.toString()"
                 currency="EUR"
                 env="sandbox"
+                :commit="false"
                 :button-style="{
                   label: 'checkout',
                     size:  'responsive',
@@ -236,12 +238,13 @@
                     }"              
                 :client="paypal"
                 :experience="experienceOptions"
+                @payment-authorized="payment_autorize"
                 @payment-completed="payment_completed_cb">
-                Payer avec Paypal
                 </AdvancedPayPal>
+   
                 <v-btn 
                 v-if="payementMethod == 'Paiement sur place'"
-                @click="orderValidate()">
+                >
                   Valider ma commande et payer sur place
                 </v-btn>
               </v-col>
@@ -302,19 +305,11 @@ export default {
       e1: 1,
       dialogSelectorShop:false,
       payementMethod:null,
-      paypalListeners: {
-          createPayment: function () {
-            // call to your api to create PayPal payment
-            //https://developer.paypal.com/docs/archive/checkout/how-to/server-integration/#1-set-up-your-client-to-call-your-server
-          },
-          executePayment: function () {
-            // call to your api to execute PayPal payment
-          }
-      },
       paypal: {
       sandbox: 'AXLIGXzwkNRHVe4HCW4sv0EkMq33O7OKybb6hhRrdj2NCP4HG3CPTmCsqOcJamaiKGgXz83w68tJbWni',
       production: ''
     },
+    paypalCommit:true,
     experienceOptions: {
         input_fields: {
           no_shipping: 1
@@ -323,8 +318,7 @@ export default {
     };
   },
   mounted() {
-    
-    
+   
   },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles','shopSelected']),
@@ -334,6 +328,30 @@ export default {
     }
   },
   methods: {
+    async payment_autorize(e)
+    {        
+      console.log(e)
+      this.$axios.$post('http://localhost:3001/order',
+        { 
+          payment: 
+          {
+            method:"Paypal",
+            params:
+            {
+              payerID:e.payerID,
+              paymentID: e.paymentID
+            }           
+          },
+          date_retrait:"2021-10-03T18:39:04.911Z",
+          id_boutique: this.shopSelected.id,
+          contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
+          id_client:1
+        }).then(result =>{console.log(result);this.e1 = 4;})
+      .catch(err => console.log(err.response))
+         
+     console.log(e)
+     
+    },
     orderValidate()
     {
       this.$refs.paypal.$el.click()
@@ -343,18 +361,18 @@ export default {
       this.e1 = 4;
     },
     shopSelectedEvent(val)
-    {
+    {    
       this.dialogSelectorShop = false;
       if(val)
       {
         this.$store.commit('cart/setShop',val)
-      }
+      }   
     },
     payment_completed_cb(res)
     {
       console.log(res)
       if(res.state == "approved")
-      {
+      {      
         this.createOrder();
       }
       
