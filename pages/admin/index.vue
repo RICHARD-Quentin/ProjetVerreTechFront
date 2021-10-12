@@ -15,7 +15,7 @@
 
         <v-card class="pb-10"> 
             <v-card-text>
-                <v-btn color="primary" @click="displayMessage('AjouterUneActualite') ">Ajouter une actualité</v-btn>
+                <v-btn color="green" class=" black--text text--lighten-2" @click="displayMessage('AjouterUneActualite') ">Ajouter une actualité</v-btn>
             </v-card-text>
 
             <template v-if="actualites.length > 0" v-for="(item,i) in actualites">
