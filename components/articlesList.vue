@@ -58,10 +58,8 @@
 
 <script>
 import {mapGetters} from "vuex";
-
 export default {
   name: "articlesList",
-
   data() {
     return {
       articles: [],
@@ -77,7 +75,6 @@ export default {
       this.$store.commit('cart/suppArticle', articleIndex)
     }
   },
-
   watch: {
     'getArticlesList':{
       handler(val) {
@@ -103,16 +100,12 @@ export default {
   },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles'])
-
    
   },
-
   mounted() {
-
   }
 }
 </script>
 
 <style scoped>
-
 </style>

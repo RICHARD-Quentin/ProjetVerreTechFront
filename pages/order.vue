@@ -244,6 +244,8 @@
    
                 <v-btn 
                 v-if="payementMethod == 'Paiement sur place'"
+                @click = "validatePayment"
+                block
                 >
                   Valider ma commande et payer sur place
                 </v-btn>
@@ -309,7 +311,6 @@ export default {
       sandbox: 'AXLIGXzwkNRHVe4HCW4sv0EkMq33O7OKybb6hhRrdj2NCP4HG3CPTmCsqOcJamaiKGgXz83w68tJbWni',
       production: ''
     },
-    paypalCommit:true,
     experienceOptions: {
         input_fields: {
           no_shipping: 1
@@ -328,6 +329,22 @@ export default {
     }
   },
   methods: {
+    async validatePayment()
+    {
+      this.$axios.$post('http://localhost:3001/order',
+        { 
+          payment: 
+          {
+            method:"None",
+            params:{}           
+          },
+          date_retrait:"2021-10-03T18:39:04.911Z",
+          id_boutique: this.shopSelected.id,
+          contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
+          id_client:1
+        }).then(result =>{console.log(result);this.e1 = 4;})
+      .catch(err => console.log(err.response))
+    },
     async payment_autorize(e)
     {        
       console.log(e)

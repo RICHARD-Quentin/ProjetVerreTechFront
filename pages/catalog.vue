@@ -20,12 +20,10 @@ export default {
       }
     }
   },
-
   methods: {
     increment() {
       this.$store.commit('cart/addArticle', {article: this.article})
     },
-
     decrement() {
       this.$store.commit('cart/suppArticle', {articleIndex: 0})
     }
@@ -34,5 +32,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
