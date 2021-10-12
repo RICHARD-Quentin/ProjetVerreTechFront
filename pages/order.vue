@@ -239,7 +239,7 @@
                     }"              
                 :client="paypal"
                 :experience="experienceOptions"
-                @payment-authorized="payment_autorize"
+                @payment-authorized="paypal_autorize"
                 @payment-completed="payment_completed_cb">
                 </AdvancedPayPal>
    
@@ -309,8 +309,8 @@
     </v-img>
     </v-card-text>
     <v-card-actions>
-      <v-btn>
-        Continuer mes achats 
+      <v-btn to="/">
+        Continuer mes achats
       </v-btn>
     </v-card-actions>
     
@@ -384,7 +384,7 @@ this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
         }).then(result =>{console.log(result);this.newOrder = result.message; this.e1 = 4;})
       .catch(err => console.log(err.response))
     },
-    async payment_autorize(e)
+    async paypal_autorize(e)
     {        
       console.log(e)
       this.$axios.$post('http://localhost:3001/order',
