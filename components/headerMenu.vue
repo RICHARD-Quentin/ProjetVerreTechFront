@@ -51,7 +51,7 @@
 
         <v-list>
           <v-list-item class="px-0">
-            <v-btn text>
+            <v-btn text nuxt to="/account">
               <v-icon class="mr-2"> mdi-account-circle</v-icon>
               Mon compte
             </v-btn>
