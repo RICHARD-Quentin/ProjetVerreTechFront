@@ -351,7 +351,7 @@ export default {
     };
   },
   created(){
-this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
+    this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
   },
   mounted() {
    
