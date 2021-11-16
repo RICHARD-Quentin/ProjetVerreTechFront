@@ -1,28 +1,29 @@
 <template>
-    <v-card class="mx-auto" max-width="344" outlined>
-    <v-list-item-title class="text-h6 items-center mb-2 container justify-center">
-        {{article.name}}
-    </v-list-item-title>
+  <v-card max-width="344" outlined>
+    <nuxt-link :to="'/catalog/' + article.id">
+      <v-img height="150" :src="article.img"></v-img>
+    </nuxt-link>
 
-    <v-img width="300" height="150" :src="article.img" class="flex items-center mb-2 container justify-center"></v-img>
+    <v-row class="mt-2 mb-1">
+      <v-col class="ml-2">
+        <div class="text-h7 font-weight-bold">
+          {{article.name}}
+        </div>
 
-    <div class="text-h6 items-center mb-2 container justify-center">
-        {{article.price}}
+        <div class="ml-4 text-h7">
+          {{article.price}}€
+        </div>
+      </v-col>
 
-        <v-card-actions>
-        <v-btn rounded color="yellow" class="flex items-center mb-2 container justify-center">
-            AJOUTER
-            <v-icon right>
-            {{article.items}}
-            </v-icon>
+      <v-col cols="3" class="mt-1 mr-2">
+        <v-btn color="yellow" @click="increment">
+          <v-icon>
+            mdi-cart
+          </v-icon>
         </v-btn>
-
-        <v-btn rounded color="grey" class="flex items-center mb-2 container justify-center">
-            VOIR L'ARTICLE
-        </v-btn>
-        </v-card-actions>
-    </div>
-    </v-card>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
@@ -38,5 +39,10 @@ export default {
   props: [
       "article"
     ],
+  methods: {
+    increment() {
+      this.$emit('increment');
+    },
+  },
 }
 </script>
