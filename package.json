@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "nuxt start --openssl-legacy-provider",
     "generate": "nuxt generate"
   },
   "dependencies": {
@@ -15,9 +15,13 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/proxy": "^2.1.0",
     "core-js": "^3.9.1",
+    "express": "^4.17.2",
+    "lodash": "^4.17.21",
     "nanoid": "^2.1.11",
     "nuxt": "^2.15.3",
     "nuxt-auth": "^2.0.10",
+    "vue-lodash": "^2.1.2",
+    "vuetify-dialog": "^2.0.17"
     "nuxt-leaflet": "^0.0.25",
     "vue-paypal-checkout": "^3.2.0"
   },
