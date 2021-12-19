@@ -79,21 +79,22 @@
           <v-btn text @click="addAdress">Ajouter une adresse</v-btn>
         </v-toolbar>
         <v-row v-for="(adresse, index) in data.adresses" :key="index" class="px-4">
-          <v-row >
+          <v-row>
             <v-col cols="12">
               <v-text-field label="Adresse" v-model="data.adresses[index].adresse"></v-text-field>
             </v-col>
             <v-col cols="4">
-              <v-text-field label="Code postal" v-model="data.adresses[index].code_postal"></v-text-field>
+              <v-text-field label="Ville" v-model="data.adresses[index].ville"></v-text-field>
             </v-col>
             <v-col cols="4">
-              <v-text-field label="Ville" v-model="data.adresses[index].ville"></v-text-field>
+              <v-text-field label="Code postal" v-model="data.adresses[index].code_postal"></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field label="Pays" v-model="data.adresses[index].pays"></v-text-field>
             </v-col>
             <hr>
           </v-row>
+<!--          <adress-field :adressData="adresse"></adress-field>-->
           <v-btn icon @click="delAddresse(index)" class="my-auto" v-show="index !== 0">
             <v-icon> mdi-minus </v-icon>
           </v-btn>
@@ -104,14 +105,19 @@
 </template>
 
 <script>
+import {isEmpty} from "lodash"
+import AdressField from "../components/adressField";
+
 export default {
   name: "account",
+  components: {AdressField},
   data() {
     return {
       valid: true,
       datePicker: false,
       data: {
         client: {
+          id_client: null,
           nom: this.$auth.user.family_name || '',
           prenom: this.$auth.user.given_name || '',
           date_naissance: "",
@@ -122,27 +128,31 @@ export default {
         },
         adresses: [
           { adresse:'', code_postal: '', ville: '', pays: '' }
-        ]
+        ],
+        deletedAdresses: []
       },
+      villes: [],
+      CP: []
     }
   },
   methods: {
     async save(){
       try {
-        const user = await this.$axios.$post('/api/user', this.data)
-
-        this.data.client = user.data[0]
-
-        const id_client = user.data[0].id_client
-
-        const adresses = this.data.adresses.map(adresse => {
-          return Object.assign(adresse, {id_client})
-        })
-
-        const addr = await this.$axios.$post('/api/user/adresse', adresses)
-
+        await this.$axios.$post('/api/user', this.data)
+        await this.$dialog.notify.success("Informations enregistrées",
+          {
+            position: "top-right",
+            timeout: 2000
+          }
+        )
+        await this.$router.push('/')
       } catch (e) {
-        console.error(e)
+        await this.$dialog.notify.error(e.message,
+          {
+            position: "top-right",
+            timeout: 2000
+          }
+        )
       }
     },
 
@@ -151,7 +161,35 @@ export default {
     },
 
     delAddresse(index){
+      const deletedAdress = this.data.adresses[index]
+      if (deletedAdress.hasOwnProperty('id_adresse')) this.data.deletedAdresses.push(this.data.adresses[index])
       this.data.adresses.splice(index, 1)
+    }
+  },
+
+  computed: {
+    allowAddAdress() {
+      const lastAdress = this.data.adresses[this.data.adresses.length - 1]
+      return Object.values(lastAdress).every(value => !isEmpty(value))
+    }
+
+    // getVilles() {
+    //   const url = 'https://geo.api.gouv.fr/communes?nom=' + this.data.adresses. + '&fields=departement&limit=5'
+    //   const result = this.$axios.$get(url)
+    // }
+  },
+
+  watch: {
+
+  },
+
+  async fetch() {
+    const res = await this.$axios.$get('/api/user/' + this.$auth.user.sub)
+    if (res.data !== null) {
+      this.data.client = res.client
+      if (res.adresses.length > 0) {
+        this.data.adresses = res.adresses
+      }
     }
   }
 }
