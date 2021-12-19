@@ -26,7 +26,7 @@
           </v-badge>
         </template>
 
-        <articles-list/>
+        <articles-list :showFooter="true"/>
 
       </v-menu>
 
@@ -89,46 +89,36 @@
 <script>
 import { mapGetters } from "vuex";
 import articlesList from "./articlesList";
-
 export default {
   components: {
     articlesList
   },
   name: "headerMenu",
   props: ['items', 'title'],
-
   data() {
     return {
       clipped: false,
     }
   },
-
   methods: {
     login() {
       this.$auth.loginWith('auth0')
     },
-
     logout() {
       this.$auth.logout()
     }
   },
-
   computed: {
     ...mapGetters('cart', ['getNumberOfArticles', 'getArticlesList']),
-
     getLoggedIn() {
       return this.$auth.loggedIn
     },
-
     getAlignButton() {
       return this.$vuetify.breakpoint.xsOnly ? 'left' : 'right'
     }
   }
-
-
 }
 </script>
 
 <style scoped>
-
 </style>
