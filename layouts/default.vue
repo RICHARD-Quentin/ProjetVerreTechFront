@@ -62,7 +62,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'A propos',
-          to: '/apropos'
+          to: '/about'
         },
         {
           icon: 'mdi-apps',
@@ -70,7 +70,6 @@ export default {
           to: '/retreat'
         },
       ],
-
       footerItems: [
         {
           img: 'lock.png',
