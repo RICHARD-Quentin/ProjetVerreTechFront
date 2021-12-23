@@ -43,6 +43,7 @@ export default {
       auth0: {
         domain: 'kradihsoy.eu.auth0.com',
         clientId: '7IWpXSGn2Z4rct4LhpMcNoM7gIUlA3d0',
+        audience: 'https://verretech/api',
         scope: ['openid', 'profile', 'offline_access'],
         accessType: 'offline',
         responseType: 'code',
