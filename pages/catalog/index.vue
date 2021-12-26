@@ -40,7 +40,7 @@ export default {
 
   methods: {
     increment() {
-      this.$store.dispatch('basket/addArticle', {article: this.article});
+      this.$store.commit('cart/addArticle', {article: this.article});
     },
   }
 }
