@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="344" outlined>
+  <v-card max-width="344" outlined elevation="4">
     <nuxt-link :to="'/catalog/' + article.id">
       <v-img height="150" :src="article.img"></v-img>
     </nuxt-link>
