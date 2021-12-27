@@ -20,14 +20,13 @@ export default {
 
         let res = this.getLoggedIn();
         console.log("l'utilisateur est connecté ?", res);
-        // check if api is online with Auth token this.$auth
-        this.$axios.get('http://localhost:3003')
+        this.$axios.get('http://localhost:3003/user')
             .then(response => {
-                console.log("API is online");
+                console.log("oui");
                 this.offline = false;
             })
             .catch(error => {
-                console.log("API is offline");
+                console.log("non");
                 this.offline = true;
             });
     },

@@ -32,6 +32,7 @@
                             <v-card-title class="text-h4"> {{item.title}} </v-card-title>
                             <v-card-subtitle class="text-h5"> {{item.date}} </v-card-subtitle>
 
+<<<<<<< HEAD
                             <v-card-text>
                                 {{item.content}}
                             </v-card-text>
@@ -41,6 +42,18 @@
                                 <v-btn color="error" @click="deleteActualite(item.id)">Supprimer</v-btn>
                             </v-card-actions>
                         </v-col>
+=======
+                    <v-row>
+                        <v-container class="ma-4">
+                            <span class="text-h5 text-center mx-auto d-block"> Journal d'événements </span>
+                            
+                            <div style="background-color:grey;" class="ma-7 pa-2">
+                                <template v-for="(entry,i) in entries" >
+                                    <div class="entry" :key="i"> {{entry.date}} - {{entry.event}} </div>
+                                </template>
+                            </div>
+                        </v-container>
+>>>>>>> f818bc9 (Test de l'api)
                     </v-row>
                 </v-card>
             </template>
