@@ -13,13 +13,13 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field label="Nom" prepend-icon="mdi-account-details"  v-model="data.client.nom"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field label="Prenom" prepend-icon="mdi-account-details"  v-model="data.client.prenom"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-menu
               ref="datePicker"
               v-model="datePicker"
@@ -62,13 +62,13 @@
               </v-date-picker>
             </v-menu>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field label="Telephone fixe" prepend-icon="mdi-phone"  v-model="data.client.telephone_f"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field label="Telephone portable" prepend-icon="mdi-cellphone"  v-model="data.client.telephone_p"></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" md="4">
             <v-text-field label="Email" prepend-icon="mdi-mail" v-model="data.client.mail"></v-text-field>
           </v-col>
         </v-row>
@@ -83,13 +83,13 @@
             <v-col cols="12">
               <v-text-field label="Adresse" v-model="data.adresses[index].adresse"></v-text-field>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-text-field label="Ville" v-model="data.adresses[index].ville"></v-text-field>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-text-field label="Code postal" v-model="data.adresses[index].code_postal"></v-text-field>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-text-field label="Pays" v-model="data.adresses[index].pays"></v-text-field>
             </v-col>
             <hr>

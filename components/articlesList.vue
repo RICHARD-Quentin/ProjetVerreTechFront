@@ -3,7 +3,7 @@
     class="mx-auto"
     tile
     max-height="50vh"
-    
+
   >
     <v-list v-show="getArticlesList.length > 0">
       <v-list-item-group>
@@ -95,12 +95,9 @@ export default {
       deep: true
     }
   },
-  methods:{
-     
-  },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles'])
-   
+
   },
   mounted() {
   }
