@@ -26,7 +26,7 @@
                             
                             <div style="background-color:grey;" class="ma-7 pa-2">
                                 <template v-for="(entry,i) in entries" >
-                                    <div class="entry"> {{entry.date}} - {{entry.event}} </div>
+                                    <div class="entry" :key="i"> {{entry.date}} - {{entry.event}} </div>
                                 </template>
                             </div>
                         </v-container>

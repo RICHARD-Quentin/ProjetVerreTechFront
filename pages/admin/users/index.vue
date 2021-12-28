@@ -1,5 +1,6 @@
 <template>
     <v-row>
+<<<<<<< HEAD
         <v-col cols="12">
             <v-card id="main_content">
                 <v-card-title class="text-center mx-auto d-block"> Les utilisateurs </v-card-title>
@@ -23,6 +24,8 @@
                 </v-container>
             </v-card>
         </v-col>
+=======
+>>>>>>> 9ac48612f500a137227c4aa2249e7f1f4a8805e9
     </v-row>
 </template>
 
@@ -35,15 +38,20 @@ export default {
     data() {
         return {
             users: [],
+<<<<<<< HEAD
             lastusercreated: null,
             offline : false,
             image: null,
+=======
+            offline : false,
+>>>>>>> 9ac48612f500a137227c4aa2249e7f1f4a8805e9
         }
     },
 
     created() {
 
         let res = this.getLoggedIn();
+<<<<<<< HEAD
         this.$axios.get('/api/user')
             .then(response => {
                 this.users = response.data.data;
@@ -52,6 +60,17 @@ export default {
                 this.lastusercreated = this.getLastCreatedUser();
             })
             .catch(error => {
+=======
+        console.log("l'utilisateur est connecté ?", res);
+        // check if api is online with Auth token this.$auth
+        this.$axios.get('http://localhost:3003')
+            .then(response => {
+                console.log("API is online");
+                this.offline = false;
+            })
+            .catch(error => {
+                console.log("API is offline");
+>>>>>>> 9ac48612f500a137227c4aa2249e7f1f4a8805e9
                 this.offline = true;
             });
     },
@@ -67,6 +86,7 @@ export default {
             });
         },
 
+<<<<<<< HEAD
         getLastCreatedUser()
         {
             let userres = null;
@@ -85,10 +105,19 @@ export default {
         }
     },
     
+=======
+        deleteUser(user) {
+            this.$http.delete('/api/users/' + user.id).then(response => {
+                this.fetchUsers();
+            });
+        }
+    }
+>>>>>>> 9ac48612f500a137227c4aa2249e7f1f4a8805e9
 
 }
 
 </script>
+<<<<<<< HEAD
 
 <style scoped>
 #userstats_title
@@ -97,3 +126,5 @@ export default {
     color: rgb(150,150,150);
 }
 </style>
+=======
+>>>>>>> 9ac48612f500a137227c4aa2249e7f1f4a8805e9
