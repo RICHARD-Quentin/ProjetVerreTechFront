@@ -1,72 +1,40 @@
 <template>  
-    <v-card>
-        <v-card-title>
-            <span class="pa-5 headline text-center mx-auto">Administration de la boutique</span>
-        </v-card-title>
+    <v-row>
+        <v-col cols="3">
+            
+            <admin-menu :menu_item_selected="menu_item_selected"></admin-menu>
+        </v-col>
+        <v-col cols="9">
+            <v-card id="main_content">
+                <v-card-title class="text-center mx-auto d-block"> Vue d'ensemble </v-card-title>
 
-        <v-container>
-            <v-card-text>
-                Bienvenue dans la partie administration de la boutique. Vous pouvez ici consulter et gérer les produits, les magasins, les commandes et les Utilisateurs.
-                Vous pouvez également consulter les statistiques dans la partie "statistiques" située ci-dessus dans la navigation.
-            </v-card-text>
-        </v-container>
-
-        <v-card-text> Ci-dessous, vous pouvez gérer les actualités et en publier en quelques clics : </v-card-text>
-
-        <v-card class="pb-10"> 
-            <v-card-text>
-                <v-btn color="green" class=" black--text text--lighten-2" @click="displayMessage('AjouterUneActualite') ">Ajouter une actualité</v-btn>
-            </v-card-text>
-
-            <template v-if="actualites.length > 0" v-for="(item,i) in actualites">
-                <v-card color="grey" class="ma-5 pa-5  ">
-
+                <v-container>
                     <v-row>
-                        <v-col cols="4" md="4" >
-                            <v-card elevation="12">
-                            <v-img class=" rounded-lg"
-                            elevation="12" contains src="/datamock/flower5.jpg"> </v-img>
-                            </v-card>
+                        <v-col cols="12">
+                    <div style="height:300px;">
+                    <client-only>
+                        <line-chart :width="300" :height="300" :data="chartData" ></line-chart>
+                    </client-only>
+                    </div>
                         </v-col>
-                        <v-col cols="8" md="8" >
-                            <v-card-title class="text-h4"> {{item.title}} </v-card-title>
-                            <v-card-subtitle class="text-h5"> {{item.date}} </v-card-subtitle>
+                    </v-row>
+                    <v-row> <v-divider> </v-divider> </v-row>
 
-<<<<<<< HEAD
-                            <v-card-text>
-                                {{item.content}}
-                            </v-card-text>
-
-                            <v-card-actions>
-                                <v-btn color="primary" @click="modifyActualite(item.id)">Modifier</v-btn>
-                                <v-btn color="error" @click="deleteActualite(item.id)">Supprimer</v-btn>
-                            </v-card-actions>
-                        </v-col>
-=======
                     <v-row>
                         <v-container class="ma-4">
                             <span class="text-h5 text-center mx-auto d-block"> Journal d'événements </span>
                             
                             <div style="background-color:grey;" class="ma-7 pa-2">
                                 <template v-for="(entry,i) in entries" >
-                                    <div class="entry" :key="i"> {{entry.date}} - {{entry.event}} </div>
+                                    <div class="entry"> {{entry.date}} - {{entry.event}} </div>
                                 </template>
                             </div>
                         </v-container>
->>>>>>> f818bc9 (Test de l'api)
                     </v-row>
-                </v-card>
-            </template>
-            <template v-else>
-                <v-card-text> Vous n'avez pas d'actualité ! Pensez à en créer, elles apparaitront ici ! </v-card-text>
-            </template>
-
-        </v-card>
-
-        
-
-
-    </v-card>
+                </v-container>
+            </v-card>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -74,53 +42,40 @@
 export default {
     name: 'admin',
     layout: 'adminlayout',
-
     data() {
         return {
-            actualites: [
+            menu_item_selected: 'overview',
+            chartData: {
+            labels : ["19/08","20/08","21/08","22/08","23/08"],
+                datasets: [{
+                    label: 'Nombre de connexions journalières',
+                    data: [45, 55, 48, 35, 12]
+                }]
+            },
+
+            entries : [
                 {
-                    id: 1,
-                    src: '/datamock/flower5.jpg',
-                    title: 'Nouveau produit',
-                    content: 'Lorem ipsum ipsum le lorem',
-                    date: '2020-10-01'
+                    date: "12/08/2021",
+                    event: "John est tombé dans les toilettes"
                 },
                 {
-                    id: 2,
-                    src: '/datamock/flower5.jpg',
-                    title: 'Nouveau cazecazc',
-                    content: 'Lorem ipsum ipsum le lorem',
-                    date: '2020-06-01'
+                    date: "15/08/2021",
+                    event: "John est ressorti des toilettes"
                 },
                 {
-                    id: 3,
-                    src: '/datamock/flower5.jpg',
-                    title: 'Nouveau veve',
-                    content: 'Lorem aaaaaaaaaa ipsum le lorem',
-                    date: '2020-01-20'
+                    date: "20/08/2021",
+                    event: "Les oiseaux volent "
                 },
                 {
-                    id: 4,
-                    src: '/datamock/flower5.jpg',
-                    title: 'sss produit',
-                    content: 'qqqqqqqqqq ipsum ipsum le lorem',
-                    date: '2020-01-01'
+                    date: "30/08/2021",
+                    event: "Fin du monde - selon ma grand mère"
                 },
+
             ]
         }
     },
 
     methods: {
-        modifyActualite(id) {
-            console.log(id);
-            console.log('modify');
-        },
-
-        deleteActualite(id) {
-            console.log(id);
-            console.log('delete');
-        },
-
         displayMessage(text)
         {
             console.log(text);
@@ -128,3 +83,22 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+
+.entry
+{
+    background-color:white;
+    border-radius:5px;
+    padding:5px;
+    margin-bottom:5px;
+}
+
+#main_content
+{
+    min-height: 400px;
+    /* background-color: yellow; */
+}
+
+</style>
