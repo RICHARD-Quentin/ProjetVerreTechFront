@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-auto"
+    class="mx-auto pa-2"
     tile
     max-height="50vh"
 
@@ -9,8 +9,9 @@
       <v-list-item-group>
         <v-list-item v-for="(article, i) in getArticlesList" :key="i" class="px-0">
           <v-row no-gutters align="center">
-            <v-col cols="4">
-              <v-img max-width="80px" max-height="80px" :src="'/' + article.img "/>
+            <v-col cols="4"> {{article.image}}
+              <v-img max-width="80px" max-height="80px" class="mr-2" v-bind:src="getUrlImageOfArticle(article.image)" />
+     
             </v-col>
 
             <v-col cols="6">
@@ -21,7 +22,7 @@
 
             <v-col cols="1">
               <v-list-item-action>
-                <v-btn @click="suppArticle({i})" text small icon>
+                <v-btn @click="suppArticle(i)" text small icon>
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-list-item-action>
@@ -31,7 +32,7 @@
       </v-list-item-group>
     </v-list>
 
-    <v-card-text v-show="getArticlesList.length > 0 " v-if="showFooter == true">
+    <v-card-text v-show="getArticlesList.length > 0 " v-if="showFooter == true" class="ma-1">
       <v-row>
         Nombre d'articles : {{ getNumberOfArticles }}
       </v-row>
@@ -47,7 +48,7 @@
     </v-card-text>
 
 
-    <v-card-actions v-show="getArticlesList.length > 0" v-if="showFooter == true">
+    <v-card-actions v-show="getArticlesList.length > 0" v-if="showFooter == true" @click="goToOrderPage()">
       <v-row no-gutters justify="center">
         <v-btn color="button-custom-color"> Passer commande </v-btn>
       </v-row>
@@ -69,11 +70,6 @@ export default {
   },
   props:{
     showFooter: Boolean
-  },
-  methods: {
-    suppArticle(articleIndex){
-      this.$store.commit('cart/suppArticle', articleIndex)
-    }
   },
   watch: {
     'getArticlesList':{
@@ -100,6 +96,21 @@ export default {
 
   },
   mounted() {
+  },
+
+  methods:{
+    suppArticle(articleIndex){
+      this.$store.commit('cart/suppArticle', articleIndex)
+    },
+    goToOrderPage(){
+
+      this.$router.push('/orders/order')
+    },
+    getUrlImageOfArticle(base64)
+    {
+      console.log(base64)
+      return base64 != undefined ? "data:image/jpeg;base64,"+base64 : "/image_not_found.png"
+    }
   }
 }
 </script>

@@ -117,8 +117,7 @@ export default {
       return this.$vuetify.breakpoint.xsOnly ? 'left' : 'right'
     },
     getUrlOrderID(){
-      //A Changer une fois qu'on aura l'id du client
-      return "/order/"+1
+      return "/orders/myorders"
     }
   }
 }
