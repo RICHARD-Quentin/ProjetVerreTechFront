@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: "footer",
+  name: "MainFooter",
   props: ['items'],
   data() {
     return {
