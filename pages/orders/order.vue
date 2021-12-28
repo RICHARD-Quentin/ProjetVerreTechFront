@@ -225,6 +225,7 @@
               </v-col>
               <v-col>
                 <!-- notify-url="<your-ipn-url>"  à placer pour vérifier la transaction coté back...-->
+                   <no-ssr>
                 <AdvancedPayPal             
                 v-if="payementMethod == 'Paypal'"
                 :amount="getTotalPrice.toString()"
@@ -242,7 +243,7 @@
                 @payment-authorized="paypal_autorize"
                 @payment-completed="payment_completed_cb">
                 </AdvancedPayPal>
-   
+                </no-ssr>
                 <v-btn 
                 v-if="payementMethod == 'Paiement sur place'"
                 @click = "validatePayment"
@@ -268,9 +269,10 @@
       </v-stepper-content>
 
       <v-stepper-content step="4">
-        <v-row align="center" justify="center" style="height:50vh">
+
+        <v-row align="center"  justify="center" style="height:50vh">
           <v-col class="d-flex flex justify-center align-center">
-        <v-card max-width="450" >
+        <v-card max-width="450" v-if="newOrder!=null" >
           <v-card-title>Votre commande a été validée !</v-card-title>
           <v-card-subtitle>Référence de commande: n° <b>{{getOrderNumber}}</b></v-card-subtitle>
           <v-card-text class="flex-column">
@@ -286,8 +288,19 @@
             </v-card>
           </v-card-text>
         </v-card>
+        <v-card max-width="450" v-else>
+          <v-card-title class="red">Erreur interne!</v-card-title>
+          <v-card-text class="flex-column red lighten-5 pa-4">
+            <p>Une erreure s'est produite lors de la création de votre commande.</p>
+            <p>Si vous avez effectuez un paiement, celui-ci à directement été annulé.
+            <p>Veuillez nous excuser pour ce désagrément et merci de rééssayer plus tard. </p>
+            <nuxt-link to="/">Retour à l'acceuil du site</nuxt-link>
+       
+          </v-card-text>
+        </v-card>
           </v-col>
         </v-row>
+     
       </v-stepper-content>
       
     </v-stepper-items>
@@ -296,26 +309,7 @@
     </v-dialog>
     <!--  -->
   </v-stepper>
-  <v-card max-width="500" class="mx-auto my-12" v-else>
-    <v-card-title >
-      Service indisponible
-    </v-card-title>
-    <v-card-subtitle>
-      Le service des commandes est momentanement indisponible, merci de réessayer plus tard. Le contenu de votre panier reste sauvegardé, et nous vous prions d'accepter nos sincères excuses pour cette gêne occasionné.
-    </v-card-subtitle>
-    <v-card-text>
-      <v-img
-    src ="https://www.cinepal.fr/evenement/5553120.jpg-r_x_600-f_jpg-q_x-xxyxx.jpg">
-    </v-img>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn to="/">
-        Continuer mes achats
-      </v-btn>
-    </v-card-actions>
-    
-    
-  </v-card>
+  <UnvailableServiceCard serviceName="Commandes" v-else />
   </v-container>
 </template>
 
@@ -323,6 +317,7 @@
 import { mapGetters } from "vuex";
 import 'leaflet/dist/leaflet.css';
 import AdvancedPayPal  from 'vue-paypal-checkout'
+import UnvailableServiceCard from '../../components/UnvailableServiceCard.vue';
 
 //test@verretech.com
 //verretech1234567
@@ -330,11 +325,13 @@ import AdvancedPayPal  from 'vue-paypal-checkout'
 export default {
 
   components: {
-    AdvancedPayPal 
+    AdvancedPayPal
+     
   },
   data() {
     return {
-      offline:true,
+      validationErrors:null,
+      offline:false,
       newOrder:null,
       e1: 1,
       dialogSelectorShop:false,
@@ -351,7 +348,7 @@ export default {
     };
   },
   created(){
-this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
+    this.$axios.$get('/api/logistic/order').catch(() => this.offline = true)
   },
   mounted() {
    
@@ -370,7 +367,7 @@ this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
   methods: {
     async validatePayment()
     {
-      this.$axios.$post('http://localhost:3001/order',
+      this.$axios.$post('/api/logistic/order',
         { 
           payment: 
           {
@@ -381,13 +378,14 @@ this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
           id_boutique: this.shopSelected.id,
           contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
           id_client:1
-        }).then(result =>{console.log(result);this.newOrder = result.message; this.e1 = 4;})
-      .catch(err => console.log(err.response))
+        }).then(result =>{this.newOrder = result.message;})
+      .catch(err => this.validationErrors = err.response.data.response)
+       this.e1 = 4;
     },
     async paypal_autorize(e)
     {        
-      console.log(e)
-      this.$axios.$post('http://localhost:3001/order',
+  
+      this.$axios.$post('/api/logistic/order',
         { 
           payment: 
           {
@@ -402,8 +400,11 @@ this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
           id_boutique: this.shopSelected.id,
           contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
           id_client:1
-        }).then(result =>{console.log(result);this.newOrder = result.message;this.e1 = 4;})
-      .catch(err => console.log(err.response))
+        }).then(result =>{console.log(result);this.newOrder = result.message;})
+      .catch(err => {
+        this.validationErrors = err.response
+      })
+      this.e1 = 4;
          
      console.log(e)
      
@@ -426,7 +427,6 @@ this.$axios.$get('http://localhost:3001').catch(() => this.offline = true)
     },
     payment_completed_cb(res)
     {
-      console.log(res)
       if(res.state == "approved")
       {      
         this.createOrder();

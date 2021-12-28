@@ -20,10 +20,10 @@
     "nanoid": "^2.1.11",
     "nuxt": "^2.15.3",
     "nuxt-auth": "^2.0.10",
-    "vue-lodash": "^2.1.2",
-    "vuetify-dialog": "^2.0.17",
     "nuxt-leaflet": "^0.0.25",
-    "vue-paypal-checkout": "^3.2.0"
+    "vue-lodash": "^2.1.2",
+    "vue-paypal-checkout": "^3.2.0",
+    "vuetify-dialog": "^2.0.17"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.3"
