@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -41,8 +41,9 @@ export default {
   auth: {
     strategies: {
       auth0: {
-        domain: 'kradihsoy.eu.auth0.com',
-        clientId: '7IWpXSGn2Z4rct4LhpMcNoM7gIUlA3d0',
+        domain: process.env.AUTH0_CLIENT_DOMAIN,
+        clientId: process.env.AUTH0_CLIENT_ID,
+        audience: process.env.AUTH0_CLIENT_AUDIENCE,
         scope: ['openid', 'profile', 'offline_access'],
         accessType: 'offline',
         responseType: 'code',
@@ -52,18 +53,26 @@ export default {
       }
     }
   },
-  
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    'vuetify-dialog/nuxt',
     'nuxt-leaflet'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseUrl: 'localhost'
+    proxy: true
+  },
+
+  proxy: {
+    '/api/logistic': { target: `http://localhost:${process.env.PORT_LOGISTIC}`, pathRewrite: {'^/api': ''} },
+    '/api/catalog': { target: `http://localhost:${process.env.PORT_CATALOG}`, pathRewrite: {'^/api': ''} },
+    '/api/user': { target: `http://localhost:${process.env.PORT_USER}`, pathRewrite: {'^/api': ''} },
+
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

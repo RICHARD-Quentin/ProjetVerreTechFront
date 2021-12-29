@@ -3,7 +3,7 @@
     class="mx-auto"
     tile
     max-height="50vh"
-    
+
   >
     <v-list v-show="getArticlesList.length > 0">
       <v-list-item-group>
@@ -49,7 +49,7 @@
 
     <v-card-actions v-show="getArticlesList.length > 0" v-if="showFooter == true">
       <v-row no-gutters justify="center">
-        <v-btn color="#fffbd2" to="order">Passer commande</v-btn>
+        <v-btn color="button-custom-color"> Passer commande </v-btn>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -95,12 +95,9 @@ export default {
       deep: true
     }
   },
-  methods:{
-     
-  },
   computed: {
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles'])
-   
+
   },
   mounted() {
   }
