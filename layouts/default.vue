@@ -72,17 +72,17 @@ export default {
       ],
       footerItems: [
         {
-          img: 'lock.png',
+          img: '/lock.png',
           title: 'Paiement sécurisé',
           subtitle: 'Tout vos paiements sur le site sont sécurisés'
         },
         {
-          img: 'cartonEmballage.jpg',
+          img: '/cartonEmballage.jpg',
           title: 'Catalogue',
           subtitle: 'Le catalogue complet des produits disponibles dans votre magasin'
         },
         {
-          img: 'chrono.png',
+          img: '/chrono.png',
           title: 'Retrait en 2h',
           subtitle: 'Retrait dans le points de retrait de votre choix dans les 2 heures'
         },

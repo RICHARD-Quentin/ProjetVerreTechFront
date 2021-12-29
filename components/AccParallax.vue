@@ -3,7 +3,7 @@
       <v-container 
       fluid>
           <v-parallax
-            style="height:230px;"
+            style="height:120px;"
             dark
             src="/chair.jpg"
             gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
@@ -32,9 +32,10 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .maintitle {
-    font-size: 5em;
+    font-size: 3em;
+    color:rgb(120,100,100);
 }
 .fade-enter-active {
   transition: opacity 2s;
