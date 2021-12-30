@@ -1,0 +1,194 @@
+<template>  
+    <v-row>
+        <v-col cols="12">
+            <v-card id="main_content">
+                <v-card-title class="text-center mx-auto d-block"> Création d'article</v-card-title>
+
+                <v-container class="mt-8">
+                    <v-row>
+                        <v-col cols="4"> 
+                            <v-row> 
+                                <span class="ml-10  font-weight-bold" style="color:rgb(100,100,150)" > Choisissez une image </span>
+                                <v-img class="d-block mx-2" v-if="!this.imagefile" src="/example.png" height="240px" width="240px" contain v-on:click="SelectImage()" ></v-img>
+                                <v-img class="d-block mx-2" v-else :src="this.imagefile" height="240px" width="240px" contain v-on:click="SelectImage()" ></v-img>
+
+                                        <v-btn class="ml-auto mr-auto my-2" color="gray"  @click="SelectImage()">
+                                                <v-icon left>mdi-pencil</v-icon>
+                                                Modifier
+                                        </v-btn>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <!-- select color -->
+                                        <v-select
+                                            v-model="formcolor"
+                                            :items="colors"
+                                            label="Color"
+                                            class="ma-3"
+                                        ></v-select>
+                                    </v-col>
+                                </v-row>
+
+                                <input type="file" id="imageselecter" @change="onFileChange" style="display:none" />
+                            </v-row>
+                        </v-col>
+                        <v-col cols="8">
+                            <v-row> 
+                                <v-col cols="12">
+                                    <v-row>
+                                        <span class="mx-auto font-weight-bold text-center" style="color:rgb(100,100,150)" > Données de l'article</span>
+                                    </v-row>
+
+                                    <v-row> 
+                                        <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Intitulé: </p></v-col>
+                                        <v-col cols="8"> <v-text-field v-model="formname"  label="Intitule de l'article" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                    </v-row>
+
+                                    <v-row> 
+                                        <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Description: </p></v-col>
+                                        <v-col cols="8"> <v-textarea v-model="formdesc" label="Description de l'article" outlined  dense  color="primary" required> </v-textarea></v-col>
+                                    </v-row>
+
+                                    <v-row> 
+                                        <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Dimensions (mm): </p></v-col>
+                                        <v-col cols="8"> 
+                                            <v-row>
+                                                <v-col cols="4"> <v-text-field type="number" v-model="formdimx" label="Longueur" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                                <v-col cols="4"> <v-text-field type="number" v-model="formdimy" label="largeur" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                                <v-col cols="4"> <v-text-field type="number" v-model="formdimz" label="hauteur" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                            </v-row>
+                                        </v-col>
+                                    </v-row>
+
+                                    <v-row> 
+                                        <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Prix d'achat: </p></v-col>
+                                        <v-col cols="8"> <v-text-field v-model="formprix" label="Prix d'achat" type="number" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                    </v-row>
+
+                                    <v-row>
+                                        <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Disponible à la commande </p></v-col>
+                                        <v-col cols="8"> <v-switch v-model="formdispo" label="Disponible à la commande" color="primary" ></v-switch></v-col>
+                                    </v-row>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-btn class="mx-auto d-block" color="primary" @click="CreateProduct()" > Créer l'article </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card>
+        </v-col>
+    </v-row>
+</template>
+
+<script>
+
+export default {
+    name: 'AccountSettings',
+    layout: 'adminlayout',
+    data() {
+        return {
+
+            imagefile: null,
+
+            colors: [
+                "blue",
+                "red",
+                "green",
+            ],
+
+            formname: '',
+            formdesc: '',
+            formprix: '',
+            formdispo: false,
+            formdimx: '',
+            formdimy: '',
+            formdimz: '',
+            formcolor: '',
+
+        }
+    },
+
+    created()
+    {
+        this.formcolor = this.colors[0];
+    },
+
+    methods: {
+        displayMessage(text)
+        {
+            console.log(text);
+        },
+
+        SelectImage()
+        {
+            document.getElementById('imageselecter').click();
+        },
+
+        onFileChange(e)
+        {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+
+        createImage(file)
+        {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+                this.imagefile = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+
+        CreateProduct()
+        {
+            var vm = this;
+            let jsonobject = {
+                intitule_article: this.formname,
+                description: this.formdesc,
+                prix_achat: this.formprix,
+                commandable: this.formdispo,
+                dimension_1: this.formdimx,
+                dimension_2: this.formdimy,
+                dimension_3: this.formdimz,
+                couleur: this.formcolor,
+                image: this.imagefile,
+                note_moyenne: 0,
+                commentaires: []
+            };
+            
+            let json = JSON.stringify(jsonobject);
+
+            this.$axios.post('/api/catalog/article', json)
+            .then(function (response) {
+                vm.displayMessage(response.data);
+            })
+            .catch(function (error) {
+                vm.displayMessage(error);
+            });
+        }
+
+
+        
+    }
+}
+</script>
+
+
+<style scoped>
+
+
+#main_content
+{
+    min-height: 400px;
+    /* background-color: yellow; */
+}
+
+</style>
