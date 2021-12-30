@@ -58,7 +58,7 @@
           </v-list-item>
 
           <v-list-item class="px-0">
-            <v-btn text>
+            <v-btn text  :to="getUrlOrderID">
               <v-icon class="mr-2"> mdi-package-variant-closed</v-icon>
               Mes commandes
             </v-btn>
@@ -115,6 +115,9 @@ export default {
     },
     getAlignButton() {
       return this.$vuetify.breakpoint.xsOnly ? 'left' : 'right'
+    },
+    getUrlOrderID(){
+      return "/orders/myorders"
     }
   }
 }

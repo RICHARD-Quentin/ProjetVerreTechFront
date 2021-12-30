@@ -1,94 +1,137 @@
 <template>
-        <v-card class="ordercard">
-            <v-row>
-                <v-col cols="4">
-                    <span v-if="order.date_retrait" class="ml-2 font-weight-bold" style="color:rgb(100,100,150)" > Statut : Retirée </span>
-                    <span v-else class="ml-2 font-weight-bold" style="color:rgb(150,100,100)" > Statut : Non retirée </span>
-                    <span class="text-body-2 d-block ml-2 mt-4 hover:bg-red-400">
-                    <v-icon> mdi-archive-outline </v-icon>
-                    {{this.date}}
-                    </span>
-                </v-col>
-                <v-col cols="4">
-                    <v-row class="d-flex justify-center ml-2 mt-1"> 
-                        <div> {{this.fullName}} </div>
-                    </v-row>
-                </v-col>
-                <v-col cols="4">
-                    <v-row class="d-flex justify-center ml-2 mt-1"> 
-                        <div class="ml-2"> {{this.order.montant}} € </div>
-                    </v-row>
-                </v-col>
-            </v-row>
-        </v-card>
+    <v-container class="lighten-5">
+        <v-row>
+            <v-col cols="1">
+                <v-btn small fab v-on:click="toogleDisplay()">
+                <v-icon >                 
+                    {{buttonDisplay}}
+                </v-icon>
+            </v-btn>
+            </v-col>
+            <v-col>
+                <h2>Commande n° {{order.n_commande}}</h2>
+            </v-col>
+        </v-row>
+            
+           
+        <v-row>
+         <v-col class="ma-4">Montant total TTC: {{order.montant}} € </v-col>
+         <v-col class="ma-4">Etat de la commande : {{stateOrder}} </v-col>
+        </v-row>
+
+        <v-container v-if="display==true">
+        <v-row>
+            <v-col v-for ="(content,idx) in order.contenus" cols="3" :key="idx">
+               
+            <v-sheet              
+                color="white"
+                elevation="2"           
+                >
+                <h3>{{content.article.intitule_article}}</h3>
+                <v-img
+                    v-if="content.article.image == undefined"
+                    lazy-src="https://picsum.photos/id/11/10/6"
+                    max-height="150"
+                    max-width="250"
+                    src="https://picsum.photos/id/11/500/300"
+                ></v-img>
+                <v-img v-else v-bind:src="'data:image/jpeg;base64,'+content.article.image" />
+                <div class="flex flex-column">
+                <div>Quantité : {{content.quantite}}</div>
+                <div>Prix unitaire : {{content.article.prix_achat}} €</div>
+                <div>Prix total : {{content.article.prix_achat*content.quantite}} €</div>
+                </div>
+            </v-sheet>
+         </v-col>
+        </v-row>
+
+        <v-row  class="grey d-flex lighten-5">
+            <v-col>
+                <h4>Point de retrait :</h4>
+                <v-sheet  color="white"
+                class="mt-4"
+                min-height="180"
+                elevation="2"  >
+                <v-row>
+                    <v-col cols="2">
+                    </v-col>
+                    <v-col cols="5">
+                    <h3>{{order.boutique.enseigne}}</h3>
+                    {{order.boutique.adresse_magasin}}
+                    </v-col>
+                    <v-col cols="4">
+                        <v-btn small>Consulter ce catalogue</v-btn>
+                    </v-col>
+                </v-row>
+                </v-sheet>
+            </v-col>
+            <v-col >
+                <h4>Facturation :</h4>
+                <v-sheet  color="white"
+                class="mt-4"
+                min-height="180"
+                elevation="2">
+                    <v-row class="pa-2">                       
+                        <v-col  v-if="order.factures.length > 0">
+                            <v-list class="ma-0 pa-0">
+                            <v-list-item>Numéro de facture :{{order.factures[0].no_facture}}</v-list-item>
+                            <v-list-item>Numéro de commande :{{order.factures[0].n_commande}}</v-list-item>
+                            <v-list-item>Réglé le : {{order.factures[0].date_facture}}</v-list-item>
+                            </v-list>
+                        </v-col>
+                        <v-col  v-else>
+                            Pas encore de facture pour cette commande.
+                        </v-col>
+                   </v-row>
+                </v-sheet>
+            </v-col>
+        </v-row>
+
+        </v-container>
+        
+    <v-divider/>
+    </v-container>
 </template>
 
 <script>
-
 export default {
-    name: "OrderCard",
+    props:{
+    order: Object
+    }, 
 
-    data: function() {
-        return {
-            client: null,
-            date: null,
-        }
-    },
-    props: {
-        order: {
-            type: Object,
-            required: true
-        },
+    data () {
+      return {
+          display:false
+      }
     },
 
-    computed: {
-        fullName() {
-            if (this.client) {
-                return this.client.prenom + ' ' + this.client.nom;
-
+    computed:{
+        stateOrder(){
+            switch(this.order.statut)
+            {
+                case "Preperation":
+                    return "En préparation"
+                case "Ready":
+                    return "¨Prête à être retirée"
+                case "TookOf":
+                    return " Retirée"
+                case "Cancelled":
+                    return "Commande annulée"
+                case "BackInStore":
+                    return "Commande retourné en stock"
             }
         },
+        buttonDisplay(){
+            return this.display == false ? "mdi-plus": "mdi-minus"
+        }
     },
 
-    created()
-    {
-        this.RetrieveUser(this.order.id_client)
-        
-        let date = new Date(this.order.date_commande);
-        this.date = date.toLocaleDateString();
-    },
+    methods: { 
 
-    methods: 
-    {
-        RouteTo(url) {
-            this.$router.push(url);
-        },
-
-        RetrieveUser(id) {
-            this.$axios.get('/api/user/' + id)
-                .then(response => {
-                    this.client = response.data.data;
-                    this.$forceUpdate();
-                })
-                .catch(error => {
-                    this.offline = true;
-                });
-        },
-
+        toogleDisplay()
+        {
+            this.display == false ? this.display = true: this.display = false;
+        }
     }
 }
-
 </script>
-
-
-<style scoped>
-
-.ordercard
-{
-    margin:10px;
-    min-height:70px;
-    background-color: rgb(240,240,240);
-}
-
-
-</style>

@@ -46,7 +46,7 @@
                 <v-row>
                     <v-col cols="12">
                         <h3 class="text-center ma-2" style="color:rgb(100,100,150)" > Les 10 dernières commandes </h3>
-                        <OrderCard v-for="order in lastorders" :order="order" :key="order.id" ></OrderCard>
+                        <AdminOrderCard v-for="order in lastorders" :order="order" :key="order.id" ></AdminOrderCard>
 
                     </v-col>
                 </v-row>
