@@ -62,7 +62,7 @@ export default {
     layout: 'adminlayout',
     data() {
         return {
-
+            menu_item_selected: "statistics",
             lastorders: [],
         }
     },
