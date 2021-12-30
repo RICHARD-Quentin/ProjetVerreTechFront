@@ -12,8 +12,8 @@
               <v-icon>mdi-city</v-icon>
             </v-col>
             <v-col cols="6">
-              <v-list-item-title v-text="shop.name"/>
-              <v-list-item-subtitle v-text="'Adresse: ' + shop.address"/>
+              <v-list-item-title v-text="shop.intitule"/>
+              <v-list-item-subtitle v-text="'Adresse: ' + shop.adresse_magasin"/>
             </v-col>          
           </v-row>
         </v-list-item>
@@ -27,8 +27,8 @@
         <l-tile-layer
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         ></l-tile-layer>
-        <div v-for="shop in shops" :key="shop.id">
-          {{shop.id}}
+        <div v-for="shop in shops" :key="shop.id_boutique">
+          {{shop.id_boutique}}
           <l-marker :lat-lng="[shop.lat, shop.lng]" ></l-marker>
         </div>      
       </l-map>
@@ -43,7 +43,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="$emit('shopSelected',null)"
+            @click="$emit('Selected',null)"
           >
             Annuler
           </v-btn>
@@ -51,7 +51,7 @@
             color="blue darken-1"
             :disabled="!selection"
             text
-            @click="$emit('shopSelected',selection)"
+            @click="$emit('Selected',selection)"
           >
             Sélectionner ce point de retrait
           </v-btn>
@@ -68,6 +68,14 @@ export default {
   props:{
     showTheMap:null
   },
+  async fetch()
+  {
+     const result = await this.$axios.get(`/api/catalog/shop`).catch(err => console.log(err))
+      if(result.data.success == true)
+      {
+        this.shops = result.data.response
+      }
+  },
   data() {
     return {
       center:{
@@ -75,19 +83,11 @@ export default {
         lng:3.3989245
       },
       selection :null,
-      shops:
-       [
-        {lat:46.9480517,lng:2.452533,name: "Magasin données brutes à changer",id:1,address:"6A rue des vignes 67320 KIRRBERG"},
-        {lat:47.9480517,lng:2.852533,name: "Magasin VerreTech de Nancy",id:2},
-        {lat:47.9980517,lng:2.483533,name: "Magasin VerreTech de Bouzonville",id:3}
-      ]
+      shops: []
     };
   },
  
-  mounted(){
-    //TODO:
-    //Requete pour récupperer les magasins... variable ---> shops
-    
+  mounted(){   
     //La carte s'affiche pas à cause du v-dialog et le redimensionnement.
     this.$nextTick(() => { 
       let map = this.$refs.map.mapObject;
@@ -95,10 +95,12 @@ export default {
     }); 
     
     if(this.shopSelected)
-      {
+    {
+        console.log(shopSelected)
       this.center.lat = shopSelected.lat;
       this.center.lng = shopSelected.lng;
-      }
+    }
+      
   },
   computed:{
     ...mapGetters('cart', ['shopSelected'])
