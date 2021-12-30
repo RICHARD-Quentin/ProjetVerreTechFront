@@ -7,7 +7,7 @@
           <v-icon color="success" :disabled="!valid" @click="save"> mdi-content-save </v-icon>
         </v-btn>
         <v-btn icon>
-          <v-icon color="error"> mdi-arrow-left </v-icon>
+          <v-icon color="error" @click="confirmLeave"> mdi-arrow-left </v-icon>
         </v-btn>
     </v-toolbar>
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -79,22 +79,22 @@
           <v-btn text @click="addAdress">Ajouter une adresse</v-btn>
         </v-toolbar>
         <v-row v-for="(adresse, index) in data.adresses" :key="index" class="px-4">
-          <v-row>
-            <v-col cols="12">
-              <v-text-field label="Adresse" v-model="data.adresses[index].adresse"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-text-field label="Ville" v-model="data.adresses[index].ville"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-text-field label="Code postal" v-model="data.adresses[index].code_postal"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-text-field label="Pays" v-model="data.adresses[index].pays"></v-text-field>
-            </v-col>
-            <hr>
-          </v-row>
-<!--          <adress-field :adressData="adresse"></adress-field>-->
+<!--          <v-row>-->
+<!--            <v-col cols="12">-->
+<!--              <v-text-field label="Adresse" v-model="data.adresses[index].adresse"></v-text-field>-->
+<!--            </v-col>-->
+<!--            <v-col cols="12" md="4">-->
+<!--              <v-text-field label="Ville" v-model="data.adresses[index].ville"></v-text-field>-->
+<!--            </v-col>-->
+<!--            <v-col cols="12" md="4">-->
+<!--              <v-text-field label="Code postal" v-model="data.adresses[index].code_postal"></v-text-field>-->
+<!--            </v-col>-->
+<!--            <v-col cols="12" md="4">-->
+<!--              <v-text-field label="Pays" v-model="data.adresses[index].pays"></v-text-field>-->
+<!--            </v-col>-->
+<!--            <hr>-->
+<!--          </v-row>-->
+          <adress-field :adressData="adresse" v-model="data.adresses[index]"></adress-field>
           <v-btn icon @click="delAddresse(index)" class="my-auto" v-show="index !== 0">
             <v-icon> mdi-minus </v-icon>
           </v-btn>
@@ -127,7 +127,7 @@ export default {
           authId: this.$auth.user.sub
         },
         adresses: [
-          { adresse:'', code_postal: '', ville: '', pays: '' }
+          { adresse:'', id_ville: '', id_pays: '' }
         ],
         deletedAdresses: []
       },
@@ -156,8 +156,22 @@ export default {
       }
     },
 
+    async confirmLeave(){
+      const confirm = await this.$dialog.confirm({
+        text: 'Tout les changements non sauvegardés serront perdus.',
+        title: 'Voulez vous vraiment quitter cette page ?',
+        actions: {
+          true: {text: 'Confirmer', color: 'success'},
+          false: {text: 'Annuler', color: 'error'},
+        }
+      })
+      if (confirm) {
+        this.$router.go(-1)
+      }
+    },
+
     addAdress() {
-      this.data.adresses.push({adresse:'', code_postal: '', ville: '', pays: ''})
+      this.data.adresses.push({})
     },
 
     delAddresse(index){
@@ -184,7 +198,7 @@ export default {
   },
 
   async fetch() {
-    const res = await this.$axios.$get('/api/user/' + this.$auth.user.sub)
+    const res = await this.$axios.$get('/api/user/auth/' + this.$auth.user.sub)
     if (res.data !== null) {
       this.data.client = res.client
       if (res.adresses.length > 0) {
