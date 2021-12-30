@@ -305,7 +305,7 @@
       
     </v-stepper-items>
     <v-dialog v-model="dialogSelectorShop" max-width="1000px">
-      <SelectShop @shopSelected="shopSelectedEvent" :showTheMap="dialogSelectorShop"/>
+      <SelectShop @Selected="shopSelectedEvent" :showTheMap="dialogSelectorShop"/>
     </v-dialog>
     <!--  -->
   </v-stepper>
