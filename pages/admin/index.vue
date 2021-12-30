@@ -48,6 +48,7 @@ export default {
     layout: 'adminlayout',
     data() {
         return {
+            menu_item_selected: 'overview',
 
             services : [
                 {
