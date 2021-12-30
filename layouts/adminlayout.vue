@@ -57,7 +57,7 @@ export default {
         {
           icon: 'mdi-settings',
           title: 'Paramètres',
-          to: '/admin/settings'
+          to: '/admin/shopsettings'
         },
         {
           icon: 'mdi-keyboard-return',

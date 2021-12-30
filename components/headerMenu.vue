@@ -106,7 +106,7 @@ export default {
     },
     logout() {
       this.$auth.logout()
-    }
+  }
   },
   computed: {
     ...mapGetters('cart', ['getNumberOfArticles', 'getArticlesList']),

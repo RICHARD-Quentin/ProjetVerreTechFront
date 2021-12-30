@@ -1,17 +1,20 @@
 <template>
-        <v-card class="usercard">
-            <span class="text-body-2 d-block ml-2 mt-4 hover:bg-red-400">
-            <v-icon>mdi-account</v-icon>
-            {{shop}} </span>
-            <div class="d-flex ml-2 mt-1">
 
+        <v-card class="shopcard">
+            <div  class="logoshopcard d-block mx-auto">
+                <v-icon  class=" d-block mx-auto text-center"
+                    color="green darken-2"> mdi-cart </v-icon>
             </div>
+            <v-card-title> {{shop.enseigne}} </v-card-title>
+            <v-card-subtitle> {{shop.adresse_magasin}} </v-card-subtitle>
         </v-card>
 </template>
 
 <script>
+import about from '../pages/about.vue'
 
 export default {
+  components: { about },
     name: "ShopCard",
     props: {
         shop: {
@@ -26,7 +29,7 @@ export default {
 
 <style scoped>
 
-.usercard
+.shopcard
 {
     margin:8px;
     width:250px;
@@ -34,5 +37,9 @@ export default {
     background-color: rgb(240,240,240);
 }
 
+.logoshopcard
+{
+    width:100%;
+}
 
 </style>

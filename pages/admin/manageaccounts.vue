@@ -30,7 +30,7 @@
                     </v-row>
 
                     <v-tabs-items v-model="current_filter">
-                        <v-tab-item> magasins </v-tab-item>
+                        <v-tab-item> Implémentation future possible </v-tab-item>
                         <v-tab-item>
                             <v-row>
                                 <div class="ma-2 d-flex flex-wrap">
@@ -89,7 +89,7 @@
                             </v-row>
                         </v-tab-item>
                         
-                        <v-tab-item> datecreation </v-tab-item>
+                        <v-tab-item> Implémentation future possible </v-tab-item>
                     </v-tabs-items>
                 </v-container>
             </v-card>

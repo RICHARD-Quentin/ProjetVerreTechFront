@@ -1,9 +1,20 @@
 <template>
         <v-card class="productcard">
-            <span class="text-body-2 d-block ml-2 mt-4 hover:bg-red-400">
-            <v-icon> mdi-package-variant-closed </v-icon>
-            {{product.intitule_article}}  </span>
-            <div class="d-flex ml-2 mt-1">
+            <v-row>
+                <v-col cols="8">
+                     <span class=" font-weight-bold d-block text-center ">
+                    <v-icon> mdi-package-variant-closed </v-icon>
+                    {{product.intitule_article}}  
+                    </span>
+                </v-col>
+                <v-col cols="4">
+                    <v-btn color="primary" dark @click.stop="RouteTo('/admin/products/' + product.code_article)">
+                        <v-icon dark  right small> mdi-pencil </v-icon>
+                    </v-btn>
+                </v-col>
+            </v-row>
+           
+            <div class="d-flex ml-2 mt-1 font-weight-light text-center">
                 code_article: {{product.code_article}}
             </div>
             <!-- image -->
@@ -26,6 +37,13 @@ export default {
             required: true
         }
     },
+
+    methods: 
+    {
+        RouteTo(url) {
+            this.$router.push(url);
+        }
+    }
 }
 
 </script>

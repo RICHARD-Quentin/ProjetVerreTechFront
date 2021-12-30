@@ -4,6 +4,20 @@
             <v-icon>mdi-account</v-icon>
             {{user.prenom}} {{user.nom}}  </span>
             <div class="d-flex ml-2 mt-1">
+                                                        <v-icon v-if="1" small color="green darken-1"> mdi-account</v-icon>
+                                                        <v-icon v-else disabled small color="green darken-1"> mdi-account</v-icon>
+
+                                                        <v-icon v-if="1" small color="green darken-1"> mdi-account</v-icon>
+                                                        <v-icon v-else disabled small color="green darken-1"> mdi-account</v-icon>
+
+                                                        <v-icon v-if="1" small color="green darken-1"> mdi-account</v-icon>
+                                                        <v-icon v-else disabled small color="green darken-1"> mdi-account</v-icon>
+                                                        
+                                                        <v-icon v-if="1" small color="green darken-1"> mdi-account</v-icon>
+                                                        <v-icon v-else disabled small color="green darken-1"> mdi-account</v-icon>
+                                                    </div>
+
+            <div class="d-flex ml-2 mt-1">
 
             </div>
         </v-card>

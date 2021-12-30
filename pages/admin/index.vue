@@ -6,27 +6,31 @@
         </v-col>
         <v-col cols="9">
             <v-card id="main_content">
-                <v-card-title class="text-center mx-auto d-block"> Vue d'ensemble </v-card-title>
+                <v-card-title class="text-center mx-auto d-block"> Bienvenue dans la partie Administration </v-card-title>
 
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                    <div style="height:300px;">
-                    <client-only>
-                        <line-chart :width="300" :height="300" :data="chartData" ></line-chart>
-                    </client-only>
-                    </div>
+                            <v-card-text>
+                                <p>
+                                    Vous pouvez ici gérer les différents paramètres de votre boutique, afficher des messages personnalisés, gérer les commandes, les clients, les produits, les catégories, les promotions, les utilisateurs, etc.
+                                </p>
+
+                                <h4> Vous pouvez télécharger la doc client en cliquant ici : </h4>
+                                <a href="example.png"  download=""> Documentation client </a>
+
+                            </v-card-text>
                         </v-col>
                     </v-row>
                     <v-row> <v-divider> </v-divider> </v-row>
 
                     <v-row>
                         <v-container class="ma-4">
-                            <span class="text-h5 text-center mx-auto d-block"> Journal d'événements </span>
+                            <span class="text-h5 text-center mx-auto d-block"> Services disponibles</span>
                             
-                            <div style="background-color:grey;" class="ma-7 pa-2">
-                                <template v-for="(entry,i) in entries" >
-                                    <div class="entry" :key="i"> {{entry.date}} - {{entry.event}} </div>
+                            <div  class="ma-7 pa-2">
+                                <template v-for="(service,i) in services" >
+                                    <div class="entry" :key="i"> <b>{{service.nom}}  </b>- {{service.description}} </div>
                                 </template>
                             </div>
                         </v-container>
@@ -44,32 +48,29 @@ export default {
     layout: 'adminlayout',
     data() {
         return {
-            menu_item_selected: 'overview',
-            chartData: {
-            labels : ["19/08","20/08","21/08","22/08","23/08"],
-                datasets: [{
-                    label: 'Nombre de connexions journalières',
-                    data: [45, 55, 48, 35, 12]
-                }]
-            },
 
-            entries : [
+            services : [
                 {
-                    date: "12/08/2021",
-                    event: "John est tombé dans les toilettes"
+                    nom: "Magasins",
+                    description: "Consulter et créer des magasins"
                 },
                 {
-                    date: "15/08/2021",
-                    event: "John est ressorti des toilettes"
+                    nom: "Articles",
+                    description: "Consulter, créer et modifier des articles"
                 },
                 {
-                    date: "20/08/2021",
-                    event: "Les oiseaux volent "
+                    nom: "Statistiques",
+                    description: "Statistiques globales du site"
                 },
                 {
-                    date: "30/08/2021",
-                    event: "Fin du monde - selon ma grand mère"
+                    nom: "Utilisateurs",
+                    description: "Visualiser la liste des utilisateurs"
                 },
+                {
+                    nom: "Paramètres",
+                    description: "Modifier vos paramètres de paiement, la page d'accueil, sauvegardes, etc."    
+                },
+
 
             ]
         }

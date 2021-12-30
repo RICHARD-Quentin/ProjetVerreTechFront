@@ -4,9 +4,17 @@
             <v-card id="main_content">
                 <v-card-title class="text-center mx-auto d-block"> Magasins </v-card-title>
                 <v-divider  class="mx-16 my-4"></v-divider>
+                    
+                    <v-btn color="primary" class="my-1 mx-8" @click="gotoCreateShop()">
+                        <v-icon class="mr-2">mdi-plus</v-icon>
+                        Ajouter une boutique
+                    </v-btn>
+
+
+                <v-divider  class="mx-16 my-4"></v-divider>
 
                 <v-container class=" mt-4 d-flex flex-wrap" >
-                    <ShopCard v-for="shop in shops" :shop="shop" :key="shop.sssssss"></ShopCard>
+                    <ShopCard v-for="shop in shops" :shop="shop" :key="shop.id_boutique"></ShopCard>
                 </v-container>
             </v-card>
         </v-col>
@@ -29,7 +37,7 @@ export default {
     created() {
         this.$axios.get('/api/catalog/shop')
             .then(response => {
-                this.products = response.data.response;
+                this.shops = response.data.response;
                 this.offline = false;
                 
                 console.log("azeaze");
@@ -43,6 +51,14 @@ export default {
                 this.offline = true;
             });
     },
+
+    methods:
+    {
+        gotoCreateShop()
+        {
+            this.$router.push('/admin/shops/create');
+        }
+    }
 
 }
 
