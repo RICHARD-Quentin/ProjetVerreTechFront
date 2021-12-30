@@ -24,6 +24,7 @@
               ref="datePicker"
               v-model="datePicker"
               :close-on-content-click="false"
+              persistant
               :return-value.sync="data.client.date_naissance"
               transition="scale-transition"
               offset-y
@@ -32,14 +33,16 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="data.client.date_naissance"
-                  label="Date de naissance"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
+                  label="Date de naissance" type="date" min="1970-01-01" max="2999-01-01"
+                  v-bind="attrs" v-on="$listeners"
+                  class="unstyled"
+                  prepend-icon="mdi-calendar" @click:prepend="datePicker = true"
                 ></v-text-field>
               </template>
               <v-date-picker
+                locale="fr"
+                min="1970-01-01"
+                max="2999-01-01"
                 v-model="data.client.date_naissance"
                 no-title
                 scrollable
@@ -132,7 +135,8 @@ export default {
         deletedAdresses: []
       },
       villes: [],
-      CP: []
+      CP: [],
+      dateValue: null
     }
   },
   methods: {
@@ -194,7 +198,12 @@ export default {
   },
 
   watch: {
-
+    dateValue: {
+      handler(date) {
+        this.data.client.date_naissance = date
+      },
+      immediate: true
+    }
   },
 
   async fetch() {
@@ -209,6 +218,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.unstyled input::-webkit-inner-spin-button,
+.unstyled input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
 </style>
