@@ -1,5 +1,5 @@
 <template>
-    <p> Coucou </p>
+    <p> Connexion réussie, vous allez être redirigé vers le site dans un instant </p>
 </template>
 
 <script>
