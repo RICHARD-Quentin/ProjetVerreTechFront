@@ -90,5 +90,43 @@ export default {
       title: 'Boutique VerreTech'
     }
   },
+
+  async mounted() {
+    if (this.$auth.loggedIn) {
+      const authId = this.$auth.user.sub
+      try {
+        const user = await this.$axios.$get('/api/user/auth/' + authId)
+        this.$auth.setUser({
+          ...this.$auth.user,
+          id_client: user.client.id_client
+        })
+      } catch (e) {
+        const data = {
+            client: {
+              id_client: null,
+              nom: this.$auth.user.family_name || '',
+              prenom: this.$auth.user.given_name || '',
+              date_naissance: "",
+              telephone_f: "",
+              telephone_p: "",
+              mail: this.$auth.user.email,
+              authId: this.$auth.user.sub
+            },
+            adresses: [],
+            deletedAdresses: []
+          }
+        try {
+          const newUser = await this.$axios.$post('/api/user', data)
+          const user = await this.$axios.$get('/api/user/auth/' + authId)
+          this.$auth.setUser({
+            ...this.$auth.user,
+            id_client: user.client.id_client
+          })
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    }
+  }
 }
 </script>
