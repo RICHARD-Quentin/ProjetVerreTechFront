@@ -7,6 +7,7 @@
         <v-autocomplete label="Ville - Code postal"
           :items="villeEntries" item-text="label" item-value="id_ville" v-model="adresse.id_ville"
           :search-input.sync="villeSearch"
+          @input="setValues"
           clearable
           :loading="loading"
         >
@@ -101,7 +102,6 @@ export default {
     },
 
     async setValues(payload){
-      console.log(payload)
       if (!isNull(payload)) {
         // this.adresse.id_ville = payload
         const ville = (await this.$axios.$get('/api/user/villes/' + payload)).data
