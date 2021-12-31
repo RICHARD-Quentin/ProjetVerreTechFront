@@ -1,29 +1,28 @@
 <template>
   <v-row>
       <v-col cols="12">
-        <v-text-field label="Adresse" v-model="adresse.adresse"></v-text-field>
+        <v-text-field label="Adresse" v-model="adresse.adresse" @change="$emit('input', adresse)"></v-text-field>
+      </v-col>
+      <v-col cols="8">
+        <v-autocomplete label="Ville - Code postal"
+          :items="villeEntries" item-text="label" item-value="id_ville" v-model="adresse.id_ville"
+          :search-input.sync="villeSearch"
+          @input="setValues"
+          clearable
+          :loading="loading"
+        >
+        </v-autocomplete>
       </v-col>
       <v-col cols="4">
-        <v-autocomplete label="Code postal" v-model="adresse.code_postal"
-          :items="codePostalEntries" item-text="codePostal" return-object hide-no-data
-          :search-input.sync="codePostalSearch" @input="setValuesFromCodePostal"
-        ></v-autocomplete>
+        <v-select label="Pays" v-model="adresse.id_pays"
+        :items="paysEntries" item-text="pays" item-value="id_pays"
+        disabled></v-select>
       </v-col>
-      <v-col cols="4">
-        <v-autocomplete label="Ville" v-model="adresse.ville"
-          :items="villeEntries" item-text="nom" return-object hide-no-data
-          :search-input.sync="villeSearch" @input="setValuesFromVille"
-        ></v-autocomplete>
-      </v-col>
-      <v-col cols="4">
-        <v-text-field label="Pays" v-model="adresse.pays"></v-text-field>
-      </v-col>
-
   </v-row>
 </template>
 
 <script>
-import {isNull} from "lodash";
+import {isEmpty, isNull} from "lodash";
 
 export default {
   name: "adressField",
@@ -36,57 +35,54 @@ export default {
     return {
       adresse: {
         adresse:'',
-        code_postal: '',
-        ville: '',
-        pays: ''
+        id_ville: '',
+        id_pays: ''
       },
-
+      loading: false,
+      fetching: false,
       villeSearch: '',
       villeEntries: [],
-
-      updateVille: true,
-      updateCodePostal: true,
-
-      codePostalSearch: '',
-      codePostalEntries: []
+      paysEntries: []
     }
   },
 
   watch: {
     adressData: {
-      handler(val) {
-        this.adresse = val
-        this.initValues(val.code_postal)
+      async handler(val) {
+        if (!isEmpty(val)){
+          this.fetching = true
+          this.adresse = val
+          const ville = (await this.$axios.$get('/api/user/villes/' + val.id_ville)).data
+          this.villeEntries = [{
+            ...ville,
+            label: ville.ville + ' - ' + ville.code_postal
+          }]
+        }
       },
       deep: true,
       immediate: true
-
     },
 
     async villeSearch(val) {
-      if (!isNull(val) && this.updateVille) {
-        const url = "https://geo.api.gouv.fr/communes?nom=" + val + "&fields=nom,codesPostaux&limit=5"
-        const result = await this.$axios.$get(url)
-        this.villeEntries = result.map(entry => {
-          return {
-            ...entry,
-            codePostal: val
+      if (!isNull(val) && !this.fetching) {
+        this.loading = true
+        try {
+          const result = await this.$axios.$get('/api/user/villes', {params: {search: val}})
+          if (result.data.length > 0) {
+            this.villeEntries = result.data.map(entry => {
+              return {
+                id_ville: entry.id_ville,
+                id_pays: entry.id_pays,
+                label: entry.ville + ' - ' + entry.code_postal
+              }
+            })
           }
-        })
+        } catch (e) {
+          console.error(e)
+        }
+        this.loading = false
       }
-    },
-
-    async codePostalSearch(val) {
-      if (!isNull(val) && this.updateCodePostal) {
-        const url = "https://geo.api.gouv.fr/communes?codePostal=" + val + "&fields=nom,codesPostaux&limit=5"
-        const result = await this.$axios.$get(url)
-        this.codePostalEntries = result.map(entry => {
-          return {
-            ...entry,
-            codePostal: val
-          }
-        })
-      }
+      this.fetching = false
     },
   },
 
@@ -101,34 +97,27 @@ export default {
       this.villeEntries = result.data
     },
 
-    setValuesFromVille(payload) {
-      this.updateCodePostal = false
-      this.codePostalEntries = payload.codesPostaux.map(codePostal => {
-        return {
-          codePostal: codePostal,
-          code: payload.code,
-          nom: payload.nom
-        }
-      })
-      this.adresse.code_postal = payload.codesPostaux.length === 1
-        ? payload.codesPostaux[0]
-        : null
-      this.adresse.ville = payload.nom
-      this.adresse.pays = "France"
-      this.updateCodePostal = true
-
+    async fetchVilles(val) {
+        this.villeSearch = val
     },
 
-    setValuesFromCodePostal(payload) {
-      console.log(payload)
-      this.updateVille = false
-      this.villeEntries = [payload]
-      this.adresse.code_postal = payload.codePostal
-      this.adresse.ville = payload.nom
-      this.adresse.pays = "France"
-      this.updateVille = true
-    }
+    async setValues(payload){
+      if (!isNull(payload)) {
+        // this.adresse.id_ville = payload
+        const ville = (await this.$axios.$get('/api/user/villes/' + payload)).data
+        this.adresse.id_pays = ville.id_pays
+      } else {
+        this.adresse.id_pays = null
+        // this.adresse.id_ville = null
+      }
+      this.$emit('input', this.adresse)
+    },
   },
+
+  async mounted() {
+    const result = await this.$axios.$get('/api/user/pays')
+    this.paysEntries = result.data
+  }
 }
 </script>
 
