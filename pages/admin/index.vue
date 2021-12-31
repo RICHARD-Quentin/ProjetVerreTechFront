@@ -1,10 +1,6 @@
 <template>  
     <v-row>
-        <v-col cols="3">
-            
-            <admin-menu :menu_item_selected="menu_item_selected"></admin-menu>
-        </v-col>
-        <v-col cols="9">
+        <v-col cols="12">
             <v-card id="main_content">
                 <v-card-title class="text-center mx-auto d-block"> Bienvenue dans la partie Administration </v-card-title>
 
@@ -48,7 +44,6 @@ export default {
     layout: 'adminlayout',
     data() {
         return {
-            menu_item_selected: 'overview',
 
             services : [
                 {

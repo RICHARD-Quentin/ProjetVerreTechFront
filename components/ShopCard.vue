@@ -2,9 +2,15 @@
 
         <v-card class="shopcard">
             <div  class="logoshopcard d-block mx-auto">
+                <v-btn right small color="primary" dark @click.stop="RouteTo('/admin/products/' + product.code_article)">
+                        <v-icon dark  right small> mdi-pencil </v-icon>
+                    </v-btn>
                 <v-icon  class=" d-block mx-auto text-center"
                     color="green darken-2"> mdi-cart </v-icon>
+                    
             </div>
+            
+
             <v-card-title> {{shop.enseigne}} </v-card-title>
             <v-card-subtitle> {{shop.adresse_magasin}} </v-card-subtitle>
         </v-card>

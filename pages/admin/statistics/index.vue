@@ -1,7 +1,7 @@
 <template>  
     <v-row>
-        <v-col cols="12">
-            <v-card id="main_content" class="ma-5">
+        <v-col  cols="12">
+            <v-card  id="main_content" class="ma-5">
                 <v-card-title class="text-center mx-auto d-block" > Statistiques </v-card-title>
 
                 
@@ -64,6 +64,16 @@ export default {
         return {
             menu_item_selected: "statistics",
             lastorders: [],
+
+            serviceonline : false,
+            loading: true,
+
+            services_availables: {
+                catalog: false,
+                users: false,
+                logistic: false,
+            }
+
         }
     },
             
@@ -72,15 +82,45 @@ export default {
     {
         this.$axios.get('/api/logistic/order')
         .then(response => {
-            this.generateStatistics_for_command(response.data.response);
+            this.serviceonline =  true;
             this.generateStatistics_for_globale();
+            this.generateStatistics_for_command(response.data.response);
             this.lastorders = response.data.response;
             this.lastorders.sort(function(a, b){ return new Date(b.date_retrait) - new Date(a.date_retrait);});
             this.lastorders = this.lastorders.slice(0,10);
             
         })
         .catch(error => {
+            this.checkServices();
+            this.loading = false;
         });
+    },
+
+    computed: {
+
+        service_user() {
+            if(this.services_availables.users) {
+                return 'ONLINE'
+            } else {
+                return 'OFFLINE'
+            }
+        },
+
+        service_catalog() {
+            if(this.services_availables.catalog) {
+                return 'ONLINE'
+            } else {
+                return 'OFFLINE'
+            }
+        },
+
+        service_logistic() {
+            if(this.services_availables.logistic) {
+                return 'ONLINE'
+            } else {
+                return 'OFFLINE'
+            }
+        }
     },
 
     methods: {
@@ -95,7 +135,7 @@ export default {
 
             }catch(e)
             {
-                // console.log(e);
+                console.log(e);
             }
 
         },
@@ -375,6 +415,31 @@ export default {
             .catch(error => {
                 // console.log(error);
             });
+        },
+
+        async checkServices()
+        {
+            try
+            {
+                this.$axios.get('/api/catalog/')
+                .then(response => {
+                    this.services_availables.catalog = true;
+                })
+
+                this.$axios.get('/api/user')
+                .then(response => {
+                    this.services_availables.users = true;
+                })
+
+                this.$axios.get('/api/logistic/order')
+                .then(response => {
+                    this.services_availables.logistic = true;
+                })
+
+            }catch(error)
+            {
+                console.log("failed");
+            }
         }
 
     }

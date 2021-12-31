@@ -4,14 +4,17 @@
             <v-row>
                 
                 <v-card id="main_content" class="text-center mx-auto my-10">
+                <span class="ma-3 font-weight-light" @click="ReturnToIndex()">
+                        <v-icon @click="ReturnToIndex()" large>mdi-arrow-left</v-icon>
+                </span>
                     <v-card-title class="text-center mx-auto d-block"> {{this.product.intitule_article}} </v-card-title>
                     <v-card-subtitle class="text-center mx-auto d-block"> Code : {{product.code_article}}  </v-card-subtitle>
                 </v-card>
             </v-row>
             <v-row>
             
-                <v-col cols="12" md="3">
-                        <span class="d-block font-weight-bold justify-center text-center" style="color:rgb(100,100,150)" > Image de l'article</span>
+                <v-col cols="3">
+                        <span class="ml-10  font-weight-bold" style="color:rgb(100,100,150)" > Image de l'article</span>
                         <v-img
                         :src="'data:image/jpeg;base64,' + product.image"
                         aspect-ratio="1"
@@ -23,7 +26,7 @@
                 </v-col>
 
 
-                <v-col cols="12" md="9">
+                <v-col cols="9">
                     <v-row> 
                         <v-col cols="12">
                             <v-row>
@@ -31,18 +34,18 @@
                             </v-row>
 
                             <v-row> 
-                                <v-col cols="12" md="4"> <p class="text-center font-weight-light justify-center mt-2 mb-0" style=";color:rgb(130,130,130);"> Intitulé: </p></v-col>
-                                <v-col cols="12" md="8"> <v-text-field  v-model="formname"  label="Intitule de l'article" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Intitulé: </p></v-col>
+                                <v-col cols="8"> <v-text-field v-model="formname"  label="Intitule de l'article" outlined  dense  color="primary" required> </v-text-field></v-col>
                             </v-row>
 
                             <v-row> 
-                                <v-col cols="12" md="4"> <p class="text-center font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Description: </p></v-col>
-                                <v-col cols="12" md="8"> <v-textarea v-model="formdesc" label="Description de l'article" outlined  dense  color="primary" required> </v-textarea></v-col>
+                                <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Description: </p></v-col>
+                                <v-col cols="8"> <v-textarea v-model="formdesc" label="Description de l'article" outlined  dense  color="primary" required> </v-textarea></v-col>
                             </v-row>
 
                             <v-row> 
-                                <v-col cols="12" md="4"> <p class="text-center font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Dimensions (mm): </p></v-col>
-                                <v-col cols="12" md="8"> 
+                                <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Dimensions (mm): </p></v-col>
+                                <v-col cols="8"> 
                                     <v-row>
                                         <v-col cols="4"> <v-text-field type="number" v-model="formdimx" label="Longueur" outlined  dense  color="primary" required> </v-text-field></v-col>
                                         <v-col cols="4"> <v-text-field type="number" v-model="formdimy" label="largeur" outlined  dense  color="primary" required> </v-text-field></v-col>
@@ -52,12 +55,12 @@
                             </v-row>
 
                             <v-row> 
-                                <v-col cols="4"> <p class="text-center font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Prix d'achat: </p></v-col>
+                                <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Prix d'achat: </p></v-col>
                                 <v-col cols="8"> <v-text-field v-model="formprix" label="Prix d'achat" type="number" outlined  dense  color="primary" required> </v-text-field></v-col>
                             </v-row>
 
                             <v-row>
-                                <v-col cols="4"> <p class="text-center font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Disponible à la commande </p></v-col>
+                                <v-col cols="4"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Disponible à la commande </p></v-col>
                                 <v-col cols="8"> <v-switch v-model="formdispo" label="Disponible à la commande" color="primary" ></v-switch></v-col>
                             </v-row>
                         </v-col>
@@ -66,10 +69,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-row class="d-flex justify-center">
-                    <v-btn class=" d-block mr-6"  color="red lighten-1"  @click="DeleteProduct()"><v-icon class="mr-2">mdi-delete</v-icon>Supprimer</v-btn>
-                    <v-btn class="d-block" color="primary" @click="ModifyProduct()" > Modifier l'article </v-btn>
-                    </v-row>
+                    <v-btn class="mx-auto d-block" color="primary" @click="ModifyProduct()" > Modifier l'article </v-btn>
                 </v-col>
             </v-row>
         </v-col>
@@ -131,54 +131,7 @@ export default {
 
         ModifyProduct()
         {
-
-            
-            let formcommandable = 0;
-            if (this.formdispo)
-                formcommandable = 1;
-
-            let stringprix = this.formprix.toString();
-            let stringdim1 =  this.formdimx.toString();
-            let stringdim2 =  this.formdimy.toString();
-            let stringdim3 =  this.formdimz.toString();
-            let stringnote = "0";
-
-            let vm = this;
-            let id = this.$route.params.id;
-            this.$axios.put('/api/catalog/article/' + id,
-            {
-                intitule_article: this.formname,
-                dimension_1: stringdim1,
-                dimension_2: stringdim2,
-                dimension_3: stringdim3,
-                couleur: this.formcolor,
-                prix_achat: stringprix,
-                commandable: formcommandable,
-                note_moyenne: stringnote,
-                description: this.formdesc
-            })
-            .then(function (response) {
-                // console.log(response);
-                vm.$router.push('/admin/products');
-            })
-            .catch(function (error) {
-                // console.log(error);
-            });
-        },
-
-        DeleteProduct()
-        {
-            let vm = this;
-            let id = this.$route.params.id;
-            // console.log("path : /api/catalog/article/" + id);
-            this.$axios.delete('/api/catalog/article/324')
-            .then(function (response) {
-                console.log(response);
-                vm.$router.push('/admin/products');
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            console.log("MODIFYPRODUCT TODO");
         }
     },
     

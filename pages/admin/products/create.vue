@@ -6,7 +6,7 @@
 
                 <v-container class="mt-8">
                     <v-row>
-                        <v-col cols="4"> 
+                        <v-col cols="12" md="4"> 
                             <v-row> 
                                 <span class="ml-10  font-weight-bold" style="color:rgb(100,100,150)" > Choisissez une image </span>
                                 <v-img class="d-block mx-2" v-if="!this.imagefile" src="/example.png" height="240px" width="240px" contain v-on:click="SelectImage()" ></v-img>
@@ -31,7 +31,7 @@
                                 <input type="file" id="imageselecter" @change="onFileChange" style="display:none" />
                             </v-row>
                         </v-col>
-                        <v-col cols="8">
+                        <v-col cols="12" md="8">
                             <v-row> 
                                 <v-col cols="12">
                                     <v-row>
@@ -150,23 +150,42 @@ export default {
         CreateProduct()
         {
             var vm = this;
-            let jsonobject = {
-                intitule_article: this.formname,
-                description: this.formdesc,
-                prix_achat: this.formprix,
-                commandable: this.formdispo,
-                dimension_1: this.formdimx,
-                dimension_2: this.formdimy,
-                dimension_3: this.formdimz,
-                couleur: this.formcolor,
-                image: this.imagefile,
-                note_moyenne: 0,
-                commentaires: []
-            };
-            
-            let json = JSON.stringify(jsonobject);
+            // let jsonobject = {
+            //     intitule_article: this.formname,
+            //     description: this.formdesc,
+            //     prix_achat: this.formprix,
+            //     commandable: this.formdispo,
+            //     dimension_1: this.formdimx,
+            //     dimension_2: this.formdimy,
+            //     dimension_3: this.formdimz,
+            //     couleur: this.formcolor,
+            //     image: this.imagefile,
+            //     note_moyenne: 0,
+            //     commentaires: []
+            // };
+            let formcommandable = 0;
+            if (this.formdispo)
+                formcommandable = 1;
 
-            this.$axios.post('/api/catalog/article', json)
+            let stringprix = this.formprix.toString();
+            let stringdim1 =  this.formdimx.toString();
+            let stringdim2 =  this.formdimy.toString();
+            let stringdim3 =  this.formdimz.toString();
+            let stringnote = "0";
+        
+            this.$axios.post('/api/catalog/article', 
+            {
+                intitule_article: this.formname,
+                dimension_1: stringdim1,
+                dimension_2: stringdim2,
+                dimension_3: stringdim3,
+                couleur: this.formcolor,
+                prix_achat: stringprix,
+                commandable: formcommandable,
+                note_moyenne: stringnote,
+                description: this.formdesc,
+                image: this.imagefile
+            })
             .then(function (response) {
                 vm.displayMessage(response.data);
             })

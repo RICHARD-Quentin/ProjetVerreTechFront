@@ -1,6 +1,6 @@
 <template>  
     <v-row>
-        <v-col cols="3">
+        <v-col cols="12" md="3">
             
             <settings-menu :menu_item_selected="menu_item_selected"></settings-menu>
         </v-col>

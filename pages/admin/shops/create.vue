@@ -40,7 +40,7 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-btn class="mx-auto d-block" color="primary" @click="CreateProduct()" > Ajouter la boutique </v-btn>
+                            <v-btn class="mx-auto d-block" color="primary" @click="CreateShop()" > Ajouter la boutique </v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -56,9 +56,6 @@ export default {
     layout: 'adminlayout',
     data() {
         return {
-
-            imagefile: null,
-
             form_adressemagasin: '',
             form_enseigne: '',
             form_intitule: ''
@@ -75,6 +72,29 @@ export default {
         {
             this.$router.push('/admin/shops');
         },
+
+        CreateShop()
+        {
+            // let jsonresponse = {
+            //     adressemagasin: this.form_adressemagasin,
+            //     enseigne: this.form_enseigne,
+            //     intitule: this.form_intitule
+            // }
+
+            // send json
+            this.$axios.post('/api/catalog/shop', {
+                enseigne: this.form_enseigne,
+                intitule: this.form_intitule,
+                adresse_magasin: this.form_adressemagasin
+            }
+            ).then(response => {
+                console.log(response);
+                this.$router.push('/admin/shops');
+            }).catch(e => {
+                console.log(e);
+            });
+            
+        }
     }
 }
 </script>

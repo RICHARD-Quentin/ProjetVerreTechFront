@@ -1,11 +1,11 @@
 <template>  
     <v-row>
-        <v-col cols="3">
+        <v-col cols="12" md="3">
             
             <settings-menu :menu_item_selected="menu_item_selected"></settings-menu>
         </v-col>
         
-        <v-col cols="9">
+        <v-col cols="12" md="9">
             <v-card id="main_content">
                 <v-card-title class="text-center mx-auto d-block"> Editer le site </v-card-title>
 
