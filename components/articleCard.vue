@@ -1,18 +1,27 @@
 <template>
-  <v-card max-width="344" outlined elevation="4">
+  <v-card max-width="404" outlined elevation="4">
     <nuxt-link :to="'/catalog/' + article.code_article">
-      <v-img height="150" :src="getUrlImage(article.image)"></v-img>
+      <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
-
-    <v-row class="mt-2 mb-1">
-      <v-col class="ml-2">
+    <v-card-text>
+      
+      <v-row class="mt-2 mb-1">
+      <v-col class="ml-2 ma-2">
         <div class="text-h7 font-weight-bold">
           {{article.intitule_article}}
         </div>
 
-        <div class="ml-4 text-h7">
+        <div class="text-h7 ma-2">
           {{article.prix_achat}}€
         </div>
+        <div>
+           <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
+           <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
+        </div>
+        <div class="text-h7 ma-2" v-if="article.quantity">
+          {{showQuantity}}
+        </div>
+        
       </v-col>
 
       <v-col cols="3" class="mt-1 mr-2">
@@ -23,6 +32,8 @@
         </v-btn>
       </v-col>
     </v-row>
+    </v-card-text>
+    
   </v-card>
 </template>
 
@@ -39,6 +50,13 @@ export default {
   props: [
       "article"
     ],
+    computed:{
+      showQuantity(){
+          if (this.article.quantity > 5) return `${this.article.quantity} pièce(s) disponible.`
+          else if(this.article.quantity < 5 && this.article.quantity > 0) return `Plus que ${this.article.quantity} pièce(s) disponible.`
+          else return `Cet article n'est plus disponible dans ce point de vente.`
+      }
+    },
   methods: {
     linkToArticle(id)
     {
