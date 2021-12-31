@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="404" outlined elevation="4">
+  <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
     <nuxt-link :to="'/catalog/' + article.code_article">
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
@@ -14,24 +14,25 @@
         <div class="text-h7 ma-2">
           {{article.prix_achat}}€
         </div>
+        <div v-if="article.quantity" class="text-h7 ma-2">
+          {{showQuantity}}
+        </div>
         <div>
            <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
            <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
-        </div>
-        <div class="text-h7 ma-2" v-if="article.quantity">
-          {{showQuantity}}
-        </div>
-        
+        </div>       
       </v-col>
-
-      <v-col cols="3" class="mt-1 mr-2">
-        <v-btn color="yellow" :to="'/catalog/' + article.code_article">
+      </v-row>
+    <v-card-actions align="right">
+       <v-flex class="text-xs-right">
+       <v-btn color="yellow" :to="'/catalog/' + article.code_article">
           <v-icon>
             mdi-arrow-right
           </v-icon>
         </v-btn>
-      </v-col>
-    </v-row>
+       </v-flex>
+    </v-card-actions>
+
     </v-card-text>
     
   </v-card>
