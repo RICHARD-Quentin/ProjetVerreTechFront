@@ -1,7 +1,7 @@
 <template>
     <v-container>
         
-    <v-row class="grey lighten-3 pa-2 " align="center"
+    <v-row class="grey lighten-3 pa-2 " align="center" 
       justify="center">
         <v-col>
         <v-btn class="mr-4"
@@ -151,36 +151,29 @@ export default {
     methods: {
         async getData()
         {
-            if(this.shopSelected)
-            {
-                
-                const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`,{ params: { id_boutique: this.shopSelected.id_boutique } }).catch(err => this.$nuxt.error({ statusCode: 404, message: err.message }))
-                if(result.data.success == true)
-                {                   
+            let params = {}
+
+            if(this.shopSelected) params["id_boutique"] = this.shopSelected.id_boutique
+       
+            const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`,{params:params}).catch(err => this.$nuxt.error({ statusCode: 404, message: "Impossible de joindre le service catalogue." }))          
+            if(result.data.success == true)
+            {   
+                if(this.shopSelected){
                     this.article = result.data.response.article
                     this.quantity = result.data.response.quantité
-                }
-                else
-                {
-                    const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`).catch(err => this.$nuxt.error({ statusCode: 404, message: err.message }))          
-                    this.article = result.data.response  
-                }
- 
-            }
-            else
-            {
-                const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`).catch(err => this.$nuxt.error({ statusCode: 404, message: err.message }))          
-                this.article = result.data.response   
-                      
-            }
+                }else{
+                    this.article= result.data.response
+                }                  
+            }                                        
         },
         getUrlImageOfArticle(base64)
         {   
             return base64 != undefined ? "data:image/jpeg;base64,"+base64 : "/image_not_found.png"
         },
         addToCart() 
-
-        {   const number = parseInt(this.quantitySelector);
+        {   
+            this.messageError = null
+            const number = parseInt(this.quantitySelector);
             if(number != this.quantitySelector && number < 0){
                 this.messageError = "Valeur incorrecte !"
                 return
@@ -196,7 +189,6 @@ export default {
                 this.$store.commit('cart/addArticle',  this.article);
                 this.quantity -= this.article.quantity
             }
-
         },
         selectShop(val)
         {

@@ -29,7 +29,9 @@
         ></l-tile-layer>
         <div v-for="shop in shops" :key="shop.id_boutique">
           {{shop.id_boutique}}
+          <div v-if="shop.lat != null && shop.lng != null" >
           <l-marker :lat-lng="[shop.lat, shop.lng]" ></l-marker>
+          </div>
         </div>      
       </l-map>
     </client-only>
@@ -86,24 +88,24 @@ export default {
       shops: []
     };
   },
- 
+  computed:{
+    ...mapGetters('cart', ['shopSelected'])
+  },
   mounted(){   
     //La carte s'affiche pas à cause du v-dialog et le redimensionnement.
     this.$nextTick(() => { 
       let map = this.$refs.map.mapObject;
       setTimeout(function(){ map.invalidateSize()}, 200);
     }); 
-    
+    /*
     if(this.shopSelected)
     {
         console.log(shopSelected)
       this.center.lat = shopSelected.lat;
       this.center.lng = shopSelected.lng;
     }
+    */
       
-  },
-  computed:{
-    ...mapGetters('cart', ['shopSelected'])
   },
   methods:{
     selectShop(shop)
