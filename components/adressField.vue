@@ -6,8 +6,7 @@
       <v-col cols="8">
         <v-autocomplete label="Ville - Code postal"
           :items="villeEntries" item-text="label" item-value="id_ville" v-model="adresse.id_ville"
-          @update:search-input="fetchVilles"
-          @input="setValues"
+          :search-input.sync="villeSearch"
           clearable
           :loading="loading"
         >
@@ -68,13 +67,15 @@ export default {
         this.loading = true
         try {
           const result = await this.$axios.$get('/api/user/villes', {params: {search: val}})
-          this.villeEntries = result.data.map(entry => {
-            return {
-              id_ville: entry.id_ville,
-              id_pays: entry.id_pays,
-              label: entry.ville + ' - ' + entry.code_postal
-            }
-          })
+          if (result.data.length > 0) {
+            this.villeEntries = result.data.map(entry => {
+              return {
+                id_ville: entry.id_ville,
+                id_pays: entry.id_pays,
+                label: entry.ville + ' - ' + entry.code_postal
+              }
+            })
+          }
         } catch (e) {
           console.error(e)
         }
@@ -96,18 +97,18 @@ export default {
     },
 
     async fetchVilles(val) {
-        if(this.fetching) this.villeSearch = val
+        this.villeSearch = val
     },
 
     async setValues(payload){
       console.log(payload)
       if (!isNull(payload)) {
-        this.adresse.id_ville = payload
+        // this.adresse.id_ville = payload
         const ville = (await this.$axios.$get('/api/user/villes/' + payload)).data
         this.adresse.id_pays = ville.id_pays
       } else {
         this.adresse.id_pays = null
-        this.adresse.id_ville = null
+        // this.adresse.id_ville = null
       }
       this.$emit('input', this.adresse)
     },
