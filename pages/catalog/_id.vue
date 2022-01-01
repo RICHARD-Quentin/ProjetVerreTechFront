@@ -10,7 +10,7 @@
                 mdi-arrow-left
             </v-icon>
         </v-btn>
-        Boutique sélectionné : <b>{{getShopName}}</b>
+        Point de vente sélectionné : <b>{{getShopName}}</b>
         </v-col>
     </v-row>
     <v-row class="mt-0">
@@ -39,7 +39,7 @@
                     <v-text-field
                         v-model = "quantitySelector"
                         type="number"
-                        suffix="pièce"
+                        suffix="pièce(s)"
                     ></v-text-field>
                 </v-col>
             </v-row>

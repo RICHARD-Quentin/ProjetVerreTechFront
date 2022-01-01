@@ -1,16 +1,16 @@
 <template>
   <v-container>
-  <v-stepper v-if="offline==false" v-model="e1">
+  <v-stepper v-if="offline==false" v-model="stepper">
     <h2 class="d-flex justify-center align-center ma-5">Passer une commande</h2>
 
     <v-stepper-header>
-      <v-stepper-step :complete="e1 > 1" step="1">Récapitulatif</v-stepper-step>
+      <v-stepper-step :complete="stepper > 1" step="1">Récapitulatif</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="e1 > 2" step="2">Identification</v-stepper-step>
+      <v-stepper-step :complete="stepper > 2" step="2">Identification</v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="e1 > 3" step="3"> Facturation </v-stepper-step>
+      <v-stepper-step :complete="stepper > 3" step="3"> Facturation </v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="e1 == 4" step="4"> Validation </v-stepper-step>
+      <v-stepper-step :complete="stepper == 4" step="4"> Validation </v-stepper-step>
     </v-stepper-header>
 
     <v-stepper-items>
@@ -59,7 +59,7 @@
                         Total hors taxe :
                       </v-col>
                       <v-col>
-                        {{getTotalPrice}} €
+                        {{getTotalPriceHT}} €
                       </v-col>
                     </v-row>
                     <v-divider></v-divider>
@@ -74,7 +74,7 @@
                     <v-btn
                     block
                     large
-                    @click="e1 = 2"
+                    @click="stepper = 2"
                     color="primary"
                     :disabled ="!shopSelected || getArticlesList == 0"
                     elevation="2">Continuer
@@ -96,7 +96,7 @@
                         <v-btn text @click="dialogSelectorShop=true"> Sélectionnez une boutique </v-btn>
                       </v-col>
                       <v-col  v-else >
-                          {{shopSelected.name}}
+                          {{shopSelected.intitule}}
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -123,14 +123,14 @@
         </h3>
         <div class="mb-12 d-flex flex-column justify-center align-center" height="200px" v-if="!getLoggedIn" max-width="300px" >        
             <div class="flex">Vous devez être connecté pour continuer...</div>
-            <v-btn @click="$auth.loginWith('auth0')" class="flex" text>
+            <v-btn @click="logginUser()" class="flex" text>
               <v-icon> mdi-account</v-icon>
               <span v-if="$vuetify.breakpoint.smAndUp">Connexion</span>
             </v-btn>        
         </div>
         <div v-else class="mb-12 d-flex flex-column justify-center align-center">
             <div class="flex">Vous êtes connecté en tant que {{$auth.user.nickname}}</div>
-            <v-btn @click="e1 = 3" class="flex" text>
+            <v-btn @click="getUser()" class="flex" text>
               <v-icon> mdi-arrow-right</v-icon>
               <span v-if="$vuetify.breakpoint.smAndUp" >Continuer avec ce compte</span>
             </v-btn> 
@@ -272,17 +272,17 @@
 
         <v-row align="center"  justify="center" style="height:50vh">
           <v-col class="d-flex flex justify-center align-center">
-        <v-card max-width="450" v-if="newOrder!=null" >
+        <v-card max-width="450" v-if="this.newOrder!=null" >
           <v-card-title>Votre commande a été validée !</v-card-title>
           <v-card-subtitle>Référence de commande: n° <b>{{getOrderNumber}}</b></v-card-subtitle>
           <v-card-text class="flex-column">
-            <p>Vous allez recevoir un e-mail concernant les informations de votre commande ! Vous pouvez aussi consulter à tout moment son état, directement sur la page de vos commandes.</p>
+            <p>Vous allez recevoir un e-mail concernant les informations de votre commande ! Vous pouvez aussi consulter à tout moment son état, directement sur <nuxt-link to="/orders/myorders"> page de vos commandes </nuxt-link>.</p>
             <p>Votre commande est disponible au plus tard dans <span class="text-bold">2h</span>. </p>
             <p>Un e-mail vous sera envoyé pour vous avertir quand elle sera prête!</p>
             <p>La boutique ou retirer votre commande est :</p>
             <v-card>
               <v-card-text>
-                {{ shopSelected == null ? "":shopSelected.name}}
+                {{ shopSelected == null ? "":shopSelected.intitule}}
               </v-card-text>
               
             </v-card>
@@ -294,6 +294,7 @@
             <p>Une erreure s'est produite lors de la création de votre commande.</p>
             <p>Si vous avez effectuez un paiement, celui-ci à directement été annulé.
             <p>Veuillez nous excuser pour ce désagrément et merci de rééssayer plus tard. </p>
+            <p>{{validationErrors}}</p>
             <nuxt-link to="/">Retour à l'acceuil du site</nuxt-link>
        
           </v-card-text>
@@ -333,7 +334,7 @@ export default {
       validationErrors:null,
       offline:false,
       newOrder:null,
-      e1: 1,
+      stepper: 1,
       dialogSelectorShop:false,
       payementMethod:null,
       paypal: {
@@ -348,13 +349,13 @@ export default {
     };
   },
   created(){
-    this.$axios.$get('/api/logistic/order').catch(() => this.offline = true)
+    
   },
   mounted() {
-   
+   this.validationErrors = null
   },
   computed: {
-    ...mapGetters('cart', ['getArticlesList', 'getTotalPrice', 'getNumberOfArticles','shopSelected']),
+    ...mapGetters('cart', ['getArticlesList', 'getTotalPrice','getTotalPriceHT', 'getNumberOfArticles','shopSelected']),
 
   getOrderNumber() {
     return this.newOrder == null ? 0 : this.newOrder.n_commande;
@@ -365,9 +366,19 @@ export default {
     }
   },
   methods: {
+    async getUser(){
+      this.$axios.$get(`/api/user/${this.$auth.user.id_client}`).then(res => console.log(res))
+      //Ici il me faut l'adresse de l'utilisateur utilisé par defaut
+      this.stepper = 3
+    },
+    async logginUser(){
+      await this.$auth.loginWith('auth0')
+      this.getUser()
+    },
     async validatePayment()
     {
-      this.$axios.$post('/api/logistic/order',
+      console.log(this.getArticlesList)
+      await this.$axios.$post('/api/logistic/order',
         { 
           payment: 
           {
@@ -375,17 +386,17 @@ export default {
             params:{}           
           },
           date_retrait:"2021-10-03T18:39:04.911Z",
-          id_boutique: this.shopSelected.id,
-          contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
-          id_client:1
-        }).then(result =>{this.newOrder = result.message;})
+          id_boutique: this.shopSelected.id_boutique,
+          contents: this.getArticlesList.map(val=>{return {code_article:val.code_article,quantité:val.quantity}}),
+          id_client:this.$auth.user.id_client
+        }).then(result =>{ this.newOrder = result.response;})
       .catch(err => this.validationErrors = err.response.data.response)
-       this.e1 = 4;
+      this.stepper = 4;
+      this.$store.commit('cart/clearCart')
     },
     async paypal_autorize(e)
     {        
-  
-      this.$axios.$post('/api/logistic/order',
+      await this.$axios.$post('/api/logistic/order',
         { 
           payment: 
           {
@@ -397,17 +408,15 @@ export default {
             }           
           },
           date_retrait:"2021-10-03T18:39:04.911Z",
-          id_boutique: this.shopSelected.id,
-          contents: this.getArticlesList.map(val=>{return {code_article:val.id,quantité:val.quantity}}),
-          id_client:1
-        }).then(result =>{console.log(result);this.newOrder = result.message;})
+          id_boutique: this.shopSelected.id_boutique,
+          contents: this.getArticlesList.map(val=>{return {code_article:val.code_article,quantité:val.quantity}}),
+          id_client:this.$auth.user.id_client
+        }).then(result =>{console.log(result);this.newOrder = result.response;})
       .catch(err => {
         this.validationErrors = err.response
       })
-      this.e1 = 4;
-         
-     console.log(e)
-     
+      this.stepper = 4;
+      this.$store.commit('cart/clearCart')
     },
     orderValidate()
     {
@@ -415,15 +424,11 @@ export default {
     },
     createOrder()
     {
-      this.e1 = 4;
+      this.stepper = 4;
     },
     shopSelectedEvent(val)
     {    
-      this.dialogSelectorShop = false;
-      if(val)
-      {
-        this.$store.commit('cart/setShop',val)
-      }   
+      this.dialogSelectorShop = false;  
     },
     payment_completed_cb(res)
     {

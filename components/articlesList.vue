@@ -8,14 +8,14 @@
     <v-list v-show="getArticlesList.length > 0">
       <v-list-item-group>
         <v-list-item v-for="(article, i) in getArticlesList" :key="i" class="px-0">
-          <v-row no-gutters align="center">
+          <v-row no-gutters align="center" @click="$router.push(`/catalog/${article.code_article}`)">
             <v-col cols="4">
               <v-img max-width="80px" max-height="80px" class="mr-2" v-bind:src="getUrlImageOfArticle(article.image)" />
      
             </v-col>
 
             <v-col cols="6">
-              <v-list-item-title v-text="article.title"/>
+              <v-list-item-title v-text="article.intitule_article"/>
               <v-list-item-subtitle v-text="'Quantité: ' + article.quantity"/>
               <v-list-item-subtitle v-text="'Prix: ' + (article.prix_achat*article.quantity) + '€'"/>
             </v-col>
