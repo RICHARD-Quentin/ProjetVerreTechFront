@@ -3,7 +3,11 @@
    <v-row class="grey lighten-3 pa-2 " align="center"
       justify="center">
         <v-col cols="4">        
+<<<<<<< HEAD
         Point de vente sélectionné : <b>{{getShopName}}</b>
+=======
+        Boutique sélectionné : <b>{{getShopName}}</b>
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
         </v-col>
         <v-col cols="5" class="text-xs-right">
           <!--
@@ -108,6 +112,10 @@ export default {
     },
     selectShop(val){
       this.shopSelection = false;
+<<<<<<< HEAD
+=======
+      this.$store.commit('cart/setShop', val);
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
       this.getArticles()
     },
     async getArticles()

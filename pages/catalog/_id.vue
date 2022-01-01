@@ -10,7 +10,11 @@
                 mdi-arrow-left
             </v-icon>
         </v-btn>
+<<<<<<< HEAD
         Point de vente sélectionné : <b>{{getShopName}}</b>
+=======
+        Boutique sélectionné : <b>{{getShopName}}</b>
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
         </v-col>
     </v-row>
     <v-row class="mt-0">
@@ -39,7 +43,11 @@
                     <v-text-field
                         v-model = "quantitySelector"
                         type="number"
+<<<<<<< HEAD
                         suffix="pièce(s)"
+=======
+                        suffix="pièce"
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
                     ></v-text-field>
                 </v-col>
             </v-row>

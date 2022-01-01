@@ -8,7 +8,11 @@
     <v-list v-show="getArticlesList.length > 0">
       <v-list-item-group>
         <v-list-item v-for="(article, i) in getArticlesList" :key="i" class="px-0">
+<<<<<<< HEAD
           <v-row no-gutters align="center" @click="$router.push(`/catalog/${article.code_article}`)">
+=======
+          <v-row no-gutters align="center">
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
             <v-col cols="4">
               <v-img max-width="80px" max-height="80px" class="mr-2" v-bind:src="getUrlImageOfArticle(article.image)" />
      

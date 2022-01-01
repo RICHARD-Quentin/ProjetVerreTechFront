@@ -28,7 +28,11 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/paypal.js', ssr: false },
+<<<<<<< HEAD
     { src: '~/plugins/chart.js', ssr: false },
+=======
+    '~/plugins/tools.js'
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -40,10 +40,14 @@ export const getters = {
   },
 
   getTotalPrice(state){
+<<<<<<< HEAD
     return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return (Number(acc)+(Number(curr.prix_achat)*curr.quantity))},0).toFixed(2) : 0;
   },
   getTotalPriceHT(state){
     return state.articles.length > 0 ? (state.articles.reduce((acc,curr)=>{return (Number(acc)+(Number(curr.prix_achat)*curr.quantity))},0)*0.8).toFixed(2) : 0;
+=======
+    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return (Number(acc)+Number(curr.prix_achat))},0) : 0;
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
   },
 
   shopSelected(state){
@@ -51,7 +55,11 @@ export const getters = {
   },
 
   getShopName(state) {
+<<<<<<< HEAD
     if(!state.shop)return "Aucun"
+=======
+    if(!state.shop)return "Aucune"
+>>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
     return state.shop.intitule
   },
 }
