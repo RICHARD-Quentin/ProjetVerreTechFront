@@ -1,44 +1,32 @@
 <template>
-  <div>
-    <v-text-field type="number" ></v-text-field>
-    <v-btn @click="increment(article1)">1</v-btn>
-    <v-btn @click="increment(article2)">2</v-btn>
-  </div>
+  <v-container>
+      <h1 class="ma-4">Points de retraits</h1>
+    <SelectShop />
+  
+  </v-container>
 
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  name: "test",
+  name: "shops",
   data() {
     return {
-      article1: {
-        id:1,
-        title: 'ete',
-        price: 40,
-        quantity: 3,
-        img: 'chrono.png'
-      },
-      article2: {
-        id:2,
-        title: 'test2',
-        price: 60,
-        img: 'lock.png',
-        quantity: 3
-      }
+      selection:null
       
     }
   },
-
+  computed:{
+     ...mapGetters('cart', ['shopSelected','getShopName'])
+  },
+  mounted() {
+   
+    
+  },
   methods: {
-    increment(article) {
-      console.log(article)
-      this.$store.commit('cart/addArticle', {article: article})
-    },
-
-    decrement() {
-      this.$store.commit('cart/suppArticle', {articleIndex: 0})
-    }
+   
   }
 }
 </script>
