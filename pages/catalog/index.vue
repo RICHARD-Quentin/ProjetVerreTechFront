@@ -3,7 +3,7 @@
    <v-row class="grey lighten-3 pa-2 " align="center"
       justify="center">
         <v-col cols="4">        
-        Boutique sélectionné : <b>{{getShopName}}</b>
+        Point de vente sélectionné : <b>{{getShopName}}</b>
         </v-col>
         <v-col cols="5" class="text-xs-right">
           <!--
@@ -108,7 +108,6 @@ export default {
     },
     selectShop(val){
       this.shopSelection = false;
-      this.$store.commit('cart/setShop', val);
       this.getArticles()
     },
     async getArticles()

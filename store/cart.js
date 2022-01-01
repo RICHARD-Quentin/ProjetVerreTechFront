@@ -27,12 +27,16 @@ export const mutations = {
 
   setShop(state,value){
     state.shop = value
+  },
+
+  clearCart(state){
+    state.articles = []
   }
 }
 
 export const getters = {
   getNumberOfArticles(state) {
-    return state.articles.length
+    return state.articles.reduce((acc,curr)=>{ return Number(acc) + Number(curr.quantity)},0)
   },
 
   getArticlesList(state) {
@@ -40,7 +44,10 @@ export const getters = {
   },
 
   getTotalPrice(state){
-    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return (Number(acc)+Number(curr.prix_achat))},0) : 0;
+    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return (Number(acc)+(Number(curr.prix_achat)*curr.quantity))},0).toFixed(2) : 0;
+  },
+  getTotalPriceHT(state){
+    return state.articles.length > 0 ? (state.articles.reduce((acc,curr)=>{return (Number(acc)+(Number(curr.prix_achat)*curr.quantity))},0)*0.8).toFixed(2) : 0;
   },
 
   shopSelected(state){
@@ -48,7 +55,7 @@ export const getters = {
   },
 
   getShopName(state) {
-    if(!state.shop)return "Aucune"
+    if(!state.shop)return "Aucun"
     return state.shop.intitule
   }
 }
