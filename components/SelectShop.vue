@@ -20,7 +20,6 @@
             <v-col cols="6">
               <v-list-item-title v-text="shop.intitule"/>
               <v-list-item-subtitle v-text="'Adresse: ' + shop.adresse_magasin"/>
-<<<<<<< HEAD
             </v-col>          
           </v-row>
         </v-list-item>
@@ -32,8 +31,6 @@
             <v-col cols="6">
               <v-list-item-title>Aucun point de vente</v-list-item-title>
               <v-list-item-subtitle >Affiche tout les articles.</v-list-item-subtitle>
-=======
->>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
             </v-col>          
           </v-row>
         </v-list-item>
@@ -65,11 +62,7 @@
           <v-btn
             color="blue darken-1"
             text
-<<<<<<< HEAD
             @click="validateShop(null)"
-=======
-            @click="$emit('Selected',null)"
->>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
           >
             Annuler
           </v-btn>
@@ -77,11 +70,7 @@
             color="blue darken-1"
             :disabled="!selection"
             text
-<<<<<<< HEAD
             @click="validateShop(selection)"
-=======
-            @click="$emit('Selected',selection)"
->>>>>>> 1f220cc03078a056457cc21ff4c52b694f2e49fb
           >
             Valider la selection
           </v-btn>

@@ -6,7 +6,7 @@
             <v-tab v-for="(item,idx) in stateOrder" :key="idx">{{item}}</v-tab>          
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="(state,index) in stateOrder" :key="index">  
-                    <OrderCard :order="ordersFiltered"  v-for="(ordersFiltered,orderID) in getFilteredListOrder(index)" :key="orderID"/>
+                    <OrderCard :order="ordersFiltered"  v-for="(ordersFiltered,orderID) in getFilteredListOrder(index)" :key="orderID"  />
                 </v-tab-item>                          
             </v-tabs-items>
             
@@ -38,10 +38,8 @@ export default {
     },
     mounted() {
         
-        this.$axios.$get('/api/logistic/order/client/1').then(result => 
+        this.$axios.$get(`/api/logistic/order/client/${this.$auth.user.id_client}`).then(result => 
         {
-            console.log(result.response)
-
             if(result.success == true){
                 this.orders = result.response
                 
