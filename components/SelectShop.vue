@@ -1,7 +1,13 @@
 <template>
 <v-card>
-  <v-card-title>Sélectionnez un point de retrait</v-card-title>
+  <v-card-title>Liste des points de vente</v-card-title>
   <v-card-text>
+      <v-alert
+      border="top"
+      color="red lighten-2"
+      dark>
+     Attention, lorsque vous sélectionnez un point de vente, vous réinitialisez votre panier achat !
+    </v-alert>
   <v-row>
     <v-col>
       <v-list v-model="selection">
@@ -12,8 +18,19 @@
               <v-icon>mdi-city</v-icon>
             </v-col>
             <v-col cols="6">
-              <v-list-item-title v-text="shop.name"/>
-              <v-list-item-subtitle v-text="'Adresse: ' + shop.address"/>
+              <v-list-item-title v-text="shop.intitule"/>
+              <v-list-item-subtitle v-text="'Adresse: ' + shop.adresse_magasin"/>
+            </v-col>          
+          </v-row>
+        </v-list-item>
+        <v-list-item class="px-0 orange lighten-5 " @click="selectShop(-1)">
+           <v-row no-gutters align="center">
+            <v-col cols="4">
+              <v-icon>mdi-city</v-icon>
+            </v-col>
+            <v-col cols="6">
+              <v-list-item-title>Aucun point de vente</v-list-item-title>
+              <v-list-item-subtitle >Affiche tout les articles.</v-list-item-subtitle>
             </v-col>          
           </v-row>
         </v-list-item>
@@ -27,9 +44,11 @@
         <l-tile-layer
           url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
         ></l-tile-layer>
-        <div v-for="shop in shops" :key="shop.id">
-          {{shop.id}}
+        <div v-for="shop in shops" :key="shop.id_boutique">
+          {{shop.id_boutique}}
+          <div v-if="shop.lat != null && shop.lng != null" >
           <l-marker :lat-lng="[shop.lat, shop.lng]" ></l-marker>
+          </div>
         </div>      
       </l-map>
     </client-only>
@@ -43,7 +62,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="$emit('shopSelected',null)"
+            @click="validateShop(null)"
           >
             Annuler
           </v-btn>
@@ -51,9 +70,9 @@
             color="blue darken-1"
             :disabled="!selection"
             text
-            @click="$emit('shopSelected',selection)"
+            @click="validateShop(selection)"
           >
-            Sélectionner ce point de retrait
+            Valider la selection
           </v-btn>
   </v-card-actions>
 </v-card>
@@ -68,6 +87,14 @@ export default {
   props:{
     showTheMap:null
   },
+  async fetch()
+  {
+     const result = await this.$axios.get(`/api/catalog/shop`).catch(err => console.log(err))
+      if(result.data.success == true)
+      {
+        this.shops = result.data.response
+      }
+  },
   data() {
     return {
       center:{
@@ -75,41 +102,50 @@ export default {
         lng:3.3989245
       },
       selection :null,
-      shops:
-       [
-        {lat:46.9480517,lng:2.452533,name: "Magasin données brutes à changer",id:1,address:"6A rue des vignes 67320 KIRRBERG"},
-        {lat:47.9480517,lng:2.852533,name: "Magasin VerreTech de Nancy",id:2},
-        {lat:47.9980517,lng:2.483533,name: "Magasin VerreTech de Bouzonville",id:3}
-      ]
+      shops: []
     };
   },
- 
-  mounted(){
-    //TODO:
-    //Requete pour récupperer les magasins... variable ---> shops
-    
+  computed:{
+    ...mapGetters('cart', ['shopSelected'])
+  },
+  mounted(){   
     //La carte s'affiche pas à cause du v-dialog et le redimensionnement.
     this.$nextTick(() => { 
       let map = this.$refs.map.mapObject;
       setTimeout(function(){ map.invalidateSize()}, 200);
     }); 
-    
+    /*
     if(this.shopSelected)
-      {
+    {
+        console.log(shopSelected)
       this.center.lat = shopSelected.lat;
       this.center.lng = shopSelected.lng;
-      }
-  },
-  computed:{
-    ...mapGetters('cart', ['shopSelected'])
+    }
+    */
+      
   },
   methods:{
     selectShop(shop)
     {
       this.selection = shop
-      this.center.lat = shop.lat;
-      this.center.lng = shop.lng;
+      if(shop != -1){
+        this.center.lat = shop.lat;
+        this.center.lng = shop.lng;
+      }     
     },
+    validateShop(val){
+      console.log(val)
+      if(val == -1){
+         this.$store.commit('cart/clearCart')
+         this.$store.commit('cart/setShop', null);
+         
+      }
+      else if(val != null){
+        this.$store.commit('cart/clearCart')
+        this.$store.commit('cart/setShop', val);
+      }
+      this.$emit('Selected',val)
+    }
     
   }
  

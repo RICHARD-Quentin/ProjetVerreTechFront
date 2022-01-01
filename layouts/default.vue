@@ -67,7 +67,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Points de retraits',
-          to: '/retreat'
+          to: '/shops'
         },
       ],
       footerItems: [
