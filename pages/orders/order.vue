@@ -141,27 +141,11 @@
          <h3 class="d-flex justify-center align-center ma-5">Facturation</h3>
          <v-row class="ma-2">
            <v-col>
-        <v-card class="mb-12" height="100%">
+        <v-card class="mb-12" height="100%" :disabled="payementMethod == 'Paiement sur place'">
           <v-card-title>Adresse de facturation</v-card-title>
-          <v-card-text>
-            <v-row > 
-              <v-col>
-                <v-text-field label="Prénom" />
-              </v-col>
-              <v-col>
-                <v-text-field label="Nom" />
-              </v-col>
-            </v-row>
-            Adresse :
-            <v-row>
-              <v-col>
-                <v-text-field label="Adresse" />              
-              </v-col>
-              <v-col>
-                <v-text-field label="Code postale" />
-              </v-col>
-            </v-row>          
-            <v-text-field label="Ville" />
+          <v-card-text>            
+            <v-select label="Carnet d'adresses" :items="getAddressList" v-model="addressSelected"></v-select>          
+            <AdressField :adressData="addressSelected" />       
           </v-card-text>
           </v-card>
           </v-col>
@@ -331,6 +315,8 @@ export default {
   },
   data() {
     return {
+      addresses: [],
+      addressSelected: null,
       validationErrors:null,
       offline:false,
       newOrder:null,
@@ -355,6 +341,9 @@ export default {
    this.validationErrors = null
   },
   computed: {
+    getAddressList(){
+      return this.addresses.map(res => {return {text:res.adresse,value:res} })
+    },
     ...mapGetters('cart', ['getArticlesList', 'getTotalPrice','getTotalPriceHT', 'getNumberOfArticles','shopSelected']),
 
   getOrderNumber() {
@@ -367,8 +356,15 @@ export default {
   },
   methods: {
     async getUser(){
-      this.$axios.$get(`/api/user/${this.$auth.user.id_client}`).then(res => console.log(res))
-      //Ici il me faut l'adresse de l'utilisateur utilisé par defaut
+      try{
+            const client = await this.$axios.$get('/api/user/auth/' + this.$auth.user.sub)
+      if(client.adresses.length > 0){
+        console.log(client.adresses[0])
+        this.addresses = client.adresses
+      }
+      }catch(err){
+
+      }
       this.stepper = 3
     },
     async logginUser(){
@@ -377,9 +373,9 @@ export default {
     },
     async validatePayment()
     {
-      console.log(this.getArticlesList)
       await this.$axios.$post('/api/logistic/order',
         { 
+          invoice: this.addressSelected,
           payment: 
           {
             method:"None",
@@ -398,6 +394,7 @@ export default {
     {        
       await this.$axios.$post('/api/logistic/order',
         { 
+          invoice: this.addressSelected,
           payment: 
           {
             method:"Paypal",
