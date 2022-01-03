@@ -81,6 +81,7 @@
                     </v-row>
                     <v-row>
 
+<<<<<<< HEAD
                         <v-col cols="12">
                             <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" 
                             v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary" 
@@ -90,6 +91,12 @@
                     
                 </v-tab-item>
                 </v-tabs-items>
+=======
+                <!-- Select month/day/week -->
+                <v-select v-model="stats_CurrentOptionDate" :items="this.stats_ArrayOptionsDate"  label="Période" class="px-6"></v-select>
+                <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" v-model="stats_NumberOfPeriods" label="Nombre de période (2-20)" outlined  dense  color="primary" 
+                max="20" min="2"> </v-text-field>
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 <!-- BUTTON -->
                 <v-btn class="mx-auto d-block" color="primary" @click="updateStats()" > Mettre à jour </v-btn>
 
@@ -151,6 +158,7 @@ export default {
             lastorders: [],
             orders: [],
 
+<<<<<<< HEAD
             tab: 0,
             
             menudeb: false,
@@ -158,6 +166,8 @@ export default {
             datedeb: null,
             datefin: null,
 
+=======
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
             stats_CurrentOptionDate : "Semaine",
             stats_ArrayOptionsDate : [ "Semaine","Mois", "Jour"],
             stats_NumberOfPeriods : 10,
@@ -232,6 +242,7 @@ export default {
 
     methods: {
 
+<<<<<<< HEAD
         parseDate (date) {
             if (!date) return null;
 
@@ -244,6 +255,13 @@ export default {
             if(value > 10) {
                 document.getElementById('inputdate').value = 10;
                 this.stats_NumberOfPeriods = 10;
+=======
+        updateInput() {
+            let value = document.getElementById('inputdate').value;
+            if(value > 20) {
+                document.getElementById('inputdate').value = 20;
+                this.stats_NumberOfPeriods = 20;
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
             } else if(value < 2) {
                 document.getElementById('inputdate').value = 2;
                 this.stats_NumberOfPeriods = 2;
@@ -251,6 +269,7 @@ export default {
 
         },
 
+<<<<<<< HEAD
         
 
         updateStats() {
@@ -277,6 +296,11 @@ export default {
                     alert("Veuillez choisir une date de début et une date de fin correctes");
                 }
             }
+=======
+        updateStats() {
+            this.generateStatistics_for_globale();
+            this.generateStatistics_for_command(this.orders);
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
         },
 
         generateStatistics_for_command(orders)
@@ -310,6 +334,7 @@ export default {
         calculateDate(date,i)
         {
             let today = new Date();
+<<<<<<< HEAD
             if(this.stats_CurrentOptionDate == "Semaine")
             {
                 date = new Date(today.getTime() - (i*7*24*60*60*1000));
@@ -322,6 +347,27 @@ export default {
             }
             return date;
         }, 
+=======
+            let datarray = [];
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
+            {
+                // Décalé d'une semaine par rapport à aujourd'hui
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
+
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
         fillChartArrayDate(date,array)
         {
@@ -429,6 +475,7 @@ export default {
                 let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
                 for(let i=0; i<numberofperiod; i++)
                 {
+<<<<<<< HEAD
                     let nborders = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
@@ -454,6 +501,51 @@ export default {
                 });
                 chart.update();
                 this.chart_orders = chart;
+=======
+                    let orderdate = new Date(orders[j].date_commande);
+                    // if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                    // {
+                    //     nborders++;
+                    // }
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
+                    }
+
+
+                }
+
+                datarray.push(nborders);
+            }
+            let ctx = document.getElementById("canvas_orders").getContext('2d');
+            let chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: arraydate.reverse(),
+                    datasets: [{
+                        label: 'Nombre de commandes',
+                        data: datarray.reverse(),
+                        borderColor: 'rgb(100,100,150)',
+                    }]
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
             
             
@@ -463,6 +555,7 @@ export default {
         constructChart_orderssum(orders)
         {
             // Calcul pour les 10 dernières semaines
+<<<<<<< HEAD
             let arraydate = []; let datarray = [];
 
             if(this.tab == 0) // Tri par unité
@@ -500,6 +593,28 @@ export default {
                                 montant += parseInt(orders[j].montant);
                             }
                         }
+=======
+            let arraydate = [];
+            let today = new Date();
+            let datarray = [];
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
+            {
+                // Décalé d'une semaine par rapport à aujourd'hui
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
                     }
                     datarray.push(montant);
@@ -528,6 +643,7 @@ export default {
 
                 for(let i=0; i<numberofperiod; i++)
                 {
+<<<<<<< HEAD
                     let montant = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
@@ -536,12 +652,36 @@ export default {
                     {
                         let orderdate = new Date(orders[j].date_commande);
                         if(orderdate >= borninf && orderdate < bornesup)
+=======
+                    let orderdate = new Date(orders[j].date_commande);
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                         {
                             montant += parseInt(orders[j].montant);
                         }
                     }
 
+<<<<<<< HEAD
                     datarray.push(montant);
+=======
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
 
                 let ctx = document.getElementById("canvas_orderssum").getContext('2d');
@@ -561,12 +701,37 @@ export default {
         constructChart_orderaverage(orders)
         {
             // Calcul pour les 10 dernières semaines
+<<<<<<< HEAD
             let arraydate = []; let datarray = [];
+=======
+            let arraydate = [];
+            let today = new Date();
+            let datarray = [];
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
+            {
+                // Décalé d'une semaine par rapport à aujourd'hui
+                // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
             if(this.tab == 0)
             {
                 for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
+<<<<<<< HEAD
                     let date = null;
                     date = this.calculateDate(date,i);
                     arraydate = this.fillChartArrayDate(date,arraydate);
@@ -605,6 +770,35 @@ export default {
                     }
 
                     datarray.push(montant/nborders);
+=======
+                    let orderdate = new Date(orders[j].date_commande);
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
+                    }
+
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
                 let ctx = document.getElementById("canvas_orderaverage").getContext('2d');
 
@@ -613,6 +807,7 @@ export default {
                     this.chart_orderaverage.destroy();
                 }
 
+<<<<<<< HEAD
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -643,15 +838,69 @@ export default {
                     let nborders = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
+=======
+        constructChart_accounts()
+        {
+            this.$axios.get('/api/user')
+            .then(response => {
+                let arraydate = [];
+                let today = new Date();
+                let datarray = [];
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
+                {
+                    // Décalé d'une semaine par rapport à aujourd'hui
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
+
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
                     for(let j=0; j<orders.length; j++)
                     {
+<<<<<<< HEAD
                         let orderdate = new Date(orders[j].date_commande);
                         if(orderdate >= borninf && orderdate < bornesup)
                         {
                             montant += parseInt(orders[j].montant);
                             nborders++;
+=======
+                        let accountdate = new Date(response.data.data[j].d_crea_compte);
+                        if(this.stats_CurrentOptionDate == "Semaine")
+                        {
+                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Mois")
+                        {
+                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Jour")
+                        {
+                            let borne = new Date(date.getTime() + (24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                         }
+
                     }
 
                     datarray.push(montant/nborders);
@@ -816,6 +1065,7 @@ export default {
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
 
+<<<<<<< HEAD
 
                         // Nombre total de comptes depuis le début
                         let nbaccounts = 0;
@@ -860,6 +1110,28 @@ export default {
                     arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                     // on calcule le temps entre les dates pour déterminer les bornes
                     let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
+=======
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
+                {
+                    // Décalé d'une semaine par rapport à aujourd'hui
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
+
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
                     for(let i=0; i<numberofperiod; i++)
                     {
@@ -912,6 +1184,7 @@ export default {
         {
             this.$axios.get('/api/user')
             .then(response => {
+<<<<<<< HEAD
                 let arraydate = []; let datarray = [];
                 
                 if(this.tab == 0)
@@ -965,6 +1238,68 @@ export default {
                         {
                             datarray.push(0);
                         }
+=======
+                let arraydate = [];
+                let today = new Date();
+                let datarray = [];
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
+                {
+                    // Décalé d'une semaine par rapport à aujourd'hui
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
+
+                    let agesum = 0;
+                    let nbaccounts = 0;
+                    for(let j=0; j<response.data.data.length; j++)
+                    {
+                        let accountdate = new Date(response.data.data[j].d_crea_compte);
+                        let datenaissance = new Date(response.data.data[j].date_naissance);
+                        let age = today.getFullYear() - datenaissance.getFullYear();
+                        // if(accountdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                        // {
+                        //     agesum += age;
+                        //     nbaccounts++;
+                        // }
+                        if(this.stats_CurrentOptionDate == "Semaine")
+                        {
+                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Mois")
+                        {
+                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Jour")
+                        {
+                            let borne = new Date(date.getTime() + (24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
+                        }
+>>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
 
                     }
                     let ctx = document.getElementById("canvas_customeraverageage").getContext('2d');
