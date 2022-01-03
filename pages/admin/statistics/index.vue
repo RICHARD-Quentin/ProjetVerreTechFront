@@ -7,6 +7,12 @@
                 
                 <div id="container_ordersumchart" ><canvas class="chart d-none" id="ordersumchart" ></canvas>  </div>
 
+                <!-- Select month/day/week -->
+                <v-select v-model="stats_CurrentOptionDate" :items="this.stats_ArrayOptionsDate"  label="Période" class="px-6"></v-select>
+                <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" v-model="stats_NumberOfPeriods" label="Nombre de période (2-20)" outlined  dense  color="primary" 
+                max="20" min="2"> </v-text-field>
+                <!-- BUTTON -->
+                <v-btn class="mx-auto d-block" color="primary" @click="updateStats()" > Mettre à jour </v-btn>
 
                 <v-row>
                     <v-col cols="12" md="6">
@@ -64,6 +70,11 @@ export default {
         return {
             menu_item_selected: "statistics",
             lastorders: [],
+            orders: [],
+
+            stats_CurrentOptionDate : "Semaine",
+            stats_ArrayOptionsDate : [ "Semaine","Mois", "Jour"],
+            stats_NumberOfPeriods : 10,
 
             serviceonline : false,
             loading: true,
@@ -76,7 +87,9 @@ export default {
 
         }
     },
-            
+
+    watch: {
+    },
 
     created()
     {
@@ -88,6 +101,7 @@ export default {
             this.lastorders = response.data.response;
             this.lastorders.sort(function(a, b){ return new Date(b.date_retrait) - new Date(a.date_retrait);});
             this.lastorders = this.lastorders.slice(0,10);
+            this.orders = response.data.response;
             
         })
         .catch(error => {
@@ -125,6 +139,23 @@ export default {
 
     methods: {
 
+        updateInput() {
+            let value = document.getElementById('inputdate').value;
+            if(value > 20) {
+                document.getElementById('inputdate').value = 20;
+                this.stats_NumberOfPeriods = 20;
+            } else if(value < 2) {
+                document.getElementById('inputdate').value = 2;
+                this.stats_NumberOfPeriods = 2;
+            }
+
+        },
+
+        updateStats() {
+            this.generateStatistics_for_globale();
+            this.generateStatistics_for_command(this.orders);
+        },
+
         generateStatistics_for_command(orders)
         {
             try
@@ -159,20 +190,57 @@ export default {
             let arraydate = [];
             let today = new Date();
             let datarray = [];
-            for(let i=0; i<10; i++)
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
             {
                 // Décalé d'une semaine par rapport à aujourd'hui
-                let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
+
 
                 let nborders = 0;
                 for(let j=0; j<orders.length; j++)
                 {
                     let orderdate = new Date(orders[j].date_commande);
-                    if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                    // if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                    // {
+                    //     nborders++;
+                    // }
+                    if(this.stats_CurrentOptionDate == "Semaine")
                     {
-                        nborders++;
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            nborders++;
+                        }
                     }
+
+
                 }
 
                 datarray.push(nborders);
@@ -183,7 +251,7 @@ export default {
                 data: {
                     labels: arraydate.reverse(),
                     datasets: [{
-                        label: 'Nombre de commandes hebdomadaires',
+                        label: 'Nombre de commandes',
                         data: datarray.reverse(),
                         borderColor: 'rgb(100,100,150)',
                     }]
@@ -199,20 +267,51 @@ export default {
             let arraydate = [];
             let today = new Date();
             let datarray = [];
-            for(let i=0; i<10; i++)
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
             {
                 // Décalé d'une semaine par rapport à aujourd'hui
-                let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
 
                 let montant = 0;
                 for(let j=0; j<orders.length; j++)
                 {
                     let orderdate = new Date(orders[j].date_commande);
-                    if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                    if(this.stats_CurrentOptionDate == "Semaine")
                     {
-                        montant += parseInt(orders[j].montant);
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                        }
                     }
+
                 }
                 datarray.push(montant);
             }
@@ -237,22 +336,56 @@ export default {
             let arraydate = [];
             let today = new Date();
             let datarray = [];
-            for(let i=0; i<10; i++)
+            for(let i=0; i<this.stats_NumberOfPeriods; i++)
             {
                 // Décalé d'une semaine par rapport à aujourd'hui
-                let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                let date = null
+                if(this.stats_CurrentOptionDate == "Semaine")
+                {
+                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                }else if(this.stats_CurrentOptionDate == "Mois")
+                {
+                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                }else if(this.stats_CurrentOptionDate == "Jour")
+                {
+                    date = new Date(today.getTime() - (i*24*60*60*1000));
+                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                }
 
                 let montant = 0;
                 let nborders = 0;
                 for(let j=0; j<orders.length; j++)
                 {
                     let orderdate = new Date(orders[j].date_commande);
-                    if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                    if(this.stats_CurrentOptionDate == "Semaine")
                     {
-                        montant += parseInt(orders[j].montant);
-                        nborders++;
+                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        let borne = new Date(date.getTime() + (24*60*60*1000));
+                        if(orderdate >= date && orderdate < borne)
+                        {
+                            montant += parseInt(orders[j].montant);
+                            nborders++;
+                        }
                     }
+
                 }
 
                 datarray.push(montant/nborders);
@@ -279,20 +412,53 @@ export default {
                 let arraydate = [];
                 let today = new Date();
                 let datarray = [];
-                for(let i=0; i<10; i++)
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
                     // Décalé d'une semaine par rapport à aujourd'hui
-                    let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
+
 
                     let nbaccounts = 0;
                     for(let j=0; j<response.data.data.length; j++)
                     {
                         let accountdate = new Date(response.data.data[j].d_crea_compte);
-                        if(accountdate >= date && accountdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                        if(this.stats_CurrentOptionDate == "Semaine")
                         {
-                            nbaccounts++;
+                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Mois")
+                        {
+                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Jour")
+                        {
+                            let borne = new Date(date.getTime() + (24*60*60*1000));
+                            if(accountdate >= date && accountdate < borne)
+                            {
+                                nbaccounts++;
+                            }
                         }
+
                     }
                     datarray.push(nbaccounts);
                 }
@@ -324,11 +490,26 @@ export default {
                 let today = new Date();
                 let datarray = [];
 
-                for(let i=0; i<10; i++)
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
                     // Décalé d'une semaine par rapport à aujourd'hui
-                    let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
+
 
                     // Nombre total de comptes depuis le début
                     let nbaccounts = 0;
@@ -369,11 +550,25 @@ export default {
                 let arraydate = [];
                 let today = new Date();
                 let datarray = [];
-                for(let i=0; i<10; i++)
+                for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
                     // Décalé d'une semaine par rapport à aujourd'hui
-                    let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    let date = null
+                    if(this.stats_CurrentOptionDate == "Semaine")
+                    {
+                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
+                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
+                    }else if(this.stats_CurrentOptionDate == "Mois")
+                    {
+                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
+                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
+                    }else if(this.stats_CurrentOptionDate == "Jour")
+                    {
+                        date = new Date(today.getTime() - (i*24*60*60*1000));
+                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
+                    }
 
                     let agesum = 0;
                     let nbaccounts = 0;
@@ -382,11 +577,37 @@ export default {
                         let accountdate = new Date(response.data.data[j].d_crea_compte);
                         let datenaissance = new Date(response.data.data[j].date_naissance);
                         let age = today.getFullYear() - datenaissance.getFullYear();
-                        if(accountdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                        // if(accountdate < new Date(date.getTime() + (7*24*60*60*1000)))
+                        // {
+                        //     agesum += age;
+                        //     nbaccounts++;
+                        // }
+                        if(this.stats_CurrentOptionDate == "Semaine")
                         {
-                            agesum += age;
-                            nbaccounts++;
+                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Mois")
+                        {
+                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
+                        }else if(this.stats_CurrentOptionDate == "Jour")
+                        {
+                            let borne = new Date(date.getTime() + (24*60*60*1000));
+                            if(accountdate < date && accountdate < borne)
+                            {
+                                agesum += age;
+                                nbaccounts++;
+                            }
                         }
+
                     }
                     if(nbaccounts > 0)
                     {
