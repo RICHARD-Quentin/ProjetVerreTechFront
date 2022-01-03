@@ -15,10 +15,14 @@ export const mutations = {
 
   addArticle(state, {article}) {
     state.articles.push(article)
+    // const id_client = this.$auth.user.id_client
+    // this.$axios.post('/api/catalog/cart', {id_client, cart: state.articles})
   },
 
   suppArticle(state, {articleIndex}) {
     state.articles.splice(articleIndex, 1)
+    // const id_client = this.$auth.user.id_client
+    // this.$axios.post('/api/catalog/cart', {id_client, cart: state.articles})
   },
 
   setShop(state,value){
