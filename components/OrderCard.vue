@@ -20,15 +20,15 @@
         </v-row>
 
         <v-container v-if="display==true">
-        <v-row>
+        <v-row >
             <v-col v-for ="(content,idx) in order.contenus" cols="3" :key="idx">
                
             <v-sheet              
                 color="white"
                 elevation="2"           
-                >
-                <h3>{{content.article.intitule_article}}</h3>
+                >              
                 <v-img
+                   
                     v-if="content.article.image == undefined"
                     lazy-src="https://picsum.photos/id/11/10/6"
                     max-height="150"
@@ -36,7 +36,8 @@
                     src="https://picsum.photos/id/11/500/300"
                 ></v-img>
                 <v-img v-else v-bind:src="'data:image/jpeg;base64,'+content.article.image" />
-                <div class="flex flex-column">
+                <div class="flex flex-column ma-2">
+                <h3>{{content.article.intitule_article}}</h3>
                 <div>Quantité : {{content.quantite}}</div>
                 <div>Prix unitaire : {{content.article.prix_achat}} €</div>
                 <div>Prix total : {{content.article.prix_achat*content.quantite}} €</div>
