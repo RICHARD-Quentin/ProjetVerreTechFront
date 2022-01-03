@@ -62,7 +62,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     'vuetify-dialog/nuxt',
-    'nuxt-leaflet'
+    'nuxt-leaflet',
+    ['cookie-universal-nuxt', { alias: 'cookiz' }]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
