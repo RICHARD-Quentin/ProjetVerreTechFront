@@ -3,7 +3,7 @@
       <v-col cols="12">
         <v-text-field label="Adresse" v-model="adresse.adresse" @change="$emit('input', adresse)"></v-text-field>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col >
         <v-autocomplete label="Ville - Code postal"
           :items="villeEntries" item-text="label" item-value="id_ville" v-model="adresse.id_ville"
           :search-input.sync="villeSearch"
@@ -13,13 +13,10 @@
         >
         </v-autocomplete>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col  >
         <v-select label="Pays" v-model="adresse.id_pays"
         :items="paysEntries" item-text="pays" item-value="id_pays"
         disabled></v-select>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-checkbox label="Cette adresse est elle une adresse de facturation ?" v-model="adresse.is_facturation"></v-checkbox>
       </v-col>
   </v-row>
 </template>

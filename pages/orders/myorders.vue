@@ -4,10 +4,10 @@
         <h2 class="d-flex ma-5">Mes commandes</h2>
         <v-tabs  v-model="tab" v-if="getOrders">
             <v-tab v-for="(item,idx) in stateOrder" :key="idx">{{item}}</v-tab>          
-            <v-tabs-items v-model="tab">
-                <v-tab-item v-for="(state,index) in stateOrder" :key="index">  
+            <v-tabs-items v-model="tab" >           
+                <v-tab-item v-for="(state,index) in stateOrder" :key="index" >  
                     <OrderCard :order="ordersFiltered"  v-for="(ordersFiltered,orderID) in getFilteredListOrder(index)" :key="orderID"  />
-                </v-tab-item>                          
+                </v-tab-item>                      
             </v-tabs-items>
             
         </v-tabs>
