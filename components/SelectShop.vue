@@ -20,7 +20,7 @@
             <v-col cols="6">
               <v-list-item-title v-text="shop.intitule"/>
               <v-list-item-subtitle v-text="'Adresse: ' + shop.adresse_magasin"/>
-            </v-col>          
+            </v-col>
           </v-row>
         </v-list-item>
         <v-list-item class="px-0 orange lighten-5 " @click="selectShop(-1)">
@@ -31,7 +31,7 @@
             <v-col cols="6">
               <v-list-item-title>Aucun point de vente</v-list-item-title>
               <v-list-item-subtitle >Affiche tout les articles.</v-list-item-subtitle>
-            </v-col>          
+            </v-col>
           </v-row>
         </v-list-item>
       </v-list-item-group>
@@ -49,12 +49,12 @@
           <div v-if="shop.lat != null && shop.lng != null" >
           <l-marker :lat-lng="[shop.lat, shop.lng]" ></l-marker>
           </div>
-        </div>      
+        </div>
       </l-map>
     </client-only>
     </div>
     </v-col>
-  
+
   </v-row>
   </v-card-text>
   <v-card-actions>
@@ -108,12 +108,12 @@ export default {
   computed:{
     ...mapGetters('cart', ['shopSelected'])
   },
-  mounted(){   
+  mounted(){
     //La carte s'affiche pas à cause du v-dialog et le redimensionnement.
-    this.$nextTick(() => { 
+    this.$nextTick(() => {
       let map = this.$refs.map.mapObject;
       setTimeout(function(){ map.invalidateSize()}, 200);
-    }); 
+    });
     /*
     if(this.shopSelected)
     {
@@ -122,7 +122,7 @@ export default {
       this.center.lng = shopSelected.lng;
     }
     */
-      
+
   },
   methods:{
     selectShop(shop)
@@ -131,23 +131,23 @@ export default {
       if(shop != -1){
         this.center.lat = shop.lat;
         this.center.lng = shop.lng;
-      }     
+      }
     },
     validateShop(val){
       console.log(val)
       if(val == -1){
-         this.$store.commit('cart/clearCart')
+         this.$store.dispatch('cart/clearCart')
          this.$store.commit('cart/setShop', null);
-         
+
       }
       else if(val != null){
-        this.$store.commit('cart/clearCart')
+        this.$store.dispatch('cart/clearCart')
         this.$store.commit('cart/setShop', val);
       }
       this.$emit('Selected',val)
     }
-    
+
   }
- 
+
 }
 </script>

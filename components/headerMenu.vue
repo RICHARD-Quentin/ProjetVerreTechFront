@@ -119,7 +119,7 @@ export default {
     getUrlOrderID(){
       return "/orders/myorders"
     }
-  }
+  },
 }
 </script>
 

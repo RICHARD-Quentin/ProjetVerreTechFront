@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        
-    <v-row class="grey lighten-3 pa-2 " align="center" 
+
+    <v-row class="grey lighten-3 pa-2 " align="center"
       justify="center">
         <v-col>
         <v-btn class="mr-4"
@@ -43,7 +43,7 @@
                     ></v-text-field>
                 </v-col>
             </v-row>
-  
+
             <v-btn color="yellow" x-large disabled v-if="article.commandable==false">
                 Article indisponible
             </v-btn>
@@ -53,21 +53,21 @@
                     Sélectionnez un point de vente
                 </v-btn>
             </div>
-            
+
             <div v-else-if="shopSelected && quantity == null">
                 <p class="body-1" >Cet article n'est pas disponible dans ce point de vente.</p>
                 <v-btn color="yellow" x-large  @click="shopSelection = true">
                     Sélectionnez un autre point de vente
                 </v-btn>
-            </div>     
-               
+            </div>
+
             <v-btn color="yellow" x-large  @click="addToCart()" v-else-if="quantity && shopSelected">
-                
+
                 Ajouter au panier
             </v-btn>
-            <p v-if="messageError" class="body-1 red--text pa-2">{{messageError}}</p> 
+            <p v-if="messageError" class="body-1 red--text pa-2">{{messageError}}</p>
             <p v-if="quantity" class="body-1 my-4" >Quantité disponible : {{quantity}} pièce(s).</p>
-               
+
         </v-col>
         <v-divider inset class="mt-6"></v-divider>
     </v-row>
@@ -76,16 +76,16 @@
             <h3>Caractéristiques :</h3>
             <v-list>
                 <v-list-item>
-                    Hauteur : {{article.dimension_1}}    
+                    Hauteur : {{article.dimension_1}}
                 </v-list-item>
                  <v-list-item>
                     Largeur :{{article.dimension_2}}
                 </v-list-item>
                  <v-list-item>
-                    Profondeur : {{article.dimension_3}} 
+                    Profondeur : {{article.dimension_3}}
                 </v-list-item>
                 <v-list-item>
-                    Couleur : {{article.couleur}} 
+                    Couleur : {{article.couleur}}
                 </v-list-item>
             </v-list>
         </v-col>
@@ -107,7 +107,7 @@
                         </v-list-item-subtitle>
                         {{commentaire.commentaire}}
                     </v-list-item-content>
-                    
+
                 </v-list-item>
             </v-list>
             <p class="ma-2" v-if="article.commentaires == 0">Pas encore de commentaires sur cet article. </p>
@@ -135,7 +135,7 @@ export default {
         }
     },
     async fetch()
-    {  
+    {
         this.getData()
 
     },
@@ -154,24 +154,24 @@ export default {
             let params = {}
 
             if(this.shopSelected) params["id_boutique"] = this.shopSelected.id_boutique
-       
-            const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`,{params:params}).catch(err => this.$nuxt.error({ statusCode: 404, message: "Impossible de joindre le service catalogue." }))          
+
+            const result = await this.$axios.get(`/api/catalog/article/${this.$route.params.id}`,{params:params}).catch(err => this.$nuxt.error({ statusCode: 404, message: "Impossible de joindre le service catalogue." }))
             if(result.data.success == true)
-            {   
+            {
                 if(this.shopSelected){
                     this.article = result.data.response.article
                     this.quantity = result.data.response.quantité
                 }else{
                     this.article= result.data.response
-                }                  
-            }                                        
+                }
+            }
         },
         getUrlImageOfArticle(base64)
-        {   
+        {
             return base64 != undefined ? "data:image/jpeg;base64,"+base64 : "/image_not_found.png"
         },
-        addToCart() 
-        {   
+        addToCart()
+        {
             this.messageError = null
             const number = parseInt(this.quantitySelector);
             if(number != this.quantitySelector && number < 0){
@@ -184,18 +184,18 @@ export default {
                 this.messageError = "Quantité invalide !"
             }
             else
-            {        
+            {
                 this.article.quantity = this.quantitySelector
-                this.$store.commit('cart/addArticle',  this.article);
+                this.$store.dispatch('cart/addArticle',  this.article);
                 this.quantity -= this.article.quantity
             }
         },
         selectShop(val)
         {
             this.shopSelection = false
-            this.$store.commit('cart/setShop', val);
+            this.$store.dispatch('cart/setShop', val);
             this.getData()
-          
+
         }
   },
 }

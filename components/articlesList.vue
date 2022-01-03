@@ -11,7 +11,7 @@
           <v-row no-gutters align="center" @click="$router.push(`/catalog/${article.code_article}`)">
             <v-col cols="4">
               <v-img max-width="80px" max-height="80px" class="mr-2" v-bind:src="getUrlImageOfArticle(article.image)" />
-     
+
             </v-col>
 
             <v-col cols="6">
@@ -100,7 +100,7 @@ export default {
 
   methods:{
     suppArticle(articleIndex){
-      this.$store.commit('cart/suppArticle', articleIndex)
+      this.$store.dispatch('cart/suppArticle', articleIndex)
     },
     goToOrderPage(){
 
