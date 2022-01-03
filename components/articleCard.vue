@@ -1,13 +1,5 @@
 <template>
-<<<<<<< HEAD
-<<<<<<< HEAD
   <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
-=======
-  <v-card max-width="404" outlined elevation="4">
->>>>>>> f866320 (catalog with filters)
-=======
-  <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
->>>>>>> 1f220cc (add quantity to list)
     <nuxt-link :to="'/catalog/' + article.code_article">
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
@@ -22,8 +14,6 @@
         <div class="text-h7 ma-2">
           {{article.prix_achat}}€
         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
         <div v-if="article.quantity" class="text-h7 ma-2">
           {{showQuantity}}
         </div>
@@ -31,25 +21,6 @@
            <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
            <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
         </div>       
-=======
-        <div>
-           <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
-           <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
-        </div>
-        <div class="text-h7 ma-2" v-if="article.quantity">
-          {{showQuantity}}
-        </div>
-        
->>>>>>> f866320 (catalog with filters)
-=======
-        <div v-if="article.quantity" class="text-h7 ma-2">
-          {{showQuantity}}
-        </div>
-        <div>
-           <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
-           <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
-        </div>       
->>>>>>> 1f220cc (add quantity to list)
       </v-col>
       </v-row>
     <v-card-actions align="right">
@@ -59,20 +30,9 @@
             mdi-arrow-right
           </v-icon>
         </v-btn>
-<<<<<<< HEAD
-<<<<<<< HEAD
        </v-flex>
     </v-card-actions>
 
-=======
-      </v-col>
-    </v-row>
->>>>>>> f866320 (catalog with filters)
-=======
-       </v-flex>
-    </v-card-actions>
-
->>>>>>> 1f220cc (add quantity to list)
     </v-card-text>
     
   </v-card>

@@ -1,5 +1,5 @@
 <template>
-    <v-container class="lighten-5">
+    <v-container class="grey lighten-5">
         <v-row>
             <v-col cols="1">
                 <v-btn small fab v-on:click="toogleDisplay()">
@@ -15,20 +15,20 @@
             
            
         <v-row>
-         <v-col class="ma-4">Montant total TTC: {{order.montant}} € </v-col>
+         <v-col class="ma-4">Montant total TTC: <b>{{order.montant}} </b> € </v-col>
          <v-col class="ma-4">Etat de la commande : {{stateOrder}} </v-col>
         </v-row>
 
         <v-container v-if="display==true">
-        <v-row >
+        <v-row style="overflow-x:scroll; white-space: nowrap;" class="grey lighten-2" >
             <v-col v-for ="(content,idx) in order.contenus" cols="3" :key="idx">
                
-            <v-sheet              
+            <v-sheet          
+                min-width="180"    
                 color="white"
                 elevation="2"           
                 >              
-                <v-img
-                   
+                <v-img               
                     v-if="content.article.image == undefined"
                     lazy-src="https://picsum.photos/id/11/10/6"
                     max-height="150"
@@ -40,7 +40,7 @@
                 <h3>{{content.article.intitule_article}}</h3>
                 <div>Quantité : {{content.quantite}}</div>
                 <div>Prix unitaire : {{content.article.prix_achat}} €</div>
-                <div>Prix total : {{content.article.prix_achat*content.quantite}} €</div>
+                <div>Prix total : <b>{{content.article.prix_achat*content.quantite}} € </b></div>
                 </div>
             </v-sheet>
          </v-col>
@@ -54,16 +54,21 @@
                 min-height="180"
                 elevation="2"  >
                 <v-row>
-                    <v-col cols="2">
-                    </v-col>
-                    <v-col cols="5">
-                    <h3>{{order.boutique.enseigne}}</h3>
+                    <v-col cols="5" class="ma-2">
+                    <h3><v-icon class="mr-2" dense>mdi-city</v-icon>{{order.boutique.enseigne}}</h3>
                     {{order.boutique.adresse_magasin}}
                     </v-col>
-                    <v-col cols="4">
-                        <v-btn small>Consulter ce catalogue</v-btn>
+                    <v-col class="ma-2">
+                        <v-btn small @click="gotToshop(order.boutique)">Consulter ce catalogue</v-btn>
                     </v-col>
                 </v-row>
+                <v-row align="center" justify="center">
+                    <v-col cols="2" >
+                        
+                    </v-col>
+                </v-row>
+               
+               
                 </v-sheet>
             </v-col>
             <v-col >
@@ -75,9 +80,14 @@
                     <v-row class="pa-2">                       
                         <v-col  v-if="order.factures.length > 0">
                             <v-list class="ma-0 pa-0">
-                            <v-list-item>Numéro de facture :{{order.factures[0].no_facture}}</v-list-item>
-                            <v-list-item>Numéro de commande :{{order.factures[0].n_commande}}</v-list-item>
-                            <v-list-item>Réglé le : {{order.factures[0].date_facture}}</v-list-item>
+                            <v-list-item>
+                                <div class="flex flex-column ma-2">
+                                    <div>Numéro de facture :{{order.factures[0].no_facture}}</div>
+                                    <div>Numéro de commande :{{order.factures[0].n_commande}}</div>
+                                    <div>Adresse :{{order.factures[0].adresse}}</div>
+                                    <div>Réglé le : {{order.factures[0].date_facture}}</div>
+                                </div>
+                            </v-list-item>
                             </v-list>
                         </v-col>
                         <v-col  v-else>
@@ -128,7 +138,10 @@ export default {
     },
 
     methods: { 
-
+        gotToshop(shop){
+            this.$store.commit('cart/setShop', shop);
+            this.$router.push('/catalog')
+        },
         toogleDisplay()
         {
             this.display == false ? this.display = true: this.display = false;
