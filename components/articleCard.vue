@@ -1,5 +1,6 @@
 <template>
-  <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
+
+  <v-card max-width="404" class="d-flex flex-column" outlined :elevation="4" >
     <nuxt-link :to="'/catalog/' + article.code_article">
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
@@ -36,6 +37,7 @@
     </v-card-text>
     
   </v-card>
+
 </template>
 
 <script>
@@ -71,3 +73,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.v-card {
+  transition: transform 0.5s;
+}
+.v-card:hover{
+ transform: scale(1.02);
+ }
+
+
+</style>
