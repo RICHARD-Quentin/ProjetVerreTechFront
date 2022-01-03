@@ -1,5 +1,4 @@
 <template>
-
   <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
     <nuxt-link :to="'/catalog/' + article.code_article">
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
@@ -31,7 +30,6 @@
            <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
            <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
         </div>       
-
       </v-col>
       </v-row>
     <v-card-actions align="right">
