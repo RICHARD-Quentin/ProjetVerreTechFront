@@ -278,7 +278,6 @@
             <p>Une erreure s'est produite lors de la création de votre commande.</p>
             <p>Si vous avez effectuez un paiement, celui-ci à directement été annulé.
             <p>Veuillez nous excuser pour ce désagrément et merci de rééssayer plus tard. </p>
-            <p>{{validationErrors}}</p>
             <nuxt-link to="/">Retour à l'acceuil du site</nuxt-link>
        
           </v-card-text>
