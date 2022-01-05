@@ -172,6 +172,9 @@ export default {
             let stringdim2 =  this.formdimy.toString();
             let stringdim3 =  this.formdimz.toString();
             let stringnote = "0";
+            
+            // imageto base64
+            let image64 = this.imagefile.split(',')[1];
         
             this.$axios.post('/api/catalog/article', 
             {
@@ -184,7 +187,7 @@ export default {
                 commandable: formcommandable,
                 note_moyenne: stringnote,
                 description: this.formdesc,
-                image: this.imagefile
+                image: image64
             })
             .then(function (response) {
                 vm.displayMessage(response.data);

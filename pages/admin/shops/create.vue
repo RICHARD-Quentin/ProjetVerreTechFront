@@ -6,8 +6,6 @@
                         <v-icon @click="ReturnToIndex()" large>mdi-arrow-left</v-icon>
                 </span>
 
-
-
                 <v-card-title class="text-center mx-auto d-block"> Création de boutique</v-card-title>
 
                 <v-container class="mt-8">
