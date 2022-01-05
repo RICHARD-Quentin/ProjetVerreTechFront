@@ -22,7 +22,7 @@
             </v-card>
             <v-card v-else>
                 <v-card-title class="text-center mx-auto d-block"> Le service est indisponible </v-card-title>
-                <v-card-subtitle class="text-center mx-auto d-block"> Veuillez contacter votre admnistrateur réseau </v-card-subtitle>
+                <v-card-subtitle class="text-center mx-auto d-block"> Veuillez contacter votre administrateur réseau </v-card-subtitle>
 
                 <!-- veritcal flex -->
                 <v-container>

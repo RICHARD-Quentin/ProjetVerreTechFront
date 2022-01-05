@@ -83,7 +83,14 @@ export default {
                 catalog: false,
                 users: false,
                 logistic: false,
-            }
+            },
+
+            chart_orders: null,
+            chart_orderssum: null, 
+            chart_ordersaverage: null,
+            chart_accounts: null,
+            chart_accountstotal: null,
+            chart_customeraverageage: null,
 
         }
     },
@@ -246,6 +253,12 @@ export default {
                 datarray.push(nborders);
             }
             let ctx = document.getElementById("canvas_orders").getContext('2d');
+
+            if(this.chart_orders != null)
+            {
+                this.chart_orders.destroy();
+            }
+            
             let chart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -258,6 +271,8 @@ export default {
                 }
             });
             chart.update();
+
+            this.chart_orders = chart;
 
         },
 
@@ -316,6 +331,12 @@ export default {
                 datarray.push(montant);
             }
             let ctx = document.getElementById("canvas_orderssum").getContext('2d');
+
+            if(this.chart_orderssum != null)
+            {
+                this.chart_orderssum.destroy();
+            }
+
             let chart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -328,6 +349,8 @@ export default {
                 }
             });
             chart.update();
+
+            this.chart_orderssum = chart;
         },
 
         constructChart_orderaverage(orders)
@@ -391,6 +414,12 @@ export default {
                 datarray.push(montant/nborders);
             }
             let ctx = document.getElementById("canvas_orderaverage").getContext('2d');
+
+            if(this.chart_orderaverage != null)
+            {
+                this.chart_orderaverage.destroy();
+            }
+
             let chart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -403,6 +432,8 @@ export default {
                 }
             });
             chart.update();
+
+            this.chart_orderaverage = chart;
         },
 
         constructChart_accounts()
@@ -463,6 +494,12 @@ export default {
                     datarray.push(nbaccounts);
                 }
                 let ctx = document.getElementById("canvas_accounts").getContext('2d');
+
+                if(this.chart_accounts != null)
+                {
+                    this.chart_accounts.destroy();
+                }
+
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -476,6 +513,8 @@ export default {
                     }
                 });
                 chart.update();
+
+                this.chart_accounts = chart;
             })
             .catch(error => {
                 // console.log(error);
@@ -524,6 +563,12 @@ export default {
                     datarray.push(nbaccounts);
                 }
                 let ctx = document.getElementById("canvas_accountstotal").getContext('2d');
+
+                if(this.chart_accountstotal != null)
+                {
+                    this.chart_accountstotal.destroy();
+                }
+
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -537,6 +582,8 @@ export default {
                     }
                 });
                 chart.update();
+                
+                this.chart_accountstotal = chart;
             })
             .catch(error => {
                 // console.log(error);
@@ -620,6 +667,14 @@ export default {
 
                 }
                 let ctx = document.getElementById("canvas_customeraverageage").getContext('2d');
+
+                // delete current chart 
+
+                if(this.chart_customeraverageage != null)
+                {
+                    this.chart_customeraverageage.destroy();
+                }
+
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -632,6 +687,9 @@ export default {
                     }
                 });
                 chart.update();
+
+                this.chart_customeraverageage = chart;
+                
             })
             .catch(error => {
                 // console.log(error);

@@ -13,6 +13,8 @@
 
             <v-card-title> {{shop.enseigne}} </v-card-title>
             <v-card-subtitle> {{shop.adresse_magasin}} </v-card-subtitle>
+            <v-card-text class="ma-0 py-0"> Latitude : {{shop.lat}} </v-card-text>
+            <v-card-text class="ma-0 py-0"> Longitude : {{shop.lng}} </v-card-text>
         </v-card>
 </template>
 
