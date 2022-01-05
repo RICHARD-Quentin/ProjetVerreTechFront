@@ -34,8 +34,9 @@
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
                                     v-model="datedeb"
+                                    type="date"
                                     label="Date de début"
-                                    hint="YYYY-MM-DD"
+                                    hint="DD/MM/YYYY"
                                     persistent-hint
                                     prepend-icon="mdi-calendar"
                                     v-bind="attrs"
@@ -60,9 +61,10 @@
                                 >
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
+                                    type="date"
                                     v-model="datefin"
                                     label="Date de fin"
-                                    hint="YYYY-MM-DD"
+                                    hint="DD/MM/YYYY"
                                     persistent-hint
                                     prepend-icon="mdi-calendar"
                                     v-bind="attrs"
