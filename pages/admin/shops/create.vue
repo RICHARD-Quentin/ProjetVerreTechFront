@@ -32,6 +32,11 @@
                                         <v-col cols="10"><v-textarea v-model="form_adressemagasin" label="Adresse" outlined  dense  color="primary" required> </v-textarea> </v-col>
                                     </v-row>
 
+                                    <v-row>
+                                        <v-col cols="6"> <v-text-field type="number" v-model="formlat" label="Latitude" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                        <v-col cols="6"> <v-text-field type="number" v-model="formlong" label="Longitude" outlined  dense  color="primary" required> </v-text-field></v-col>
+                                    </v-row>
+
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -56,7 +61,9 @@ export default {
         return {
             form_adressemagasin: '',
             form_enseigne: '',
-            form_intitule: ''
+            form_intitule: '',
+            formlat: '',
+            formlong: '',
 
         }
     },
@@ -80,10 +87,15 @@ export default {
             // }
 
             // send json
+            let stringlat =  this.formlat.toString();
+            let stringlong =  this.formlong.toString();
+
             this.$axios.post('/api/catalog/shop', {
                 enseigne: this.form_enseigne,
                 intitule: this.form_intitule,
-                adresse_magasin: this.form_adressemagasin
+                adresse_magasin: this.form_adressemagasin,
+                lat: stringlat,
+                lng: stringlong
             }
             ).then(response => {
                 console.log(response);

@@ -67,7 +67,7 @@
             <v-row>
                 <v-col>
                     <v-row class="d-flex justify-center">
-                    <v-btn class=" d-block mr-6"  color="red lighten-1"  @click="DeleteProduct()"><v-icon class="mr-2">mdi-delete</v-icon>Supprimer</v-btn>
+                    <v-btn class=" d-block mr-6" disabled  color="red lighten-1"  @click="DeleteProduct()"><v-icon class="mr-2">mdi-delete</v-icon>Supprimer</v-btn>
                     <v-btn class="d-block" color="primary" @click="ModifyProduct()" > Modifier l'article </v-btn>
                     </v-row>
                 </v-col>
