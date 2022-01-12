@@ -1,6 +1,5 @@
 <template>
-
-  <v-card max-width="404" class="d-flex flex-column" outlined :elevation="4" >
+  <v-card max-width="404" class="d-flex flex-column" outlined elevation="4">
     <nuxt-link :to="'/catalog/' + article.code_article">
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
@@ -11,10 +10,9 @@
         <div class="text-h7 font-weight-bold">
           {{article.intitule_article}}
         </div>
-
         <div class="text-h7 ma-2">
           {{article.prix_achat}}€
-        </div>
+        </div>   
         <div v-if="article.quantity" class="text-h7 ma-2">
           {{showQuantity}}
         </div>
@@ -33,7 +31,6 @@
         </v-btn>
        </v-flex>
     </v-card-actions>
-
     </v-card-text>
     
   </v-card>
