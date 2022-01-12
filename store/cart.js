@@ -57,9 +57,5 @@ export const getters = {
   getShopName(state) {
     if(!state.shop)return "Aucun"
     return state.shop.intitule
-<<<<<<< HEAD
   },
-=======
-  }
->>>>>>> 727198b76abbe3f6c569c512d36084ad33035cfd
 }
