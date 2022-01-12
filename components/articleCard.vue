@@ -10,19 +10,9 @@
         <div class="text-h7 font-weight-bold">
           {{article.intitule_article}}
         </div>
-
         <div class="text-h7 ma-2">
           {{article.prix_achat}}€
-        </div>
-
-        <div v-if="article.quantity" class="text-h7 ma-2">
-          {{showQuantity}}
-        </div>
-        <div>
-           <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
-           <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
-        </div>       
-
+        </div>   
         <div v-if="article.quantity" class="text-h7 ma-2">
           {{showQuantity}}
         </div>

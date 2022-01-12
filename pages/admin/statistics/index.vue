@@ -81,7 +81,6 @@
                     </v-row>
                     <v-row>
 
-<<<<<<< HEAD
                         <v-col cols="12">
                             <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" 
                             v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary" 
@@ -91,12 +90,6 @@
                     
                 </v-tab-item>
                 </v-tabs-items>
-=======
-                <!-- Select month/day/week -->
-                <v-select v-model="stats_CurrentOptionDate" :items="this.stats_ArrayOptionsDate"  label="Période" class="px-6"></v-select>
-                <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" v-model="stats_NumberOfPeriods" label="Nombre de période (2-20)" outlined  dense  color="primary" 
-                max="20" min="2"> </v-text-field>
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 <!-- BUTTON -->
                 <v-btn class="mx-auto d-block" color="primary" @click="updateStats()" > Mettre à jour </v-btn>
 
@@ -148,7 +141,6 @@
 </template>
 
 <script>
-
 export default {
     name: 'admin',
     layout: 'adminlayout',
@@ -157,43 +149,32 @@ export default {
             menu_item_selected: "statistics",
             lastorders: [],
             orders: [],
-
-<<<<<<< HEAD
             tab: 0,
             
             menudeb: false,
             menufin: false,
             datedeb: null,
             datefin: null,
-
-=======
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
             stats_CurrentOptionDate : "Semaine",
             stats_ArrayOptionsDate : [ "Semaine","Mois", "Jour"],
             stats_NumberOfPeriods : 10,
-
             serviceonline : false,
             loading: true,
-
             services_availables: {
                 catalog: false,
                 users: false,
                 logistic: false,
             },
-
             chart_orders: null,
             chart_orderssum: null, 
             chart_ordersaverage: null,
             chart_accounts: null,
             chart_accountstotal: null,
             chart_customeraverageage: null,
-
         }
     },
-
     watch: {
     },
-
     created()
     {
         this.$axios.get('/api/logistic/order')
@@ -212,9 +193,7 @@ export default {
             this.loading = false;
         });
     },
-
     computed: {
-
         service_user() {
             if(this.services_availables.users) {
                 return 'ONLINE'
@@ -222,7 +201,6 @@ export default {
                 return 'OFFLINE'
             }
         },
-
         service_catalog() {
             if(this.services_availables.catalog) {
                 return 'ONLINE'
@@ -230,7 +208,6 @@ export default {
                 return 'OFFLINE'
             }
         },
-
         service_logistic() {
             if(this.services_availables.logistic) {
                 return 'ONLINE'
@@ -239,39 +216,23 @@ export default {
             }
         }
     },
-
     methods: {
-
-<<<<<<< HEAD
         parseDate (date) {
             if (!date) return null;
-
             const [jour, mois, annee] = date.split('/')
             return `${jour.padStart(2, '0')}-${mois.padStart(2, '0')}-${annee}`
         },
-
         updateInput() {
             let value = document.getElementById('inputdate').value;
             if(value > 10) {
                 document.getElementById('inputdate').value = 10;
                 this.stats_NumberOfPeriods = 10;
-=======
-        updateInput() {
-            let value = document.getElementById('inputdate').value;
-            if(value > 20) {
-                document.getElementById('inputdate').value = 20;
-                this.stats_NumberOfPeriods = 20;
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
             } else if(value < 2) {
                 document.getElementById('inputdate').value = 2;
                 this.stats_NumberOfPeriods = 2;
             }
-
         },
-
-<<<<<<< HEAD
         
-
         updateStats() {
             if(this.tab == 0) { // if premier tri
                 this.generateStatistics_for_globale();
@@ -280,7 +241,6 @@ export default {
                 // if dates
                 if((this.datefin && this.datedeb)) {
                     // date format : YYYY-MM-DD
-
                     let db = new Date(this.datedeb);
                     let df = new Date(this.datefin);
                     if(( db.getTime() < df.getTime()))
@@ -296,13 +256,7 @@ export default {
                     alert("Veuillez choisir une date de début et une date de fin correctes");
                 }
             }
-=======
-        updateStats() {
-            this.generateStatistics_for_globale();
-            this.generateStatistics_for_command(this.orders);
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
         },
-
         generateStatistics_for_command(orders)
         {
             try
@@ -310,14 +264,11 @@ export default {
                 this.constructChart_orders(orders);
                 this.constructChart_orderssum(orders);
                 this.constructChart_orderaverage(orders);
-
             }catch(e)
             {
                 console.log(e);
             }
-
         },
-
         generateStatistics_for_globale()
         {
             try
@@ -334,7 +285,6 @@ export default {
         calculateDate(date,i)
         {
             let today = new Date();
-<<<<<<< HEAD
             if(this.stats_CurrentOptionDate == "Semaine")
             {
                 date = new Date(today.getTime() - (i*7*24*60*60*1000));
@@ -347,28 +297,6 @@ export default {
             }
             return date;
         }, 
-=======
-            let datarray = [];
-            for(let i=0; i<this.stats_NumberOfPeriods; i++)
-            {
-                // Décalé d'une semaine par rapport à aujourd'hui
-                let date = null
-                if(this.stats_CurrentOptionDate == "Semaine")
-                {
-                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                }else if(this.stats_CurrentOptionDate == "Mois")
-                {
-                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                }else if(this.stats_CurrentOptionDate == "Jour")
-                {
-                    date = new Date(today.getTime() - (i*24*60*60*1000));
-                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                }
-
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
         fillChartArrayDate(date,array)
         {
             if(this.stats_CurrentOptionDate == "Semaine")
@@ -382,7 +310,6 @@ export default {
                 array.push(date.getDate() + "/" + date.getMonth()+1 + "/" + date.getFullYear());
             }
             return array;
-
         },
         
         // If mode == 1 Give date with hour : ex : 12/12/2019 12:00
@@ -397,7 +324,6 @@ export default {
                 return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
             }
         },
-
         calculateDates(datedeb,datefin, numberofperiod, arraydate)
         {
             // chess if time between periods is less than 20 hours (ptit décalage pour l'ergonomie)
@@ -419,12 +345,9 @@ export default {
             }
             return arraydate;
         },
-
-
         constructChart_orders(orders)
         {
             let arraydate = []; let datarray = [];
-
             if(this.tab == 0) // Tri par unité
             {
                 for(let i=0; i<this.stats_NumberOfPeriods; i++)
@@ -475,21 +398,16 @@ export default {
                 let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
                 for(let i=0; i<numberofperiod; i++)
                 {
-<<<<<<< HEAD
                     let nborders = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
-
                     for(let j=0; j<orders.length; j++)
                     {
                         let orderdate = new Date(orders[j].date_commande);
                         if(orderdate >= borninf && orderdate < bornesup) nborders++;
                     }
-
-
                     datarray.push(nborders);
                 }
-
                 let ctx = document.getElementById("canvas_orders").getContext('2d');
                 if(this.chart_orders != null) this.chart_orders.destroy();
                 let chart = new Chart(ctx, {
@@ -501,63 +419,14 @@ export default {
                 });
                 chart.update();
                 this.chart_orders = chart;
-=======
-                    let orderdate = new Date(orders[j].date_commande);
-                    // if(orderdate >= date && orderdate < new Date(date.getTime() + (7*24*60*60*1000)))
-                    // {
-                    //     nborders++;
-                    // }
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            nborders++;
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            nborders++;
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        let borne = new Date(date.getTime() + (24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            nborders++;
-                        }
-                    }
-
-
-                }
-
-                datarray.push(nborders);
-            }
-            let ctx = document.getElementById("canvas_orders").getContext('2d');
-            let chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: arraydate.reverse(),
-                    datasets: [{
-                        label: 'Nombre de commandes',
-                        data: datarray.reverse(),
-                        borderColor: 'rgb(100,100,150)',
-                    }]
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
             
             
-
         },
-
         constructChart_orderssum(orders)
         {
             // Calcul pour les 10 dernières semaines
-<<<<<<< HEAD
             let arraydate = []; let datarray = [];
-
             if(this.tab == 0) // Tri par unité
             {
                 for(let i=0; i<this.stats_NumberOfPeriods; i++)
@@ -566,7 +435,6 @@ export default {
                     let date = null;
                     date = this.calculateDate(date,i);
                     arraydate = this.fillChartArrayDate(date,arraydate);
-
                     let montant = 0;
                     for(let j=0; j<orders.length; j++)
                     {
@@ -593,35 +461,11 @@ export default {
                                 montant += parseInt(orders[j].montant);
                             }
                         }
-=======
-            let arraydate = [];
-            let today = new Date();
-            let datarray = [];
-            for(let i=0; i<this.stats_NumberOfPeriods; i++)
-            {
-                // Décalé d'une semaine par rapport à aujourd'hui
-                let date = null
-                if(this.stats_CurrentOptionDate == "Semaine")
-                {
-                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                }else if(this.stats_CurrentOptionDate == "Mois")
-                {
-                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                }else if(this.stats_CurrentOptionDate == "Jour")
-                {
-                    date = new Date(today.getTime() - (i*24*60*60*1000));
-                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                }
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
                     }
                     datarray.push(montant);
                 } // fin for
                 let ctx = document.getElementById("canvas_orderssum").getContext('2d');
                 if(this.chart_orderssum != null) this.chart_orderssum.destroy();
-
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -640,53 +484,23 @@ export default {
                 arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                 // on calcule le temps entre les dates pour déterminer les bornes
                 let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
-
                 for(let i=0; i<numberofperiod; i++)
                 {
-<<<<<<< HEAD
                     let montant = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
-
                     for(let j=0; j<orders.length; j++)
                     {
                         let orderdate = new Date(orders[j].date_commande);
                         if(orderdate >= borninf && orderdate < bornesup)
-=======
-                    let orderdate = new Date(orders[j].date_commande);
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            montant += parseInt(orders[j].montant);
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            montant += parseInt(orders[j].montant);
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        let borne = new Date(date.getTime() + (24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                         {
                             montant += parseInt(orders[j].montant);
                         }
                     }
-
-<<<<<<< HEAD
                     datarray.push(montant);
-=======
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
-
                 let ctx = document.getElementById("canvas_orderssum").getContext('2d');
                 if(this.chart_orderssum != null) this.chart_orderssum.destroy();
-
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -697,45 +511,17 @@ export default {
                 chart.update();
             }
         },
-
         constructChart_orderaverage(orders)
         {
             // Calcul pour les 10 dernières semaines
-<<<<<<< HEAD
             let arraydate = []; let datarray = [];
-=======
-            let arraydate = [];
-            let today = new Date();
-            let datarray = [];
-            for(let i=0; i<this.stats_NumberOfPeriods; i++)
-            {
-                // Décalé d'une semaine par rapport à aujourd'hui
-                // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                let date = null
-                if(this.stats_CurrentOptionDate == "Semaine")
-                {
-                    date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                }else if(this.stats_CurrentOptionDate == "Mois")
-                {
-                    date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                    arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                }else if(this.stats_CurrentOptionDate == "Jour")
-                {
-                    date = new Date(today.getTime() - (i*24*60*60*1000));
-                    arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                }
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
             if(this.tab == 0)
             {
                 for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
-<<<<<<< HEAD
                     let date = null;
                     date = this.calculateDate(date,i);
                     arraydate = this.fillChartArrayDate(date,arraydate);
-
                     let montant = 0;
                     let nborders = 0;
                     for(let j=0; j<orders.length; j++)
@@ -766,48 +552,14 @@ export default {
                                 nborders++;
                             }
                         }
-
                     }
-
                     datarray.push(montant/nborders);
-=======
-                    let orderdate = new Date(orders[j].date_commande);
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        let borne = new Date(date.getTime() + (7*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            montant += parseInt(orders[j].montant);
-                            nborders++;
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        let borne = new Date(date.getTime() + (30*24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            montant += parseInt(orders[j].montant);
-                            nborders++;
-                        }
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        let borne = new Date(date.getTime() + (24*60*60*1000));
-                        if(orderdate >= date && orderdate < borne)
-                        {
-                            montant += parseInt(orders[j].montant);
-                            nborders++;
-                        }
-                    }
-
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                 }
                 let ctx = document.getElementById("canvas_orderaverage").getContext('2d');
-
                 if(this.chart_orderaverage != null)
                 {
                     this.chart_orderaverage.destroy();
                 }
-
-<<<<<<< HEAD
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -820,7 +572,6 @@ export default {
                     }
                 });
                 chart.update();
-
                 this.chart_orderaverage = chart;
             }else
             {
@@ -831,84 +582,25 @@ export default {
                 arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                 // on calcule le temps entre les dates pour déterminer les bornes
                 let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
-
                 for(let i=0; i<numberofperiod; i++)
                 {
                     let montant = 0;
                     let nborders = 0;
                     let borninf = datedeb.getTime() + (i*timebetweenperiod);
                     let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
-=======
-        constructChart_accounts()
-        {
-            this.$axios.get('/api/user')
-            .then(response => {
-                let arraydate = [];
-                let today = new Date();
-                let datarray = [];
-                for(let i=0; i<this.stats_NumberOfPeriods; i++)
-                {
-                    // Décalé d'une semaine par rapport à aujourd'hui
-                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    let date = null
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        date = new Date(today.getTime() - (i*24*60*60*1000));
-                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                    }
-
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
                     for(let j=0; j<orders.length; j++)
                     {
-<<<<<<< HEAD
                         let orderdate = new Date(orders[j].date_commande);
                         if(orderdate >= borninf && orderdate < bornesup)
                         {
                             montant += parseInt(orders[j].montant);
                             nborders++;
-=======
-                        let accountdate = new Date(response.data.data[j].d_crea_compte);
-                        if(this.stats_CurrentOptionDate == "Semaine")
-                        {
-                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
-                            if(accountdate >= date && accountdate < borne)
-                            {
-                                nbaccounts++;
-                            }
-                        }else if(this.stats_CurrentOptionDate == "Mois")
-                        {
-                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
-                            if(accountdate >= date && accountdate < borne)
-                            {
-                                nbaccounts++;
-                            }
-                        }else if(this.stats_CurrentOptionDate == "Jour")
-                        {
-                            let borne = new Date(date.getTime() + (24*60*60*1000));
-                            if(accountdate >= date && accountdate < borne)
-                            {
-                                nbaccounts++;
-                            }
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
                         }
-
                     }
-
                     datarray.push(montant/nborders);
                 }
-
                 let ctx = document.getElementById("canvas_orderaverage").getContext('2d');
                 if(this.chart_orderaverage != null) this.chart_orderaverage.destroy();
-
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -921,17 +613,14 @@ export default {
                     }
                 });
                 chart.update();
-
                 this.chart_orderaverage = chart;
             }
         },
-
         constructChart_accounts()
         {
             this.$axios.get('/api/user')
             .then(response => {
                 let arraydate = []; let datarray = [];
-
                 if(this.tab == 0)
                 {
                     for(let i=0; i<this.stats_NumberOfPeriods; i++)
@@ -940,8 +629,6 @@ export default {
                         let date = null;
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
-
-
                         let nbaccounts = 0;
                         for(let j=0; j<response.data.data.length; j++)
                         {
@@ -968,17 +655,14 @@ export default {
                                     nbaccounts++;
                                 }
                             }
-
                         }
                         datarray.push(nbaccounts);
                     }
                     let ctx = document.getElementById("canvas_accounts").getContext('2d');
-
                     if(this.chart_accounts != null)
                     {
                         this.chart_accounts.destroy();
                     }
-
                     let chart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -992,7 +676,6 @@ export default {
                         }
                     });
                     chart.update();
-
                     this.chart_accounts = chart;
                 }else
                 {
@@ -1003,13 +686,11 @@ export default {
                     arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                     // on calcule le temps entre les dates pour déterminer les bornes
                     let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
-
                     for(let i=0; i<numberofperiod; i++)
                     {
                         let nbaccounts = 0;
                         let borninf = datedeb.getTime() + (i*timebetweenperiod);
                         let bornesup = new Date(datedeb.getTime() + ((i+1)*timebetweenperiod));
-
                         for(let j=0; j<response.data.data.length; j++)
                         {
                             let accountdate = new Date(response.data.data[j].d_crea_compte);
@@ -1020,14 +701,11 @@ export default {
                         }
                         datarray.push(nbaccounts);
                     }
-
                     let ctx = document.getElementById("canvas_accounts").getContext('2d');
-
                     if(this.chart_accounts != null)
                     {
                         this.chart_accounts.destroy();
                     }
-
                     let chart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -1040,7 +718,6 @@ export default {
                             }]
                         }
                     });
-
                     chart.update();
                     this.chart_accounts = chart;
                 }
@@ -1049,7 +726,6 @@ export default {
                 // console.log(error);
             });
         },
-
         constructChart_accountstotal()
         {
             this.$axios.get('/api/user')
@@ -1064,9 +740,6 @@ export default {
                         let date = null;
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
-
-<<<<<<< HEAD
-
                         // Nombre total de comptes depuis le début
                         let nbaccounts = 0;
                         for(let j=0; j<response.data.data.length; j++)
@@ -1080,12 +753,10 @@ export default {
                         datarray.push(nbaccounts);
                     }
                     let ctx = document.getElementById("canvas_accountstotal").getContext('2d');
-
                     if(this.chart_accountstotal != null)
                     {
                         this.chart_accountstotal.destroy();
                     }
-
                     let chart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -1110,34 +781,10 @@ export default {
                     arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                     // on calcule le temps entre les dates pour déterminer les bornes
                     let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
-=======
-                for(let i=0; i<this.stats_NumberOfPeriods; i++)
-                {
-                    // Décalé d'une semaine par rapport à aujourd'hui
-                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                    let date = null
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        date = new Date(today.getTime() - (i*24*60*60*1000));
-                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                    }
-
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
                     for(let i=0; i<numberofperiod; i++)
                     {
                         let nbaccounts = 0;
                         let borninf = datedeb.getTime() + (i*timebetweenperiod);
-
                         for(let j=0; j<response.data.data.length; j++)
                         {
                             let accountdate = new Date(response.data.data[j].d_crea_compte);
@@ -1149,14 +796,11 @@ export default {
                         datarray.push(nbaccounts);
                     }
                 }
-
                 let ctx = document.getElementById("canvas_accountstotal").getContext('2d');
-
                 if(this.chart_accountstotal != null)
                 {
                     this.chart_accountstotal.destroy();
                 }
-
                 let chart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -1169,9 +813,7 @@ export default {
                         }]
                     }
                 });
-
                 chart.update();
-
                 this.chart_accountstotal = chart;
                 
             })
@@ -1179,12 +821,10 @@ export default {
                 // console.log(error);
             });
         },
-
         constructChart_customeraverageage()
         {
             this.$axios.get('/api/user')
             .then(response => {
-<<<<<<< HEAD
                 let arraydate = []; let datarray = [];
                 
                 if(this.tab == 0)
@@ -1195,7 +835,6 @@ export default {
                         let date = null;
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
-
                         let agesum = 0;
                         let nbaccounts = 0;
                         for(let j=0; j<response.data.data.length; j++)
@@ -1228,7 +867,6 @@ export default {
                                     nbaccounts++;
                                 }
                             }
-
                         }
                         if(nbaccounts > 0)
                         {
@@ -1238,79 +876,13 @@ export default {
                         {
                             datarray.push(0);
                         }
-=======
-                let arraydate = [];
-                let today = new Date();
-                let datarray = [];
-                for(let i=0; i<this.stats_NumberOfPeriods; i++)
-                {
-                    // Décalé d'une semaine par rapport à aujourd'hui
-                    // let date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                    // arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                    let date = null
-                    if(this.stats_CurrentOptionDate == "Semaine")
-                    {
-                        date = new Date(today.getTime() - (i*7*24*60*60*1000));
-                        arraydate.push(date.getDate()+"/"+(date.getMonth()+1));
-                    }else if(this.stats_CurrentOptionDate == "Mois")
-                    {
-                        date = new Date(today.getTime() - (i*30*24*60*60*1000));
-                        arraydate.push(date.getMonth()+1 + "/" + date.getFullYear());
-                    }else if(this.stats_CurrentOptionDate == "Jour")
-                    {
-                        date = new Date(today.getTime() - (i*24*60*60*1000));
-                        arraydate.push(date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear());
-                    }
-
-                    let agesum = 0;
-                    let nbaccounts = 0;
-                    for(let j=0; j<response.data.data.length; j++)
-                    {
-                        let accountdate = new Date(response.data.data[j].d_crea_compte);
-                        let datenaissance = new Date(response.data.data[j].date_naissance);
-                        let age = today.getFullYear() - datenaissance.getFullYear();
-                        // if(accountdate < new Date(date.getTime() + (7*24*60*60*1000)))
-                        // {
-                        //     agesum += age;
-                        //     nbaccounts++;
-                        // }
-                        if(this.stats_CurrentOptionDate == "Semaine")
-                        {
-                            let borne = new Date(date.getTime() + (7*24*60*60*1000));
-                            if(accountdate < date && accountdate < borne)
-                            {
-                                agesum += age;
-                                nbaccounts++;
-                            }
-                        }else if(this.stats_CurrentOptionDate == "Mois")
-                        {
-                            let borne = new Date(date.getTime() + (30*24*60*60*1000));
-                            if(accountdate < date && accountdate < borne)
-                            {
-                                agesum += age;
-                                nbaccounts++;
-                            }
-                        }else if(this.stats_CurrentOptionDate == "Jour")
-                        {
-                            let borne = new Date(date.getTime() + (24*60*60*1000));
-                            if(accountdate < date && accountdate < borne)
-                            {
-                                agesum += age;
-                                nbaccounts++;
-                            }
-                        }
->>>>>>> b76566e (Fonctionnalité : Paramètrage des statistiques (période, nombre))
-
                     }
                     let ctx = document.getElementById("canvas_customeraverageage").getContext('2d');
-
                     // delete current chart 
-
                     if(this.chart_customeraverageage != null)
                     {
                         this.chart_customeraverageage.destroy();
                     }
-
                     let chart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -1323,11 +895,9 @@ export default {
                         }
                     });
                     chart.update();
-
                     this.chart_customeraverageage = chart;
                 }else
                 {
-
                     let datedeb = new Date(this.datedeb);
                     let datefin = new Date(this.datefin);
                     let numberofperiod = this.stats_NumberOfPeriods;
@@ -1335,13 +905,11 @@ export default {
                     arraydate = this.calculateDates(datedeb,datefin,numberofperiod,arraydate);
                     // on calcule le temps entre les dates pour déterminer les bornes
                     let timebetweenperiod = (datefin.getTime() - datedeb.getTime())/(numberofperiod);
-
                     for(let i=0; i<numberofperiod; i++)
                     {
                         let agesum = 0;
                         let nbaccounts = 0;
                         let bornsup = datedeb.getTime() + (i*timebetweenperiod);
-
                         for(let j=0; j<response.data.data.length; j++)
                         {
                             let accountdate = new Date(response.data.data[j].d_crea_compte);
@@ -1363,14 +931,11 @@ export default {
                             datarray.push(0);
                         }
                     }
-
                     let ctx = document.getElementById("canvas_customeraverageage").getContext('2d');
-
                     if(this.chart_customeraverageage != null)
                     {
                         this.chart_customeraverageage.destroy();
                     }
-
                     let chart = new Chart(ctx, {
                         type: 'line',
                         data: {
@@ -1382,17 +947,14 @@ export default {
                             }]
                         }
                     });
-
                     chart.update();
                     this.chart_customeraverageage = chart;
                 }
-
             })
             .catch(error => {
                 console.log(error);
             });
         },
-
         async checkServices()
         {
             try
@@ -1401,30 +963,25 @@ export default {
                 .then(response => {
                     this.services_availables.catalog = true;
                 })
-
                 this.$axios.get('/api/user')
                 .then(response => {
                     this.services_availables.users = true;
                 })
-
                 this.$axios.get('/api/logistic/order')
                 .then(response => {
                     this.services_availables.logistic = true;
                 })
-
             }catch(error)
             {
                 console.log("failed");
             }
         }
-
     }
 }
 </script>
 
 
 <style scoped>
-
 .entry
 {
     background-color:white;
@@ -1432,17 +989,14 @@ export default {
     padding:5px;
     margin-bottom:5px;
 }
-
 #main_content
 {
     min-height: 400px;
     /* background-color: yellow; */
 }
-
 .chart
 {
     width:300px;
     height:300px;
 }
-
 </style>
