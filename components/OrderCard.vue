@@ -85,7 +85,7 @@
                                     <div>Numéro de facture :{{order.factures[0].no_facture}}</div>
                                     <div>Numéro de commande :{{order.factures[0].n_commande}}</div>
                                     <div>Adresse :{{order.factures[0].adresse}}</div>
-                                    <div>Réglé le : {{order.factures[0].date_facture}}</div>
+                                    <div>Réglé le : {{getDate(order.factures[0].date_facture)}}</div>
                                 </div>
                             </v-list-item>
                             </v-list>
@@ -116,7 +116,7 @@ export default {
       }
     },
 
-    computed:{
+    computed:{        
         stateOrder(){
             switch(this.order.statut)
             {
@@ -138,6 +138,11 @@ export default {
     },
 
     methods: { 
+        getDate(date){
+        let ye = date.substring(0,10).split('-',10)
+        let h = date.substring(11).split(':',2)
+        return `${ye[2]}/${ye[1]}/${ye[0]} à ${h[0]}h${h[1]}`
+        },
         gotToshop(shop){
             this.$store.commit('cart/setShop', shop);
             this.$router.push('/catalog')
