@@ -13,7 +13,7 @@ export const mutations = {
     state.articleCount --
   },
 
-  addArticle(state, {article}) {
+  addArticle(state, article) {
     state.articles.push(article)
     // const id_client = this.$auth.user.id_client
     // this.$axios.post('/api/catalog/cart', {id_client, cart: state.articles})
@@ -40,10 +40,15 @@ export const getters = {
   },
 
   getTotalPrice(state){
-    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return acc+curr.price},0) : 0;
+    return state.articles.length > 0 ? state.articles.reduce((acc,curr)=>{return (Number(acc)+Number(curr.prix_achat))},0) : 0;
   },
 
   shopSelected(state){
     return state.shop;
+  },
+
+  getShopName(state) {
+    if(!state.shop)return "Aucune"
+    return state.shop.intitule
   }
 }
