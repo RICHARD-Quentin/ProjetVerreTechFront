@@ -1,9 +1,9 @@
-<template>  
+<template>
     <v-row>
         <v-col  cols="12">
             <v-card  id="main_content" class="ma-5">
                 <v-card-title class="text-center mx-auto d-block" > Statistiques </v-card-title>
-                
+
                 <v-tabs
                     v-model="tab"
                     background-color="primary"
@@ -12,12 +12,12 @@
                     <v-tab>Tri par unité</v-tab>
                     <v-tab>Tri par période</v-tab>
                 </v-tabs>
-                
+
                 <v-tabs-items v-model="tab" class="ma-1">
                 <v-tab-item>
                     <v-select v-model="stats_CurrentOptionDate" :items="this.stats_ArrayOptionsDate"  label="Unité" class="px-6"></v-select>
                 <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate"
-                 type="number" v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary" 
+                 type="number" v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary"
                 max="10" min="2"> </v-text-field>
                 </v-tab-item>
                 <v-tab-item>
@@ -82,12 +82,12 @@
                     <v-row>
 
                         <v-col cols="12">
-                            <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number" 
-                            v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary" 
+                            <v-text-field class="px-16" v-on:blur="updateInput()" id="inputdate" type="number"
+                            v-model="stats_NumberOfPeriods" label="Nombre de période (2-10)" outlined  dense  color="primary"
                 max="10" min="2"> </v-text-field>
                         </v-col>
                     </v-row>
-                    
+
                 </v-tab-item>
                 </v-tabs-items>
                 <!-- BUTTON -->
@@ -97,7 +97,7 @@
                     <v-col cols="12" md="6">
                         <div class="mx-1 px-4 py-1" >
                             <h3 class="text-center ma-2" style="color:rgb(100,100,150)" > Globales </h3>
-                            
+
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
@@ -108,13 +108,13 @@
                                 </v-row>
                             </v-container>
                         </div>
-                        
+
                     </v-col>
 
                     <v-col cols="12" md="6">
                         <div class="mx-1 pa-4" >
                             <h3 class="text-center ma-2" style="color:rgb(100,100,150)" > Commandes </h3>
-                            
+
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
@@ -144,13 +144,14 @@
 export default {
     name: 'admin',
     layout: 'adminlayout',
+    middleware: 'admin',
     data() {
         return {
             menu_item_selected: "statistics",
             lastorders: [],
             orders: [],
             tab: 0,
-            
+
             menudeb: false,
             menufin: false,
             datedeb: null,
@@ -166,7 +167,7 @@ export default {
                 logistic: false,
             },
             chart_orders: null,
-            chart_orderssum: null, 
+            chart_orderssum: null,
             chart_ordersaverage: null,
             chart_accounts: null,
             chart_accountstotal: null,
@@ -186,7 +187,7 @@ export default {
             this.lastorders.sort(function(a, b){ return new Date(b.date_retrait) - new Date(a.date_retrait);});
             this.lastorders = this.lastorders.slice(0,10);
             this.orders = response.data.response;
-            
+
         })
         .catch(error => {
             this.checkServices();
@@ -232,7 +233,7 @@ export default {
                 this.stats_NumberOfPeriods = 2;
             }
         },
-        
+
         updateStats() {
             if(this.tab == 0) { // if premier tri
                 this.generateStatistics_for_globale();
@@ -281,7 +282,7 @@ export default {
                 // console.log(e);
             }
         },
-        
+
         calculateDate(date,i)
         {
             let today = new Date();
@@ -296,7 +297,7 @@ export default {
                 date = new Date(today.getTime() - (i*24*60*60*1000));
             }
             return date;
-        }, 
+        },
         fillChartArrayDate(date,array)
         {
             if(this.stats_CurrentOptionDate == "Semaine")
@@ -311,7 +312,7 @@ export default {
             }
             return array;
         },
-        
+
         // If mode == 1 Give date with hour : ex : 12/12/2019 12:00
         // If mode == 2 Give date with day : ex : 12/12/2019
         calculateDatePeriod(date,mode)
@@ -386,7 +387,7 @@ export default {
                 });
                 chart.update();
                 this.chart_orders = chart;
-                
+
             }else // Tri par période
             {
                 let datedeb = new Date(this.datedeb);
@@ -420,8 +421,8 @@ export default {
                 chart.update();
                 this.chart_orders = chart;
                 }
-            
-            
+
+
         },
         constructChart_orderssum(orders)
         {
@@ -431,7 +432,7 @@ export default {
             {
                 for(let i=0; i<this.stats_NumberOfPeriods; i++)
                 {
-                    
+
                     let date = null;
                     date = this.calculateDate(date,i);
                     arraydate = this.fillChartArrayDate(date,arraydate);
@@ -625,7 +626,7 @@ export default {
                 {
                     for(let i=0; i<this.stats_NumberOfPeriods; i++)
                     {
-                        
+
                         let date = null;
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
@@ -731,12 +732,12 @@ export default {
             this.$axios.get('/api/user')
             .then(response => {
                 let arraydate = []; let datarray = [];
-                
+
                 if(this.tab == 0)
                 {
                     for(let i=0; i<this.stats_NumberOfPeriods; i++)
                     {
-                            
+
                         let date = null;
                         date = this.calculateDate(date,i);
                         arraydate = this.fillChartArrayDate(date,arraydate);
@@ -770,7 +771,7 @@ export default {
                         }
                     });
                     chart.update();
-                    
+
                     this.chart_accountstotal = chart;
                 }else
                 {
@@ -815,7 +816,7 @@ export default {
                 });
                 chart.update();
                 this.chart_accountstotal = chart;
-                
+
             })
             .catch(error => {
                 // console.log(error);
@@ -826,10 +827,10 @@ export default {
             this.$axios.get('/api/user')
             .then(response => {
                 let arraydate = []; let datarray = [];
-                
+
                 if(this.tab == 0)
                 {
-                        let today = new Date();  
+                        let today = new Date();
                     for(let i=0; i<this.stats_NumberOfPeriods; i++)
                     {
                         let date = null;
@@ -878,7 +879,7 @@ export default {
                         }
                     }
                     let ctx = document.getElementById("canvas_customeraverageage").getContext('2d');
-                    // delete current chart 
+                    // delete current chart
                     if(this.chart_customeraverageage != null)
                     {
                         this.chart_customeraverageage.destroy();
@@ -914,7 +915,7 @@ export default {
                         {
                             let accountdate = new Date(response.data.data[j].d_crea_compte);
                             let datenaissance = new Date(response.data.data[j].date_naissance);
-                            let today = new Date();  
+                            let today = new Date();
                             let age = today.getFullYear() - datenaissance.getFullYear();
                             if(accountdate < bornsup)
                             {

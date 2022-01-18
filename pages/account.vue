@@ -114,6 +114,7 @@ import AdressField from "../components/adressField";
 export default {
   name: "account",
   components: {AdressField},
+  middleware: 'connected',
   data() {
     return {
       valid: true,
@@ -207,13 +208,18 @@ export default {
   },
 
   async fetch() {
-    const res = await this.$axios.$get('/api/user/auth/' + this.$auth.user.sub)
-    if (res.data !== null) {
-      this.data.client = res.client
-      if (res.adresses.length > 0) {
-        this.data.adresses = res.adresses
+    try {
+      const res = await this.$axios.$get('/api/user/auth/' + this.$auth.user.sub)
+      if (res.data !== null) {
+        this.data.client = res.client
+        if (res.adresses.length > 0) {
+          this.data.adresses = res.adresses
+        }
       }
+    } catch (e) {
+      this.$nuxt.error({statusCode: e.message.substr(e.message.length-3, 3),message: e.message})
     }
+
   }
 }
 </script>

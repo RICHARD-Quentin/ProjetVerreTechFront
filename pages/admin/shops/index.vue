@@ -7,7 +7,7 @@
                 <!-- modifier -->
 
                 <v-divider  class="mx-16 my-4"></v-divider>
-                    
+
                     <v-btn color="primary" class="my-1 mx-8" @click="gotoCreateShop()">
                         <v-icon class="mr-2">mdi-plus</v-icon>
                         Ajouter une boutique
@@ -57,7 +57,7 @@
 export default {
     name: 'AdminShops',
     layout: 'adminlayout',
-    
+    middleware: 'admin',
     data() {
         return {
             shops: [],

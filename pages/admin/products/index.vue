@@ -5,7 +5,7 @@
                 <v-card-title class="text-center mx-auto d-block"> Articles </v-card-title>
                 <v-divider  class="mx-16 my-4"></v-divider>
 
-                
+
                 <v-btn color="primary" class="my-1 mx-8" @click="gotoCreateProduct()">
                     <v-icon class="mr-2">mdi-plus</v-icon>
                     Ajouter un article
@@ -72,7 +72,7 @@
 export default {
     name: 'AdminProducts',
     layout: 'adminlayout',
-    
+    middleware: 'admin',
     data() {
         return {
             products: [],
@@ -129,7 +129,7 @@ export default {
             })
             .catch(error => {
                 this.serviceonline = false;
-                
+
                 this.checkServices();
                 this.loading = false;
             });
@@ -194,7 +194,7 @@ export default {
 
 
     },
-    
+
 
 }
 
