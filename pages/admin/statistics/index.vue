@@ -842,7 +842,7 @@ export default {
                             labels: arraydate.reverse(),
                             datasets: [{
                                 label: 'Nombre total de comptes',
-                                data: datarray,
+                                data: datarray.reverse(),
                                 borderColor: 'rgb(150,150,100)',
                                 tension: 0
                             }]
@@ -891,7 +891,7 @@ export default {
                         labels: arraydate,
                         datasets: [{
                             label: 'Nombre total de comptes',
-                            data: datarray,
+                            data: datarray.reverse(),
                             borderColor: 'rgb(150,150,100)',
                             tension: 0
                         }]

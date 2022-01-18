@@ -15,7 +15,7 @@
                                 <v-col cols="12">
                                     <v-row>
                                         <span class="mx-auto font-weight-bold text-center" style="color:rgb(100,100,150)" > Données</span>
-                                    </v-row>
+                                    </v-row>    
 
                                     <v-row> 
                                         <v-col cols="2"> <p class="text-right font-weight-light justify-center mt-2" style=";color:rgb(130,130,130);"> Nom de la boutique: </p></v-col>
