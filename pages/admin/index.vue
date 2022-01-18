@@ -1,4 +1,4 @@
-<template>  
+<template>
     <v-row>
         <v-col cols="12">
             <v-card id="main_content">
@@ -13,7 +13,7 @@
                                 </p>
 
                                 <h4> Vous pouvez télécharger la doc client en cliquant ici : </h4>
-                                <a href="example.png"  download=""> Documentation client </a>
+                                <a href="DocumentationClientVerreTech.pdf"  download=""> Documentation client </a>
 
                             </v-card-text>
                         </v-col>
@@ -23,7 +23,7 @@
                     <v-row>
                         <v-container class="ma-4">
                             <span class="text-h5 text-center mx-auto d-block"> Services disponibles</span>
-                            
+
                             <div  class="ma-7 pa-2">
                                 <template v-for="(service,i) in services" >
                                     <div class="entry" :key="i"> <b>{{service.nom}}  </b>- {{service.description}} </div>
@@ -42,6 +42,7 @@
 export default {
     name: 'admin',
     layout: 'adminlayout',
+    middleware: 'admin',
     data() {
         return {
 
@@ -64,7 +65,7 @@ export default {
                 },
                 {
                     nom: "Paramètres",
-                    description: "Modifier vos paramètres de paiement, la page d'accueil, sauvegardes, etc."    
+                    description: "Modifier vos paramètres de paiement, la page d'accueil, sauvegardes, etc."
                 },
 
 

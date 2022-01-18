@@ -60,7 +60,7 @@
 export default {
     name: 'AdminUsers',
     layout: 'adminlayout',
-    
+    middleware: 'admin',
     data() {
         return {
             users: [],
@@ -86,7 +86,7 @@ export default {
                 this.users = response.data.data;
                 this.serviceonline =  true;
                 this.loading =false;
-                
+
                 this.lastusercreated = this.getLastCreatedUser();
             })
             .catch(error => {
@@ -137,7 +137,7 @@ export default {
         getLastCreatedUser()
         {
             let userres = null;
-            let registereddate= new Date("01/01/0000");   
+            let registereddate= new Date("01/01/0000");
             for(let i = 0; i <this.users.length ; i++)
             {
                 let datecreation = new Date(this.users[i].d_crea_compte);
@@ -176,7 +176,7 @@ export default {
             }
         }
     },
-    
+
 
 }
 
