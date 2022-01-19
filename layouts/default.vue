@@ -127,6 +127,15 @@ export default {
         }
       }
     }
+
+    if(typeof this.$cookies.get('sessionId') === 'undefined') {
+      const sessionId = [...crypto.getRandomValues(new Uint8Array(20))].map(m=>('0'+m.toString(16)).slice(-2)).join('')
+      this.$cookies.set('sessionId', sessionId)
+    }
+
+    await this.$store.dispatch('cart/initArticles')
+    await this.$store.dispatch('cart/initShop')
+
   }
 }
 </script>

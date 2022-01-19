@@ -63,7 +63,7 @@ export default {
     '@nuxtjs/auth-next',
     'vuetify-dialog/nuxt',
     'nuxt-leaflet',
-    ['cookie-universal-nuxt', { alias: 'cookiz' }]
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -75,6 +75,7 @@ export default {
     '/api/logistic': { target: `http://localhost:${process.env.PORT_LOGISTIC}`, pathRewrite: {'^/api': ''} },
     '/api/catalog': { target: `http://localhost:${process.env.PORT_CATALOG}`, pathRewrite: {'^/api': ''} },
     '/api/user': { target: `http://localhost:${process.env.PORT_USER}`, pathRewrite: {'^/api': ''} },
+    '/api/cache': { target: `http://localhost:${process.env.PORT_CACHE}`, pathRewrite: {'^/api': ''} },
 
   },
 
