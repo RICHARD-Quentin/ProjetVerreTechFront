@@ -1,14 +1,15 @@
 <template>
   <v-app dark>
     <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
+       <UnvailableServiceCard serviceName="" />
+    </h1>
+    <h1 v-else-if="error.statusCode === 504">
+      <UnvailableServiceCard serviceName="" />
     </h1>
     <h1 v-else>
       {{ otherError }}
     </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
+
   </v-app>
 </template>
 
@@ -29,7 +30,7 @@ export default {
   },
   head () {
     const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
+      this.error.statusCode === 404 ? this.pageNotFound : this.error.message
     return {
       title
     }

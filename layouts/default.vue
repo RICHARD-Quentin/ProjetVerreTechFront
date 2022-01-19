@@ -67,7 +67,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Points de retraits',
-          to: '/retreat'
+          to: '/shops'
         },
       ],
       footerItems: [
@@ -90,5 +90,52 @@ export default {
       title: 'Boutique VerreTech'
     }
   },
+
+  async mounted() {
+    if (this.$auth.loggedIn) {
+      const authId = this.$auth.user.sub
+      try {
+        const user = await this.$axios.$get('/api/user/auth/' + authId)
+        this.$auth.setUser({
+          ...this.$auth.user,
+          id_client: user.client.id_client
+        })
+      } catch (e) {
+        const data = {
+            client: {
+              id_client: null,
+              nom: this.$auth.user.family_name || '',
+              prenom: this.$auth.user.given_name || '',
+              date_naissance: "",
+              telephone_f: "",
+              telephone_p: "",
+              mail: this.$auth.user.email,
+              authId: this.$auth.user.sub
+            },
+            adresses: [],
+            deletedAdresses: []
+          }
+        try {
+          const newUser = await this.$axios.$post('/api/user', data)
+          const user = await this.$axios.$get('/api/user/auth/' + authId)
+          this.$auth.setUser({
+            ...this.$auth.user,
+            id_client: user.client.id_client
+          })
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    }
+
+    if(typeof this.$cookies.get('sessionId') === 'undefined') {
+      const sessionId = [...crypto.getRandomValues(new Uint8Array(20))].map(m=>('0'+m.toString(16)).slice(-2)).join('')
+      this.$cookies.set('sessionId', sessionId)
+    }
+
+    await this.$store.dispatch('cart/initArticles')
+    await this.$store.dispatch('cart/initShop')
+
+  }
 }
 </script>

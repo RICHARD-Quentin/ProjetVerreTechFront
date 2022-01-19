@@ -1,4 +1,4 @@
-<template>  
+<template>
  <div> </div>
 </template>
 
@@ -7,6 +7,7 @@
 export default {
     name: 'AdminSettings',
     layout: 'adminlayout',
+    middleware: 'admin',
     data() {
         return {
         }

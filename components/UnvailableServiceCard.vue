@@ -4,7 +4,8 @@
       Service indisponible
     </v-card-title>
     <v-card-subtitle>
-      Le service {{serviceName}} est momentanement indisponible, merci de réessayer plus tard. Nous vous prions d'accepter nos sincères excuses pour cette gêne occasionné.
+      Le service {{serviceName}} est momentanément indisponible,
+      merci de réessayer plus tard. Nous vous prions d'accepter nos sincères excuses pour la gêne occasionnée.
     </v-card-subtitle>
     <v-card-text>
       <v-img
@@ -16,8 +17,8 @@
         Retour à l'acceuil
       </v-btn>
     </v-card-actions>
-    
-    
+
+
   </v-card>
 </template>
 

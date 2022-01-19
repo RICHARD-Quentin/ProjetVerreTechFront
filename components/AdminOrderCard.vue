@@ -2,20 +2,20 @@
         <v-card class="ordercard">
             <v-row>
                 <v-col cols="4">
-                    <span v-if="order.date_retrait" class="ml-2 font-weight-bold" style="color:rgb(100,100,150)" > Statut : Retirée </span>
-                    <span v-else class="ml-2 font-weight-bold" style="color:rgb(150,100,100)" > Statut : Non retirée </span>
+                    <span v-if="order.date_retrait" class="ml-2 font-weight-bold" style="color:rgb(100,100,150)" > Retirée </span>
+                    <span v-else class="ml-2 font-weight-bold" style="color:rgb(150,100,100)" > Non retirée </span>
                     <span class="text-body-2 d-block ml-2 mt-4 hover:bg-red-400">
                     <v-icon> mdi-archive-outline </v-icon>
                     {{this.date}}
                     </span>
                 </v-col>
                 <v-col cols="4">
-                    <v-row class="d-flex justify-center ml-2 mt-1"> 
+                    <v-row class="d-flex flex-column justify-center mt-auto"> 
                         <div> {{this.fullName}} </div>
                     </v-row>
                 </v-col>
                 <v-col cols="4">
-                    <v-row class="d-flex justify-center ml-2 mt-1"> 
+                    <v-row class="d-flex flex-column justify-center ml-2 mt-1" > 
                         <div class="ml-2"> {{this.order.montant}} € </div>
                     </v-row>
                 </v-col>
