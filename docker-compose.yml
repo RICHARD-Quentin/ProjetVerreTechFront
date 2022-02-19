@@ -1,0 +1,16 @@
+version : "3.8"
+services:
+  front:
+    container_name: verretech_front
+    build : .
+    restart : always
+    volumes: 
+      - .:/app
+    networks:
+      - verretech_network
+    ports:
+      - 5000:5000
+networks:
+  verretech_network: 
+    external: 
+      name: verretech_network
