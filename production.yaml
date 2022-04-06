@@ -7,20 +7,24 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=treafik_default"
         - "traefik.constraint-label=treafik_default"
-        - "traefik.http.routers.wiki-bc.rule=Host(`verre-tech.florianstock.fr`)"
-        - "traefik.http.routers.wiki-bc.entrypoints=websecure"
-        - "traefik.http.services.wiki-bc.loadbalancer.server.port=5000"
+        - "traefik.http.routers.verretech.rule=Host(`verre-tech.florianstock.fr`)"
+        - "traefik.http.routers.verretech.entrypoints=websecure"
+        - "traefik.http.services.verretech.loadbalancer.server.port=5000"
         - "entrypoints.web.http.redirections.entrypoint.permanent=true"
-        - "traefik.http.routers.wiki-bc.tls=true"
-        - "traefik.http.routers.wiki-bc.tls.certresolver=myresolver"
+        - "traefik.http.routers.verretech.tls=true"
+        - "traefik.http.routers.verretech.tls.certresolver=myresolver"
       replicas: 2
       placement:
         max_replicas_per_node: 1
     networks:
       - verretech_network
+      - treafik_default
     ports:
       - 5000:5000
 networks:
   verretech_network: 
     external:
       name: verretech_network
+  treafik_default:
+    external:
+      name: treafik_default
