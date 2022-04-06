@@ -26,5 +26,4 @@ networks:
     external:
       name: verretech_network
   treafik_default:
-    external:
-      name: treafik_default
+    external: true
