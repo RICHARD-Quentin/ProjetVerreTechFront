@@ -72,10 +72,10 @@ export default {
   },
 
   proxy: {
-    '/api/logistic': { target: `http://service_logistic:${process.env.PORT_LOGISTIC}`, pathRewrite: {'^/api': ''} },
-    '/api/catalog': { target: `http://service_catalog:${process.env.PORT_CATALOG}`, pathRewrite: {'^/api': ''} },
-    '/api/user': { target: `http://service_users:${process.env.PORT_USER}`, pathRewrite: {'^/api': ''} },
-    '/api/cache': { target: `http://service_cache:${process.env.PORT_CACHE}`, pathRewrite: {'^/api': ''} },
+    '/api/logistic': { target: process.env.URL_LOGISTIC, pathRewrite: {'^/api': ''} },
+    '/api/catalog': { target: process.env.URL_CATALOG, pathRewrite: {'^/api': ''} },
+    '/api/user': { target: process.env.URL_USER, pathRewrite: {'^/api': ''} },
+    '/api/cache': { target: process.env.URL_CACHE, pathRewrite: {'^/api': ''} },
 
   },
 

@@ -1,9 +1,11 @@
 version : "3.8"
 services:
   front:
-    container_name: verretech_front
     image: verretech_front
-    build : .
+     deploy:
+      replicas: 2
+      placement:
+        max_replicas_per_node: 1
     restart : always
     networks:
       - verretech_network
