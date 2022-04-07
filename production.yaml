@@ -5,8 +5,8 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network=treafik_default"
-        - "traefik.constraint-label=treafik_default"
+        - "traefik.docker.network=proxy"
+        - "traefik.constraint-label=proxy"
         - "traefik.http.routers.verretech.rule=Host(`verre-tech.florianstock.fr`)"
         - "traefik.http.routers.verretech.entrypoints=websecure"
         - "traefik.http.services.verretech.loadbalancer.server.port=5000"
@@ -44,8 +44,8 @@ services:
           - --log.level=debug 
         volumes: 
           - /var/run/docker.sock:/var/run/docker.sock:ro 
-          - ${HOME}/admin/traefik/treafik.toml:/etc/traefik/traefik.toml
-          - ${HOME}/admin/letsencrypt:/letsencrypt
+          - /admin/treafik/traefik.toml:/etc/traefik/traefik.toml
+          - /admin/treafik/letsencrypt:/letsencrypt
         networks: 
           - proxy 
         deploy: 
