@@ -44,8 +44,8 @@ services:
           - --log.level=debug 
         volumes: 
           - /var/run/docker.sock:/var/run/docker.sock:ro 
-          - /admin/treafik/traefik.toml:/etc/traefik/traefik.toml
-          - /admin/treafik/letsencrypt:/letsencrypt
+          - /home/admin/treafik/traefik.toml:/etc/traefik/traefik.toml
+          - /home/admin/treafik/letsencrypt:/letsencrypt
         networks: 
           - proxy 
         deploy: 
