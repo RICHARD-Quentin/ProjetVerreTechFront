@@ -7,7 +7,6 @@ services:
     restart : always
     networks:
       - verretech_network
-      - treafik_default
     ports:
       - 5000:5000
     labels:
