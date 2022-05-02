@@ -14,6 +14,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-badge
+            v-if="!admin"
             overlap
             color="red"
             class="mr-5"
@@ -74,14 +75,14 @@
       </v-menu>
 
     <template v-slot:extension class="px-0">
-        <v-slide-group show-arrows>
-          <v-slide-item v-for="item in items" :key="item.to">
-            <v-btn small plain text nuxt :to="item.to">
-              <v-icon v-if="item.icon"> {{ item.icon }}</v-icon>
-              {{ item.title }}
-            </v-btn>
-          </v-slide-item>
-        </v-slide-group>
+      <v-slide-group show-arrows>
+        <v-slide-item v-for="item in items" :key="item.to">
+          <v-btn small plain text nuxt :to="item.to">
+            <v-icon v-if="item.icon"> {{ item.icon }}</v-icon>
+            {{ item.title }}
+          </v-btn>
+        </v-slide-item>
+      </v-slide-group>
     </template>
   </v-app-bar>
 </template>
@@ -94,7 +95,7 @@ export default {
     articlesList
   },
   name: "headerMenu",
-  props: ['items', 'title'],
+  props: ['items', 'title', 'admin'],
   data() {
     return {
       clipped: false,

@@ -9,7 +9,7 @@
      Attention, lorsque vous sélectionnez un point de vente, vous réinitialisez votre panier achat !
     </v-alert>
   <v-row>
-    <v-col>
+    <v-col cols="12" md="6">
       <v-list v-model="selection">
       <v-list-item-group>
         <v-list-item v-for="(shop, i) in shops" :key="i" class="px-0" @click="selectShop(shop)">
@@ -37,7 +37,7 @@
       </v-list-item-group>
     </v-list>
     </v-col>
-    <v-col>
+    <v-col cols="12" md="6">
       <div id="map-wrap"  style="height: 50vh">
       <client-only>
       <l-map :zoom="6" :center="center" ref="map">
@@ -135,14 +135,17 @@ export default {
     },
     validateShop(val){
       console.log(val)
-      if(val == -1){
+      if(val === -1){
          this.$store.dispatch('cart/clearCart')
-         this.$store.commit('cart/setShop', null);
-
+         this.$store.dispatch('cart/delShop');
       }
       else if(val != null){
         this.$store.dispatch('cart/clearCart')
-        this.$store.commit('cart/setShop', val);
+        this.$store.dispatch('cart/setShop', val);
+      }
+      else if (val === null) {
+        this.$store.dispatch('cart/clearCart')
+        this.$store.dispatch('cart/delShop', val);
       }
       this.$emit('Selected',val)
     }

@@ -34,7 +34,10 @@ export const mutations = {
     // const id_client = this.$cookies.get('sessionId')
     // this.$axios.post('/api/cache/shop', {id_client, shop: value})
     state.shop = value
+  },
 
+  delShop(state, value){
+    state.shop = null
   },
 
   clearCart(state){
@@ -64,7 +67,7 @@ export const getters = {
   },
 
   getShopName(state) {
-    if(!state.shop)return "Aucun"
+    if(!state.shop) return "Aucun"
     return state.shop.intitule
   },
 }
@@ -116,7 +119,14 @@ export const actions = {
     if (res.data.success) {
       commit("setShop", value)
     }
+  },
 
+  async delShop({commit},value){
+    const id_client = this.$cookies.get('sessionId')
+    const shop = await this.$axios.$delete('/api/cache/shop/' + id_client)
+    if (shop.success) {
+      commit('delShop', null)
+    }
   },
 
 

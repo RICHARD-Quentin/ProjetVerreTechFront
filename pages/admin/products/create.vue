@@ -148,37 +148,37 @@ export default {
             reader.readAsDataURL(file);
         },
 
-        CreateProduct()
-        {
-            var vm = this;
-            // let jsonobject = {
-            //     intitule_article: this.formname,
-            //     description: this.formdesc,
-            //     prix_achat: this.formprix,
-            //     commandable: this.formdispo,
-            //     dimension_1: this.formdimx,
-            //     dimension_2: this.formdimy,
-            //     dimension_3: this.formdimz,
-            //     couleur: this.formcolor,
-            //     image: this.imagefile,
-            //     note_moyenne: 0,
-            //     commentaires: []
-            // };
-            let formcommandable = 0;
-            if (this.formdispo)
-                formcommandable = 1;
+        async CreateProduct() {
+          var vm = this;
+          // let jsonobject = {
+          //     intitule_article: this.formname,
+          //     description: this.formdesc,
+          //     prix_achat: this.formprix,
+          //     commandable: this.formdispo,
+          //     dimension_1: this.formdimx,
+          //     dimension_2: this.formdimy,
+          //     dimension_3: this.formdimz,
+          //     couleur: this.formcolor,
+          //     image: this.imagefile,
+          //     note_moyenne: 0,
+          //     commentaires: []
+          // };
+          let formcommandable = 0;
+          if (this.formdispo)
+            formcommandable = 1;
 
-            let stringprix = this.formprix.toString();
-            let stringdim1 =  this.formdimx.toString();
-            let stringdim2 =  this.formdimy.toString();
-            let stringdim3 =  this.formdimz.toString();
-            let stringnote = "0";
+          let stringprix = this.formprix.toString();
+          let stringdim1 = this.formdimx.toString();
+          let stringdim2 = this.formdimy.toString();
+          let stringdim3 = this.formdimz.toString();
+          let stringnote = "0";
 
-            // imageto base64
-            let image64 = this.imagefile.split(',')[1];
+          // imageto base64
+          let image64 = this.imagefile.split(',')[1];
 
-            this.$axios.post('/api/catalog/article',
-            {
+          try {
+            await this.$axios.post('/api/catalog/article',
+              {
                 intitule_article: this.formname,
                 dimension_1: stringdim1,
                 dimension_2: stringdim2,
@@ -189,17 +189,42 @@ export default {
                 note_moyenne: stringnote,
                 description: this.formdesc,
                 image: image64
-            })
-            .then(function (response) {
-                vm.displayMessage(response.data);
-            })
-            .catch(function (error) {
-                vm.displayMessage(error);
-            });
+              })
+            await this.$dialog.notify.success("Informations enregistrées",
+              {
+                position: "top-right",
+                timeout: 2000
+              }
+            )
+            await this.$router.push('/admin/products')
+          } catch (e) {
+            await this.$dialog.notify.error(e.message,
+              {
+                position: "top-right",
+                timeout: 2000
+              }
+            )
+          }
+          // this.$axios.post('/api/catalog/article',
+          //   {
+          //     intitule_article: this.formname,
+          //     dimension_1: stringdim1,
+          //     dimension_2: stringdim2,
+          //     dimension_3: stringdim3,
+          //     couleur: this.formcolor,
+          //     prix_achat: stringprix,
+          //     commandable: formcommandable,
+          //     note_moyenne: stringnote,
+          //     description: this.formdesc,
+          //     image: image64
+          //   })
+          //   .then(function (response) {
+          //     vm.displayMessage(response.data);
+          //   })
+          //   .catch(function (error) {
+          //     vm.displayMessage(error);
+          //   });
         }
-
-
-
     }
 }
 </script>

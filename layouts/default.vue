@@ -50,7 +50,7 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-home',
           title: 'Accueil',
           to: '/'
         },
@@ -60,14 +60,14 @@ export default {
           to: '/catalog'
         },
         {
-          icon: 'mdi-apps',
-          title: 'A propos',
-          to: '/about'
-        },
-        {
-          icon: 'mdi-apps',
+          icon: 'mdi-map-marker',
           title: 'Points de retraits',
           to: '/shops'
+        },
+        {
+          icon: 'mdi-fountain-pen-tip',
+          title: 'A propos',
+          to: '/about'
         },
       ],
       footerItems: [
@@ -132,9 +132,13 @@ export default {
       const sessionId = [...crypto.getRandomValues(new Uint8Array(20))].map(m=>('0'+m.toString(16)).slice(-2)).join('')
       this.$cookies.set('sessionId', sessionId)
     }
+    try {
+      await this.$store.dispatch('cart/initArticles')
+      await this.$store.dispatch('cart/initShop')
+    } catch (e) {
+      console.error('Service de cache indisponible')
+    }
 
-    await this.$store.dispatch('cart/initArticles')
-    await this.$store.dispatch('cart/initShop')
 
   }
 }

@@ -6,7 +6,7 @@
     <v-row>
       <v-col cols="12" md="7" >
         <v-card color="grey lighten-3">
-            <v-carousel cycle height="300px" color="grey darken-3"> 
+            <v-carousel cycle height="300px" color="grey darken-3">
               <v-carousel-item>
                 <v-img src="/acceuil/cloisonverre.jpg" height="300px">
                   <v-card-title class="carrousel_title"> Cloisons</v-card-title>
@@ -19,7 +19,7 @@
               </v-carousel-item>
               <v-carousel-item>
                 <v-img src="/acceuil/insertcheminee.jpg" height="300px">
-                  <v-card-title class="carrousel_title"> Insert cheminee</v-card-title>
+                  <v-card-title class="carrousel_title"> Insert de cheminée</v-card-title>
                 </v-img>
               </v-carousel-item>
             </v-carousel>
@@ -36,7 +36,7 @@
             Depuis son origine Verre-tech est spécialisée et leader dans la fabrication et la distribution en
             magasins de produits en verre techniques et décoratifs.
           </v-card-text>
-          
+
         </v-card>
 
       </v-col>
@@ -54,7 +54,7 @@
               <v-card-title> Nous ouvrons notre solution d'E commerce </v-card-title>
 
               <v-card-text class="">
-                Nous sommes heureux de vous annoncer que Verre Tech a ouvert une boutique E-commerce ! 
+                Nous sommes heureux de vous annoncer que Verre Tech a ouvert une boutique E-commerce !
                 Vous pouvez ici passer des commandes en Click&collect et ainsi profiter de nos services.
               </v-card-text>
             </v-col>
@@ -72,7 +72,7 @@
               <v-card-title> C'est Noël chez Verre-tech !</v-card-title>
 
               <v-card-text class="">
-                Profitez de nos offres exclusives, c'est Noël chez Verre-Tech ! 
+                Profitez de nos offres exclusives, c'est Noël chez Verre-Tech !
                 Allez vite consulter nos articles en promotion.
               </v-card-text>
             </v-col>
@@ -82,9 +82,9 @@
     </v-row>
 
 
-        
+
   </v-container>
-  
+
 </template>
 
 <script>
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style>
-  .fade-enter-active, .fade-leave-active 
+  .fade-enter-active, .fade-leave-active
 {
   transition: opacity .5s;
 }

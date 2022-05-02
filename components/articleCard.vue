@@ -4,7 +4,7 @@
       <v-img height="180" :src="getUrlImage(article.image)"></v-img>
     </nuxt-link>
     <v-card-text>
-      
+
       <v-row class="mt-2 mb-1">
       <v-col class="ml-2 ma-2">
         <div class="text-h7 font-weight-bold">
@@ -12,14 +12,14 @@
         </div>
         <div class="text-h7 ma-2">
           {{article.prix_achat}}€
-        </div>   
+        </div>
         <div v-if="article.quantity" class="text-h7 ma-2">
           {{showQuantity}}
         </div>
         <div>
            <v-icon v-for="(star,index) in article.note_moyenne" :key="'a'+index">mdi-star</v-icon>
            <v-icon v-for="(star2,index) in 5-article.note_moyenne" :key="'b'+index">mdi-star-outline</v-icon>
-        </div>       
+        </div>
       </v-col>
       </v-row>
     <v-card-actions align="right">
@@ -32,7 +32,7 @@
        </v-flex>
     </v-card-actions>
     </v-card-text>
-    
+
   </v-card>
 
 </template>
@@ -52,8 +52,8 @@ export default {
     ],
     computed:{
       showQuantity(){
-          if (this.article.quantity > 5) return `${this.article.quantity} pièce(s) disponible.`
-          else if(this.article.quantity < 5 && this.article.quantity > 0) return `Plus que ${this.article.quantity} pièce(s) disponible.`
+          if (this.article.quantity > 5) return `${this.article.quantity} pièce(s) disponible(s).`
+          else if(this.article.quantity < 5 && this.article.quantity > 0) return `Plus que ${this.article.quantity} pièce(s) disponible(s).`
           else return `Cet article n'est plus disponible dans ce point de vente.`
       }
     },

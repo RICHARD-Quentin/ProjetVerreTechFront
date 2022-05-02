@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
 
-    <header-menu :items="items" :title="title"></header-menu>
+    <header-menu :items="items" :title="title" :admin="true"></header-menu>
 
     <v-main id="main">
       <v-container style="min-height: 100vh">
@@ -15,8 +15,6 @@
             <span>&copy; {{ new Date().getFullYear() }} - Copyright</span>
           </v-row>
         </v-card-text>
-
-      </v-card>
     </v-footer>
   </v-app>
 </template>
@@ -54,11 +52,11 @@ export default {
           title: 'Utilisateurs',
           to: '/admin/users'
         },
-        {
-          icon: 'mdi-settings',
-          title: 'Paramètres',
-          to: '/admin/shopsettings'
-        },
+        // {
+        //   icon: 'mdi-settings',
+        //   title: 'Paramètres',
+        //   to: '/admin/shopsettings'
+        // },
         {
           icon: 'mdi-keyboard-return',
           title: 'Retourner à la boutique ',
