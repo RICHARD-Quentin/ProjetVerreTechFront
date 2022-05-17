@@ -8,10 +8,9 @@ on :
   push :
     branches : main
 
-    
 jobs:
-  front:
-    name: front
+  deploy:
+    name: deploy
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -24,21 +23,41 @@ jobs:
           script : |
             cd /home/admin/cesi/verre-tech/ProjetVerreTechFront
             git pull origin main
-            docker-compose build --with-registry-auth --pull
-            docker stack up -c production.yaml verretechfrontend
-  back:
-    name: back
+            docker-compose build
+            docker stack deploy -c production.yaml verretechfrontend --prune --with-registry-auth
+
+  update:
+    name: update
+    needs: deploy
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    strategy:
+      matrix:
+        service : [verretechfrontend_front]
+          
     steps:
-      - name: multiple command
+      - name: update
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script : |
-            cd /home/admin/cesi/verre-tech/ProjetVerreTechBack
-            git pull origin main
-            docker-compose build --with-registry-auth --pull
-            docker stack up -c production.yaml verretechbackend
+            cd /home/admin/cesi/verre-tech/ProjetVerreTechFront
+            docker service update --force ${{ matrix.service }}
+#   back:
+#     name: back
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 60
+#     steps:
+#       - name: multiple command
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           password: ${{ secrets.SSH_PASSWORD }}
+#           script : |
+#             cd /home/admin/cesi/verre-tech/ProjetVerreTechBack
+#             git pull origin main
+#             docker-compose build --with-registry-auth --pull
+#             docker stack up -c production.yaml verretechbackend
