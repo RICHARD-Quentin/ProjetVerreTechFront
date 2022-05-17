@@ -14,45 +14,11 @@ services:
         - "traefik.http.routers.verretech.tls=true"
         - "traefik.http.routers.verretech.tls.certresolver=myresolver"
       replicas: 2
-      placement:
-        max_replicas_per_node: 1
     networks:
       - verretech_network
       - proxy
     ports:
       - 5000:5000
-  traefik: 
-        image: traefik:latest
-        ports:
-          - target: 80
-            published: 80 
-            protocol: tcp 
-            mode: host 
-          - target: 443
-            published: 443
-            protocol: tcp
-            mode: host
-        command: 
-          - --providers.docker.swarmMode=true 
-          - --providers.docker.exposedByDefault=false 
-          - --providers.docker.network=proxy 
-          - --entrypoints.web.address=:80
-          - --entrypoints.web.http.redirections.entryPoint.to=websecure
-          - --entrypoints.web.http.redirections.entryPoint.scheme=https
-          - --entrypoints.websecure.address=:443 
-          - --accesslog 
-          - --log.level=debug 
-        volumes: 
-          - /var/run/docker.sock:/var/run/docker.sock:ro 
-          - /home/admin/treafik/traefik.toml:/etc/traefik/traefik.toml
-          - /home/admin/treafik/letsencrypt:/letsencrypt
-        networks: 
-          - proxy 
-        deploy: 
-            mode: global 
-            placement: 
-                constraints: 
-                  - node.role == manager 
 networks:
     verretech_network: 
       external:
