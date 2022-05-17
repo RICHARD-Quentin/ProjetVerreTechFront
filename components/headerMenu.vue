@@ -5,7 +5,7 @@
     app
     dense
   >
-    <v-toolbar-title> La Boutique <br v-if="$vuetify.breakpoint.xsOnly"/> de VerreTech </v-toolbar-title>
+    <v-toolbar-title> Boutique <br v-if="$vuetify.breakpoint.xsOnly"/> Verre-Tech </v-toolbar-title>
       <v-spacer/>
 
       <v-menu
