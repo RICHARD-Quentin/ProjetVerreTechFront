@@ -51,7 +51,7 @@ export default {
         responseType: 'code',
         grantType: 'authorization_code',
         codeChallengeMethod: 'S256',
-        logoutRedirectUri: 'http://front:5000',
+        logoutRedirectUri: 'https://verre-tech.florianstock.fr/',
       }
     }
   },
